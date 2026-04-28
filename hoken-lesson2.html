@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>性意識の変化と性行動の選択 グループワーク</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#8b67d4;--g2:#f0ebfc;--g3:#c9b8f0;--p:#3dba7f;--p2:#e8f9f1;--o:#ff8c42;--o2:#fff3eb;--b:#4aa8d8;--b2:#eaf5fc;--bg:#fffdf8;--text:#3a3330;--r:18px;}
+body{font-family:"M PLUS Rounded 1c",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+.hero{background:linear-gradient(135deg,#8b67d4,#4aa8d8);padding:22px 16px 28px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:rgba(255,255,255,.1);border-radius:50%;}
+.hero-emoji{font-size:44px;display:block;margin-bottom:6px;animation:bop 2s ease-in-out infinite;}
+@keyframes bop{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.hero h1{font-size:18px;font-weight:900;color:#fff;line-height:1.3;position:relative;}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:4px;position:relative;}
+.modebar{display:flex;gap:8px;padding:12px 14px;background:var(--bg);position:sticky;top:0;z-index:200;border-bottom:2px solid #f0ece4;}
+.mbtn{flex:1;border:2.5px solid #e0dbd2;background:#fff;border-radius:40px;padding:10px 8px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;color:#aaa;}
+.mbtn.ons{background:var(--g);border-color:var(--g);color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.mbtn.ont{background:#e85d5d;border-color:#e85d5d;color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.pnl{display:none;padding:14px;}
+.pnl.show{display:block;}
+.slbl{font-size:12px;font-weight:800;color:#aaa;margin-bottom:8px;}
+.ggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+.gbtn{border:2.5px solid #e0dbd2;background:#fff;border-radius:14px;padding:9px 4px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;transition:all .18s;text-align:center;color:#aaa;}
+.gbtn.on{background:var(--g);border-color:var(--g);color:#fff;transform:scale(1.05);box-shadow:0 3px 10px rgba(139,103,212,.3);}
+.gico{font-size:22px;display:block;margin-bottom:2px;}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;}
+.tabs::-webkit-scrollbar{display:none;}
+.tbtn{flex-shrink:0;border:none;border-radius:30px;padding:8px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;background:#f0ece4;color:#aaa;transition:all .2s;}
+.tbtn.on{color:#fff;}
+.tbtn.t1.on{background:#8b67d4;}.tbtn.t2.on{background:#e85d5d;}.tbtn.t3.on{background:#4aa8d8;}.tbtn.t4.on{background:#ff8c42;}
+.bbl{display:flex;align-items:flex-start;gap:10px;border-radius:16px;padding:12px;margin-bottom:12px;}
+.bface{font-size:34px;flex-shrink:0;animation:wag 3s ease-in-out infinite;}
+@keyframes wag{0%,100%{transform:rotate(0);}30%{transform:rotate(-8deg);}70%{transform:rotate(8deg);}}
+.btxt{font-size:13px;font-weight:700;line-height:1.5;}
+.bnm{font-size:11px;opacity:.7;margin-top:3px;}
+.crd{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:1.5px solid #f0ece4;}
+.crd.lk{opacity:.3;pointer-events:none;}
+.chd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.cico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.cttl{font-size:13px;font-weight:800;line-height:1.3;}
+.csub{font-size:11px;color:#aaa;margin-top:2px;}
+textarea{width:100%;border:2px solid #e8e4dc;border-radius:12px;padding:11px;font-family:inherit;font-size:14px;line-height:1.6;resize:vertical;min-height:80px;background:#fefcf8;color:var(--text);transition:border-color .2s;outline:none;}
+textarea:focus{border-color:var(--g);background:#fff;}
+.ccnt{font-size:11px;color:#ccc;text-align:right;margin-top:3px;}
+.sbtn{width:100%;padding:15px;border:none;border-radius:16px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;margin-top:4px;color:#fff;}
+.sbtn:active{transform:scale(.97);}
+.sbtn.lk{opacity:.35;pointer-events:none;}
+.sbtn.c1{background:#8b67d4;box-shadow:0 4px 14px rgba(139,103,212,.35);}
+.sbtn.c2{background:#e85d5d;box-shadow:0 4px 14px rgba(232,93,93,.35);}
+.sbtn.c3{background:#4aa8d8;box-shadow:0 4px 14px rgba(74,168,216,.35);}
+.sbtn.c4{background:#ff8c42;box-shadow:0 4px 14px rgba(255,140,66,.35);}
+.sent-wrap{display:none;margin-top:8px;border-radius:18px;overflow:hidden;border:2.5px solid #e85d5d;}
+.sent-wrap.show{display:block;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.sent-ok{padding:14px 16px;color:#fff;display:flex;align-items:center;gap:10px;}
+.sent-ok-ico{font-size:24px;}
+.sent-ok-txt{font-size:13px;font-weight:800;line-height:1.4;}
+.sent-ok-sub{font-size:11px;opacity:.85;margin-top:2px;}
+.unsend-btn{display:block;width:100%;padding:16px;background:#fff0f0;border:none;border-top:2.5px solid #e85d5d;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;color:#c0392b;text-align:center;line-height:1.4;}
+.unsend-btn:active{background:#ffd5d5;}
+.unsend-sub{display:block;font-size:11px;color:#922b21;margin-top:3px;font-weight:700;}
+.tth{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.tttl{font-size:16px;font-weight:900;}
+.rfbtn{border:2px solid var(--g);background:var(--g2);color:#4a2d8a;border-radius:30px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
+.rfbtn:hover{background:var(--g);color:#fff;}
+.ttabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;}
+.ttabs::-webkit-scrollbar{display:none;}
+.gc{background:#fff;border-radius:16px;border:1.5px solid #f0ece4;margin-bottom:10px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.gch{padding:10px 14px;font-size:13px;font-weight:900;color:#fff;display:flex;align-items:center;gap:7px;}
+.gcb{padding:10px 14px;}
+.flbl{font-size:11px;font-weight:800;color:#aaa;margin-top:7px;margin-bottom:2px;}
+.fval{font-size:13px;color:var(--text);line-height:1.6;}
+.nd{color:#ccc;font-size:12px;font-style:italic;}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.chip{background:#fff;border:1.5px solid #f0ece4;border-radius:30px;padding:5px 12px;font-size:12px;font-weight:800;color:#888;}
+.empty{text-align:center;padding:30px;color:#ccc;font-size:14px;font-weight:700;}
+.prog-wrap{padding:10px 14px 0;}
+.prog-lbl{font-size:11px;font-weight:800;color:#aaa;margin-bottom:5px;display:flex;justify-content:space-between;}
+.prog-bg{background:#f0ece4;border-radius:999px;height:7px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,#8b67d4,#4aa8d8);border-radius:999px;transition:width .5s ease;}
+.conn-badge{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:800;margin-left:8px;}
+.conn-ok{background:#e8f9f1;color:#2a8a58;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-emoji">💬</span>
+  <h1>性意識の変化と<br>性行動の選択</h1>
+  <p class="hero-sub">教科書 p.86〜87 をもとに考えよう！</p>
+</div>
+
+<div class="prog-wrap" id="prog-wrap" style="display:none;">
+  <div class="prog-lbl"><span>🐾 送信済みグループ</span><span id="prog-txt">0 / 9</span></div>
+  <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<div class="modebar">
+  <button class="mbtn ons" id="mb-s" onclick="setMode('s')">🐾 生徒モード</button>
+  <button class="mbtn" id="mb-t" onclick="setMode('t')">👩‍🏫 教員モード</button>
+</div>
+
+<!-- 生徒パネル -->
+<div class="pnl show" id="pnl-s">
+  <div style="height:12px"></div>
+  <div class="slbl">🦊 自分のグループを選んでね</div>
+  <div class="ggrid">
+    <button class="gbtn" onclick="pg(1)"><span class="gico">🐻</span>グループ1</button>
+    <button class="gbtn" onclick="pg(2)"><span class="gico">🐼</span>グループ2</button>
+    <button class="gbtn" onclick="pg(3)"><span class="gico">🦊</span>グループ3</button>
+    <button class="gbtn" onclick="pg(4)"><span class="gico">🐰</span>グループ4</button>
+    <button class="gbtn" onclick="pg(5)"><span class="gico">🐧</span>グループ5</button>
+    <button class="gbtn" onclick="pg(6)"><span class="gico">🦁</span>グループ6</button>
+    <button class="gbtn" onclick="pg(7)"><span class="gico">🐸</span>グループ7</button>
+    <button class="gbtn" onclick="pg(8)"><span class="gico">🐯</span>グループ8</button>
+    <button class="gbtn" onclick="pg(9)"><span class="gico">🦋</span>グループ9</button>
+  </div>
+  <div class="tabs">
+    <button class="tbtn t1 on" onclick="pt(1)">💜 性意識と異性の尊重</button>
+    <button class="tbtn t2" onclick="pt(2)">🚨 デートDV</button>
+    <button class="tbtn t3" onclick="pt(3)">🔍 性情報の判断</button>
+    <button class="tbtn t4" onclick="pt(4)">✨ 振り返り</button>
+  </div>
+
+  <!-- タブ1：性意識と異性の尊重 -->
+  <div id="tp1">
+    <div class="bbl" style="background:#ede9fb;border:1.5px solid #afa9ec;">
+      <span class="bface">🦊</span>
+      <div><div class="btxt" style="color:#3c3489;">性意識の変化と異性の尊重について<br>p.86を参考に話し合おう！</div><div class="bnm" style="color:#534ab7;">— キツネ先生（教科書p.86）</div></div>
+    </div>
+    <div class="crd lk" id="c1a">
+      <div class="chd"><div class="cico" style="background:#ede9fb;">💜</div><div><div class="cttl">性意識の男女差・異性への関心</div><div class="csub">男女間の意識の違い・コミュニケーションの差（p.86）</div></div></div>
+      <textarea id="f1a" rows="3" placeholder="例：男女間で性への関心の種類が異なる。男女の人間関係がうまくいかない背景には性意識の差異への誤解がある…" oninput="cc(this,'n1a')"></textarea>
+      <div class="ccnt" id="n1a">0文字</div>
+    </div>
+    <div class="crd lk" id="c1b">
+      <div class="chd"><div class="cico" style="background:#ede9fb;">🤝</div><div><div class="cttl">異性を尊重するとはどういうこと？</div><div class="csub">固定観念・相手の立場・人として対等な関係（p.86）</div></div></div>
+      <textarea id="f1b" rows="3" placeholder="例：「男性（女性）はこうあるべき」という固定観念で捉えるのではなく、相手の生き方や将来の希望などを尊重する…" oninput="cc(this,'n1b')"></textarea>
+      <div class="ccnt" id="n1b">0文字</div>
+    </div>
+    <div class="crd lk" id="c1c">
+      <div class="chd"><div class="cico" style="background:#eeedfe;">🌈</div><div><div class="cttl">多様な性のあり方（LGBTQ+・SOGI）</div><div class="csub">性自認・性的指向・多様性の尊重（p.86 Columnより）</div></div></div>
+      <textarea id="f1c" rows="3" placeholder="例：SOGIとは性的指向と性自認を表す言葉。LGBTQとは異なる概念。偏見や誤解をなくし互いの多様な性のあり方を認め尊重することが大切…" oninput="cc(this,'n1c')"></textarea>
+      <div class="ccnt" id="n1c">0文字</div>
+    </div>
+    <button class="sbtn c1 lk" id="sb1" onclick="ds(1)">💜 グループ? の回答を送る</button>
+    <div class="sent-wrap" id="sent1">
+      <div class="sent-ok" style="background:#8b67d4;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！先生の画面に反映されました！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(1)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+
+  <!-- タブ2：デートDV -->
+  <div id="tp2" style="display:none;">
+    <div class="bbl" style="background:#fde8e8;border:1.5px solid #f5a0a0;">
+      <span class="bface">🐰</span>
+      <div><div class="btxt" style="color:#7a1a1a;">デートDVとセクシュアル・ハラスメントについて<br>p.86の図2を見ながら考えよう！</div><div class="bnm" style="color:#a03030;">— うさぎ先生（教科書p.86）</div></div>
+    </div>
+    <div class="crd lk" id="c2a">
+      <div class="chd"><div class="cico" style="background:#fde8e8;">🚨</div><div><div class="cttl">デートDVの種類（図2より）</div><div class="csub">精神的・身体的・経済的・性的暴力の具体例</div></div></div>
+      <textarea id="f2a" rows="3" placeholder="例：精神的暴力→大声で怒鳴る・バカにする、身体的暴力→殴る・蹴る、経済的暴力→デート費用をまったく払わない、性的暴力→性行為を強要する…" oninput="cc(this,'n2a')"></textarea>
+      <div class="ccnt" id="n2a">0文字</div>
+    </div>
+    <div class="crd lk" id="c2b">
+      <div class="chd"><div class="cico" style="background:#fde8e8;">🤔</div><div><div class="cttl">なぜデートDVは起きやすいの？</div><div class="csub">「好きだから」「嫌われたくないから」という心理</div></div></div>
+      <textarea id="f2b" rows="3" placeholder="例：「好きだから」「嫌われたくないから」という気持ちが先立って自分で判断・解決するのが難しい。周りや専門機関への相談が大切…" oninput="cc(this,'n2b')"></textarea>
+      <div class="ccnt" id="n2b">0文字</div>
+    </div>
+    <div class="crd lk" id="c2c">
+      <div class="chd"><div class="cico" style="background:#fde8e8;">💬</div><div><div class="cttl">グループで考えた：もし友人が相談してきたら？</div><div class="csub">自分たちならどう対応する？</div></div></div>
+      <textarea id="f2c" rows="3" placeholder="例：まず話をしっかり聞く。一緒に専門機関（DV相談ナビ等）を探す。一人で抱え込まないよう寄り添う…" oninput="cc(this,'n2c')"></textarea>
+      <div class="ccnt" id="n2c">0文字</div>
+    </div>
+    <button class="sbtn c2 lk" id="sb2" onclick="ds(2)">🚨 グループ? の回答を送る</button>
+    <div class="sent-wrap" id="sent2">
+      <div class="sent-ok" style="background:#e85d5d;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！大事な話し合いができたね！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(2)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+
+  <!-- タブ3：性情報の判断 -->
+  <div id="tp3" style="display:none;">
+    <div class="bbl" style="background:#e6f1fb;border:1.5px solid #85b7eb;">
+      <span class="bface">🦭</span>
+      <div><div class="btxt" style="color:#042c53;">性に関する情報の取捨選択について<br>p.87「考えてみよう」に挑戦！</div><div class="bnm" style="color:#185fa5;">— アザラシ先生（教科書p.87）</div></div>
+    </div>
+    <div class="crd lk" id="c3a">
+      <div class="chd"><div class="cico" style="background:#e6f1fb;">📡</div><div><div class="cttl">信頼できる情報の出どころ（誰が発信？）</div><div class="csub">専門家・学術団体・NPOなど信頼できる発信者の特徴</div></div></div>
+      <textarea id="f3a" rows="3" placeholder="例：専門家や学術団体・NPOなどによる情報は信頼できる。インターネットやDVD・テレビ・雑誌などは興味本位で性を取り上げるものも含まれる（p.87）…" oninput="cc(this,'n3a')"></textarea>
+      <div class="ccnt" id="n3a">0文字</div>
+    </div>
+    <div class="crd lk" id="c3b">
+      <div class="chd"><div class="cico" style="background:#e6f1fb;">🔬</div><div><div class="cttl">信頼できる情報の見分け方</div><div class="csub">科学的な正確さ・根拠・目的で判断する</div></div></div>
+      <textarea id="f3b" rows="3" placeholder="例：科学的に正確か、根拠が示されているか、情報の目的が何かを確認する。入手した情報をそのまま無批判に受け入れないことが大切（p.87）…" oninput="cc(this,'n3b')"></textarea>
+      <div class="ccnt" id="n3b">0文字</div>
+    </div>
+    <div class="crd lk" id="c3c">
+      <div class="chd"><div class="cico" style="background:#e6f1fb;">🎯</div><div><div class="cttl">グループ独自の判断基準（考えてみよう・p.87）</div><div class="csub">話し合って気づいた独自ポイント！</div></div></div>
+      <textarea id="f3c" rows="3" placeholder="例：不安をあおるだけの情報・匿名の情報は疑う。友人から聞いた話を鵜呑みにしない。複数の信頼できる情報源で確認する…" oninput="cc(this,'n3c')"></textarea>
+      <div class="ccnt" id="n3c">0文字</div>
+    </div>
+    <button class="sbtn c3 lk" id="sb3" onclick="ds(3)">🔍 グループ? の回答を送る</button>
+    <div class="sent-wrap" id="sent3">
+      <div class="sent-ok" style="background:#4aa8d8;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！鋭い視点！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(3)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+
+  <!-- タブ4：振り返り -->
+  <div id="tp4" style="display:none;">
+    <div class="bbl" style="background:#fff0e0;border:1.5px solid #ef9f27;">
+      <span class="bface">🐨</span>
+      <div><div class="btxt" style="color:#412402;">今日の学びを自分の言葉でまとめよう！<br>正解なんてない、思ったことを書いてね🐨</div><div class="bnm" style="color:#633806;">— コアラ先生</div></div>
+    </div>
+    <div class="crd lk" id="c4a">
+      <div class="chd"><div class="cico" style="background:#faeeda;">✨</div><div><div class="cttl">振り返り（一言）</div><div class="csub">「もし友人から誤った性情報を聞いたとき、あなたはどう対応しますか？」</div></div></div>
+      <textarea id="f4a" rows="3" placeholder="例：まずその情報が信頼できるものかを確認する。専門機関のサイトで調べてから友人に伝える。一人で判断せず周りの大人にも相談する…" oninput="cc(this,'n4a')"></textarea>
+      <div class="ccnt" id="n4a">0文字</div>
+    </div>
+    <div class="crd lk" id="c4b">
+      <div class="chd"><div class="cico" style="background:#faeeda;">❓</div><div><div class="cttl">疑問・次回聞きたいこと</div><div class="csub">先生への質問・もっと知りたいこと</div></div></div>
+      <textarea id="f4b" rows="2" placeholder="例：デートDVに気づいたとき相談できる場所はどこ？科学的に正確な性情報はどこで手に入る？" oninput="cc(this,'n4b')"></textarea>
+      <div class="ccnt" id="n4b">0文字</div>
+    </div>
+    <button class="sbtn c4 lk" id="sb4" onclick="ds(4)">✨ グループ? の振り返りを送る</button>
+    <div class="sent-wrap" id="sent4">
+      <div class="sent-ok" style="background:#ff8c42;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！今日もお疲れさま！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(4)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- 教員パネル -->
+<div class="pnl" id="pnl-t">
+  <div style="height:12px"></div>
+  <div class="tth">
+    <div class="tttl">👩‍🏫 全グループ回答一覧<span class="conn-badge conn-ok" id="conn-badge">● 接続中</span></div>
+    <button class="rfbtn" onclick="loadTeacher()">🔄 更新</button>
+  </div>
+  <div class="ttabs">
+    <button class="tbtn t1 on" onclick="ptt(1)">💜 性意識と尊重</button>
+    <button class="tbtn t2" onclick="ptt(2)">🚨 デートDV</button>
+    <button class="tbtn t3" onclick="ptt(3)">🔍 性情報の判断</button>
+    <button class="tbtn t4" onclick="ptt(4)">✨ 振り返り</button>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div id="tcontent"><div class="empty">🔄 更新ボタンを押すと生徒の回答が表示されます</div></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCgA-yqynPM-ezZpBZCp8DLrxN9R82zS5U",
+  authDomain: "hoken-app-26315.firebaseapp.com",
+  databaseURL: "https://hoken-app-26315-default-rtdb.firebaseio.com",
+  projectId: "hoken-app-26315",
+  storageBucket: "hoken-app-26315.firebasestorage.app",
+  messagingSenderId: "932877641447",
+  appId: "1:932877641447:web:a351fa878ed76ae4392442",
+  measurementId: "G-8CEGDB5SWB"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const ANI=["🐻","🐼","🦊","🐰","🐧","🦁","🐸","🐯","🦋"];
+const HC={1:"#8b67d4",2:"#e85d5d",3:"#4aa8d8",4:"#ff8c42"};
+const FL={
+  1:{a:"性意識の男女差・異性への関心",b:"異性を尊重するとは",c:"多様な性のあり方（LGBTQ+・SOGI）"},
+  2:{a:"デートDVの種類",b:"なぜデートDVは起きやすいか",c:"友人が相談してきたらどう対応する？"},
+  3:{a:"信頼できる情報の出どころ",b:"信頼できる情報の見分け方",c:"グループ独自の判断基準"},
+  4:{a:"振り返り（一言）",b:"疑問・次回聞きたいこと"}
+};
+const FM={1:["f1a","f1b","f1c"],2:["f2a","f2b","f2c"],3:["f3a","f3b","f3c"],4:["f4a","f4b"]};
+const CI={1:["c1a","c1b","c1c"],2:["c2a","c2b","c2c"],3:["c3a","c3b","c3c"],4:["c4a","c4b"]};
+let cg=null,ct=1,ctt=1;
+
+window.setMode=function(m){
+  document.getElementById("mb-s").className="mbtn"+(m==="s"?" ons":"");
+  document.getElementById("mb-t").className="mbtn"+(m==="t"?" ont":"");
+  document.getElementById("pnl-s").classList.toggle("show",m==="s");
+  document.getElementById("pnl-t").classList.toggle("show",m==="t");
+  document.getElementById("prog-wrap").style.display=m==="s"?"block":"none";
+  if(m==="t") loadTeacher();
+};
+
+window.pg=function(n){
+  cg=n;
+  document.querySelectorAll(".gbtn").forEach((b,i)=>b.classList.toggle("on",i+1===n));
+  [1,2,3,4].forEach(t=>unlock(t));
+  updateProg();
+};
+
+function unlock(t){
+  if(!cg)return;
+  CI[t].forEach(id=>document.getElementById(id)?.classList.remove("lk"));
+  const sb=document.getElementById("sb"+t);
+  if(!sb)return;
+  sb.classList.remove("lk");
+  const ic={1:"💜",2:"🚨",3:"🔍",4:"✨"};
+  const lb={1:"性意識と尊重",2:"デートDV",3:"性情報の判断",4:"振り返り"};
+  sb.textContent=ic[t]+" グループ"+cg+" の"+lb[t]+"を送る";
+}
+
+window.pt=function(n){
+  ct=n;
+  [1,2,3,4].forEach(i=>{
+    document.getElementById("tp"+i).style.display=i===n?"block":"none";
+    document.querySelectorAll(".tabs .tbtn")[i-1].classList.toggle("on",i===n);
+  });
+  unlock(n);
+};
+
+window.cc=function(el,id){document.getElementById(id).textContent=el.value.length+"文字";};
+
+window.ds=async function(t){
+  if(!cg)return;
+  document.getElementById("sb"+t).classList.add("lk");
+  const d={};
+  FM[t].forEach((id,i)=>{d[String.fromCharCode(97+i)]=document.getElementById(id)?.value||"";});
+  d.submitted=true;
+  d.timestamp=Date.now();
+  try{
+    await set(ref(db,"lesson2/t"+t+"/g"+cg),d);
+    document.getElementById("sent"+t).classList.add("show");
+    document.getElementById("sb"+t).style.display="none";
+    updateProg();
+  }catch(e){
+    document.getElementById("sb"+t).classList.remove("lk");
+    alert("送信に失敗しました。もう一度試してください。");
+  }
+};
+
+window.us=async function(t){
+  if(!cg)return;
+  try{ await set(ref(db,"lesson2/t"+t+"/g"+cg+"/submitted"),false); }catch(e){}
+  document.getElementById("sent"+t).classList.remove("show");
+  document.getElementById("sb"+t).style.display="flex";
+  document.getElementById("sb"+t).classList.remove("lk");
+};
+
+async function updateProg(){
+  let done=0;
+  for(let g=1;g<=9;g++){
+    for(let t=1;t<=4;t++){
+      try{
+        const snap=await get(ref(db,"lesson2/t"+t+"/g"+g+"/submitted"));
+        if(snap.val()===true){done++;break;}
+      }catch(e){}
+    }
+  }
+  document.getElementById("prog-txt").textContent=done+" / 9";
+  document.getElementById("prog-fill").style.width=Math.round(done/9*100)+"%";
+}
+
+window.ptt=function(n){
+  ctt=n;
+  document.querySelectorAll(".ttabs .tbtn").forEach((b,i)=>b.classList.toggle("on",i+1===n));
+  loadTeacher();
+};
+
+window.loadTeacher=async function(){
+  const el=document.getElementById("tcontent");
+  el.innerHTML="<div class='empty'>読み込み中… 🐾</div>";
+  const t=ctt;
+  const labels=FL[t];
+  const keys=Object.keys(labels);
+  let html="",filled=0;
+  for(let g=1;g<=9;g++){
+    let gd=null;
+    try{const snap=await get(ref(db,"lesson2/t"+t+"/g"+g));gd=snap.val();}catch(e){}
+    html+="<div class='gc'><div class='gch' style='background:"+HC[t]+";'>"+ANI[g-1]+" グループ"+g+(gd&&gd.submitted?" ✓":"")+"</div><div class='gcb'>";
+    if(!gd||!gd.submitted||!Object.values(gd).some(v=>typeof v==="string"&&v.trim())){
+      html+="<span class='nd'>まだ届いていません</span>";
+    }else{
+      filled++;
+      keys.forEach(k=>{
+        const v=String(gd[k]||"").replace(/</g,"&lt;");
+        html+="<div class='flbl'>"+labels[k]+"</div><div class='fval'>"+(v||"<span class='nd'>—</span>")+"</div>";
+      });
+    }
+    html+="</div></div>";
+  }
+  document.getElementById("stats").innerHTML=filled>0
+    ?"<div class='chip'>送信済み <b style='color:#8b67d4'>"+filled+"</b> / 9</div><div class='chip'>未送信 <b style='color:#e85d5d'>"+(9-filled)+"</b></div>":"";
+  el.innerHTML=html;
+  onValue(ref(db,"lesson2/t"+ctt),()=>{
+    if(document.getElementById("pnl-t").classList.contains("show")) loadTeacher();
+  },{onlyOnce:false});
+};
+
+updateProg();
+</script>
+</body>
+</html>
