@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>導入クイズ：デートDV・性情報</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#1a1a1a;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:1rem;font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;}
+.app{background:#0d0d0d;width:100%;max-width:960px;min-height:520px;border-radius:16px;padding:2.5rem 3rem;display:flex;flex-direction:column;position:relative;overflow:hidden;color:#fff;}
+.slide-num{position:absolute;top:1.25rem;right:1.5rem;font-size:14px;color:#555;}
+.intro-badge{display:inline-block;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:1.25rem;background:#2a2060;color:#a89ef5;}
+.intro-title{font-size:32px;font-weight:700;color:#fff;line-height:1.45;margin-bottom:0.6rem;}
+.intro-sub{font-size:20px;color:#aaa;line-height:1.6;margin-bottom:1.25rem;}
+.teacher-note{font-size:13px;color:#555;border-left:2px solid #333;padding-left:0.75rem;line-height:1.6;}
+.sec-badge{display:inline-block;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:1.5rem;}
+.sec-dv{background:#3a1a10;color:#ff9060;}
+.sec-info{background:#0a2040;color:#60b8ff;}
+.sec-title{font-size:40px;font-weight:700;color:#fff;line-height:1.4;white-space:pre-line;text-align:center;margin-bottom:0.6rem;}
+.sec-sub{font-size:17px;color:#888;text-align:center;}
+.q-tag{display:inline-block;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:1.25rem;}
+.tag-dv{background:#3a1a10;color:#ff9060;}
+.tag-info{background:#0a2040;color:#60b8ff;}
+.q-text{font-size:32px;font-weight:700;color:#fff;line-height:1.5;white-space:pre-line;margin-bottom:2rem;flex:1;}
+.btn-row{display:flex;gap:16px;margin-top:auto;}
+.ans-btn{flex:1;padding:20px 12px;border:2.5px solid;border-radius:14px;font-family:inherit;font-size:24px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center;background:transparent;}
+.btn-dv{border-color:#7a2020;color:#f07070;}
+.btn-no{border-color:#2a6e4a;color:#4ecb87;}
+.btn-o{border-color:#2a6e4a;color:#4ecb87;}
+.btn-x{border-color:#7a2020;color:#f07070;}
+.btn-dv:hover:not(:disabled){background:#3a1010;}
+.btn-no:hover:not(:disabled){background:#1a3d2a;}
+.btn-o:hover:not(:disabled){background:#1a3d2a;}
+.btn-x:hover:not(:disabled){background:#3a1010;}
+.ans-btn:disabled{opacity:.3;cursor:default;}
+.big-answer{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:16px;z-index:10;opacity:0;pointer-events:none;transition:opacity .15s;}
+.big-answer.show{opacity:1;pointer-events:auto;}
+.big-mark{font-size:160px;font-weight:700;line-height:1;}
+.anim-pop{animation:pop .35s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes pop{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.bg-ok{background:#0a2a18;}
+.bg-ng{background:#2a0a0a;}
+.bg-tri{background:#13102a;}
+.col-ok{color:#4ecb87;}
+.col-ng{color:#f07070;}
+.col-tri{color:#a89ef5;}
+.explain-box{position:absolute;inset:0;border-radius:16px;padding:2.5rem 3rem;display:flex;flex-direction:column;justify-content:center;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s;}
+.explain-box.show{opacity:1;pointer-events:auto;}
+.explain-mark{font-size:72px;font-weight:700;line-height:1;margin-bottom:1rem;}
+.explain-text{font-size:30px;font-weight:700;line-height:1.75;white-space:pre-line;color:#fff;}
+.explain-hint{font-size:15px;color:#555;margin-top:1.75rem;}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.25rem;width:100%;max-width:960px;}
+.nav-btn{border:1px solid #333;background:#1a1a1a;border-radius:8px;padding:12px 28px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color:#aaa;transition:all .15s;}
+.nav-btn:hover{background:#2a2a2a;color:#fff;}
+.nav-btn:disabled{opacity:.25;cursor:default;}
+.dots-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.dots{display:flex;gap:5px;flex-wrap:wrap;max-width:320px;justify-content:center;}
+.dot{width:9px;height:9px;border-radius:50%;background:#333;flex-shrink:0;transition:background .2s;}
+.dot.cur{background:#a89ef5;}
+.dot.done-ok{background:#4ecb87;}
+.dot.done-ng{background:#f07070;}
+.prog{font-size:12px;color:#555;}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <span class="slide-num" id="snum"></span>
+  <div id="content" style="display:flex;flex-direction:column;flex:1;"></div>
+  <div class="big-answer" id="big-answer"><div class="big-mark" id="big-mark"></div></div>
+  <div class="explain-box" id="explain-box">
+    <div class="explain-mark" id="explain-mark"></div>
+    <div class="explain-text" id="explain-text"></div>
+    <div class="explain-hint">← → キーまたは下のボタンで次の問題へ</div>
+  </div>
+</div>
+<div class="nav">
+  <button class="nav-btn" id="prev" onclick="move(-1)" disabled>← 前へ</button>
+  <div class="dots-wrap">
+    <div class="dots" id="dots"></div>
+    <div class="prog" id="prog"></div>
+  </div>
+  <button class="nav-btn" id="next" onclick="move(1)">次へ →</button>
+</div>
+
+<script>
+const SLIDES=[
+  {type:"intro",title:"最初にちょっと質問します。",sub:"みんなで考えてみよう。",note:"答えを確認しながら授業を進めます。"},
+  {type:"section",label:"第1部　全10問",title:"これって\nデートDV？",sub:"DV？ DVじゃない？ で答えてみよう",cls:"sec-dv"},
+  {type:"dv",tag:"デートDV",q:"彼氏が彼女のスマホのパスワードを\n毎日教えるよう求めている",ans:"dv",explain:"相手のプライバシーを侵害する\n「精神的暴力」です。\n「好きだから」でも、デートDVにあたります。"},
+  {type:"dv",tag:"デートDV",q:"好きだから心配で、\n彼女が他の男友達と話すことを禁止している",ans:"dv",explain:"交友関係を一方的に制限するのは\n「精神的暴力」です。\n愛情と支配・コントロールは別物です。"},
+  {type:"dv",tag:"デートDV",q:"付き合っているんだから手をつなぐのは当然、\nと思って嫌がっていても手をつなごうとする",ans:"dv",explain:"相手の意思を無視した接触は\n「性的暴力」になりえます。\n付き合っていても、同意は必ず必要です。"},
+  {type:"dv",tag:"デートDV",q:"別れたいと言ったら「なんで」と泣いて\n何時間も引き止める",ans:"tri",explain:"感情を表現すること自体は自然ですが、\n「何時間も引き止める」は相手の意思を\n拘束する精神的暴力になりえます。"},
+  {type:"dv",tag:"デートDV",q:"彼女のSNSのコメントを毎日チェックして\n「この人だれ？」と問い詰める",ans:"dv",explain:"行動を監視・問い詰めるのは\n「精神的暴力」です。\n信頼関係のなさがDVにつながっていきます。"},
+  {type:"dv",tag:"デートDV",q:"デート代をいつも相手に払わせていて\n「払えないなら来るな」と言う",ans:"dv",explain:"お金を使って相手をコントロールするのは\n「経済的暴力」です。\n対等な関係の上に恋愛関係は成り立ちます。"},
+  {type:"dv",tag:"デートDV",q:"「お前のことが心配だから」と言って\n毎日の行動を細かく報告させている",ans:"dv",explain:"「心配」を理由にした行動管理も\n「精神的暴力」です。\n心配と支配・監視は違います。"},
+  {type:"dv",tag:"デートDV",q:"外見についてのコメントを\n相手が嫌がっているのに繰り返している",ans:"dv",explain:"相手が不快に感じているのに繰り返す言動は\n「セクシュアル・ハラスメント」にあたります。\n冗談のつもりでも関係ありません。"},
+  {type:"dv",tag:"デートDV",q:"怒ったときに壁を殴ったり\n物を投げたりして威圧する",ans:"dv",explain:"直接手を出していなくても\n身体的暴力に準じる行為です。\n恐怖を与えてコントロールしようとするのはDVです。"},
+  {type:"dv",tag:"デートDV",q:"付き合い始めたので、相手の同意を得た上で\n2人だけの写真をお互いに持っている",ans:"no",explain:"お互いの同意があれば問題ありません。\n重要なのは「同意があるかどうか」です。\n同意なく撮影・保存・拡散することはNGです。"},
+  {type:"section",label:"第2部　全10問",title:"その性情報、\n本当に正しい？",sub:"○か×か、みんなで考えてみよう",cls:"sec-info"},
+  {type:"ox",tag:"性情報",q:"コンドームをつければ\n性感染症を100%防げる",ans:"x",explain:"コンドームはリスクを大幅に下げますが\n100%ではありません。\n皮膚の接触で感染するものもあります。"},
+  {type:"ox",tag:"性情報",q:"アフターピル（緊急避妊薬）は今や\n一部の薬局で処方箋なしに買える",ans:"o",explain:"2026年2月から一部の薬局で\n購入可能になりました。\n全薬局の約15〜17%のみ・約7,500円〜です。"},
+  {type:"ox",tag:"性情報",q:"SNSやインターネットの性情報は\n信頼できないものが多い",ans:"o",explain:"興味本位で不正確な情報が多く含まれます。\n専門家・学術団体・行政機関が\n発信した情報を確認しましょう。"},
+  {type:"ox",tag:"性情報",q:"LINEで「別れよう」と送るのは\nデートDVにあたる",ans:"tri",explain:"LINEかどうかより「内容と文脈」が重要です。\n一方的に脅す内容ならDVになりえますが、\n単に別れを伝えるだけではDVではありません。"},
+  {type:"ox",tag:"性情報",q:"友達から聞いた性の情報は\n科学的に正確なことが多い",ans:"x",explain:"友人・先輩からの性情報は\nあいまいな根拠・個人の経験に基づくことが多く、\n科学的正確さに欠ける場合があります。"},
+  {type:"ox",tag:"性情報",q:"「専門家・学術団体が発信している」\nことは信頼できる情報の目安になる",ans:"o",explain:"専門家・学術団体・NPO・行政などが\n発信する情報は科学的根拠に基づいていることが多く、\n信頼の目安になります。"},
+  {type:"ox",tag:"性情報",q:"妊娠は性交の翌日に\n検査薬で必ずわかる",ans:"x",explain:"妊娠検査薬が反応するのは一般的に\n性交から約2〜3週間後です。\n翌日では正確な判定はできません。"},
+  {type:"ox",tag:"性情報",q:"性感染症は症状がなければ\n人にうつすことはない",ans:"x",explain:"多くの性感染症（クラミジア・HIV等）は\n症状がなくても感染が広がります。\n定期的な検査が重要です。"},
+  {type:"ox",tag:"性情報",q:"LGBTQ+の人は\n日本にほとんどいない",ans:"x",explain:"日本でも人口の約3〜10%程度とされています。\nクラスに1〜3人いてもおかしくない数字です。"},
+  {type:"ox",tag:"性情報",q:"入手した性情報は\nそのまま無批判に受け入れないことが大切だ",ans:"o",explain:"情報の出どころ・根拠・目的を確認することが大切です。\n「正しいかどうか」を自分で判断する力が\n性行動の選択を守ります。"},
+];
+
+let cur=0;
+const chosen=new Array(SLIDES.length).fill(null);
+
+function getDisplay(s,v){
+  if(s.ans==="tri")return{sym:"△",bg:"bg-tri",col:"col-tri"};
+  const ok=s.ans===v;
+  return ok?{sym:"○",bg:"bg-ok",col:"col-ok"}:{sym:"×",bg:"bg-ng",col:"col-ng"};
+}
+function isOk(s,v){
+  if(!v)return false;
+  if(s.ans==="tri")return true;
+  return s.ans===v;
+}
+function showAnswer(v){
+  const s=SLIDES[cur];
+  chosen[cur]=v;
+  const d=getDisplay(s,v);
+  const ba=document.getElementById("big-answer");
+  ba.className="big-answer "+d.bg+" show";
+  const bm=document.getElementById("big-mark");
+  const newBm=bm.cloneNode(false);
+  newBm.className="big-mark anim-pop "+d.col;
+  newBm.textContent=d.sym;
+  bm.parentNode.replaceChild(newBm,bm);
+  setTimeout(()=>{
+    ba.className="big-answer";
+    const eb=document.getElementById("explain-box");
+    eb.className="explain-box "+d.bg+" show";
+    const em=document.getElementById("explain-mark");
+    em.className="explain-mark "+d.col;
+    em.textContent=d.sym;
+    document.getElementById("explain-text").textContent=s.explain;
+    renderDots();
+  },900);
+}
+function renderDots(){
+  const qs=SLIDES.map((s,i)=>(s.type==="dv"||s.type==="ox")?i:-1).filter(i=>i>=0);
+  document.getElementById("dots").innerHTML=qs.map(i=>{
+    let c="dot";
+    if(i===cur)c+=" cur";
+    else if(chosen[i]!==null)c+=isOk(SLIDES[i],chosen[i])?" done-ok":" done-ng";
+    return"<div class=\""+c+"\"></div>";
+  }).join("");
+}
+function render(){
+  const s=SLIDES[cur];
+  document.getElementById("snum").textContent=(cur+1)+" / "+SLIDES.length;
+  document.getElementById("prev").disabled=cur===0;
+  document.getElementById("next").disabled=cur===SLIDES.length-1;
+  const qN=SLIDES.slice(0,cur+1).filter(x=>x.type==="dv"||x.type==="ox").length;
+  const isQ=s.type==="dv"||s.type==="ox";
+  document.getElementById("prog").textContent=isQ?"問 "+qN+"/20":"← → で進む";
+  document.getElementById("big-answer").className="big-answer";
+  const eb=document.getElementById("explain-box");
+  if(chosen[cur]!==null&&isQ){
+    const d=getDisplay(s,chosen[cur]);
+    eb.className="explain-box "+d.bg+" show";
+    document.getElementById("explain-mark").className="explain-mark "+d.col;
+    document.getElementById("explain-mark").textContent=d.sym;
+    document.getElementById("explain-text").textContent=s.explain;
+  } else {
+    eb.className="explain-box";
+  }
+  renderDots();
+  let html="";
+  if(s.type==="intro"){
+    html="<div class=\"intro-badge\">導入</div><div class=\"intro-title\">"+s.title+"</div><div class=\"intro-sub\">"+s.sub+"</div><div class=\"teacher-note\">教員メモ："+s.note+"</div>";
+  } else if(s.type==="section"){
+    html="<div style=\"flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;\"><div class=\"sec-badge "+s.cls+"\" style=\"display:inline-block;margin:0 auto 1.5rem;\">"+s.label+"</div><div class=\"sec-title\">"+s.title+"</div><div class=\"sec-sub\" style=\"margin-top:0.75rem;\">"+s.sub+"</div></div>";
+  } else if(s.type==="dv"){
+    const lk=chosen[cur]!==null?"disabled":"";
+    html="<div class=\"q-tag tag-dv\">"+s.tag+"</div><div class=\"q-text\">"+s.q+"</div><div class=\"btn-row\"><button class=\"ans-btn btn-dv\" onclick=\"showAnswer('dv')\" "+lk+">DV</button><button class=\"ans-btn btn-no\" onclick=\"showAnswer('no')\" "+lk+">DVじゃない</button></div>";
+  } else {
+    const lk=chosen[cur]!==null?"disabled":"";
+    html="<div class=\"q-tag tag-info\">"+s.tag+"</div><div class=\"q-text\">"+s.q+"</div><div class=\"btn-row\"><button class=\"ans-btn btn-o\" onclick=\"showAnswer('o')\" "+lk+">○</button><button class=\"ans-btn btn-x\" onclick=\"showAnswer('x')\" "+lk+">×</button></div>";
+  }
+  document.getElementById("content").innerHTML=html;
+}
+function move(d){cur=Math.max(0,Math.min(SLIDES.length-1,cur+d));render();}
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight")move(1);
+  if(e.key==="ArrowLeft")move(-1);
+});
+render();
+</script>
+</body>
+</html>
