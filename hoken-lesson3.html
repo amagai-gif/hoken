@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>結婚生活と健康 グループワーク</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#e8845a;--g2:#fdf0ea;--g3:#f5c4a3;--p:#5a7dd4;--p2:#eaeffd;--b:#4aa8a0;--b2:#eaf7f5;--o:#d4a05a;--o2:#fdf5ea;--bg:#fffdf8;--text:#3a3330;}
+body{font-family:"M PLUS Rounded 1c",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+.hero{background:linear-gradient(135deg,#e8845a,#d4a05a);padding:22px 16px 28px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:rgba(255,255,255,.1);border-radius:50%;}
+.hero-emoji{font-size:44px;display:block;margin-bottom:6px;animation:bop 2s ease-in-out infinite;}
+@keyframes bop{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.hero h1{font-size:18px;font-weight:900;color:#fff;line-height:1.3;position:relative;}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:4px;position:relative;}
+.modebar{display:flex;gap:8px;padding:12px 14px;background:var(--bg);position:sticky;top:0;z-index:200;border-bottom:2px solid #f0ece4;}
+.mbtn{flex:1;border:2.5px solid #e0dbd2;background:#fff;border-radius:40px;padding:10px 8px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;color:#aaa;}
+.mbtn.ons{background:var(--g);border-color:var(--g);color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.mbtn.ont{background:#e85d5d;border-color:#e85d5d;color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.pnl{display:none;padding:14px;}
+.pnl.show{display:block;}
+.slbl{font-size:12px;font-weight:800;color:#aaa;margin-bottom:8px;}
+.ggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+.gbtn{border:2.5px solid #e0dbd2;background:#fff;border-radius:14px;padding:9px 4px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;transition:all .18s;text-align:center;color:#aaa;}
+.gbtn.on{background:var(--g);border-color:var(--g);color:#fff;transform:scale(1.05);box-shadow:0 3px 10px rgba(232,132,90,.3);}
+.gico{font-size:22px;display:block;margin-bottom:2px;}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;}
+.tabs::-webkit-scrollbar{display:none;}
+.tbtn{flex-shrink:0;border:none;border-radius:30px;padding:8px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;background:#f0ece4;color:#aaa;transition:all .2s;}
+.tbtn.on{color:#fff;}
+.tbtn.t1.on{background:#e8845a;}.tbtn.t2.on{background:#5a7dd4;}.tbtn.t3.on{background:#4aa8a0;}.tbtn.t4.on{background:#d4a05a;}
+.bbl{display:flex;align-items:flex-start;gap:10px;border-radius:16px;padding:12px;margin-bottom:12px;}
+.bface{font-size:34px;flex-shrink:0;animation:wag 3s ease-in-out infinite;}
+@keyframes wag{0%,100%{transform:rotate(0);}30%{transform:rotate(-8deg);}70%{transform:rotate(8deg);}}
+.btxt{font-size:13px;font-weight:700;line-height:1.5;}
+.bnm{font-size:11px;opacity:.7;margin-top:3px;}
+.crd{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:1.5px solid #f0ece4;}
+.crd.lk{opacity:.3;pointer-events:none;}
+.chd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.cico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.cttl{font-size:13px;font-weight:800;line-height:1.3;}
+.csub{font-size:11px;color:#aaa;margin-top:2px;}
+textarea{width:100%;border:2px solid #e8e4dc;border-radius:12px;padding:11px;font-family:inherit;font-size:14px;line-height:1.6;resize:vertical;min-height:80px;background:#fefcf8;color:var(--text);transition:border-color .2s;outline:none;}
+textarea:focus{border-color:var(--g);background:#fff;}
+.ccnt{font-size:11px;color:#ccc;text-align:right;margin-top:3px;}
+.sbtn{width:100%;padding:15px;border:none;border-radius:16px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;margin-top:4px;color:#fff;}
+.sbtn:active{transform:scale(.97);}
+.sbtn.lk{opacity:.35;pointer-events:none;}
+.sbtn.c1{background:#e8845a;box-shadow:0 4px 14px rgba(232,132,90,.35);}
+.sbtn.c2{background:#5a7dd4;box-shadow:0 4px 14px rgba(90,125,212,.35);}
+.sbtn.c3{background:#4aa8a0;box-shadow:0 4px 14px rgba(74,168,160,.35);}
+.sbtn.c4{background:#d4a05a;box-shadow:0 4px 14px rgba(212,160,90,.35);}
+.sent-wrap{display:none;margin-top:8px;border-radius:18px;overflow:hidden;border:2.5px solid #e85d5d;}
+.sent-wrap.show{display:block;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.sent-ok{padding:14px 16px;color:#fff;display:flex;align-items:center;gap:10px;}
+.sent-ok-ico{font-size:24px;}
+.sent-ok-txt{font-size:13px;font-weight:800;line-height:1.4;}
+.sent-ok-sub{font-size:11px;opacity:.85;margin-top:2px;}
+.unsend-btn{display:block;width:100%;padding:16px;background:#fff0f0;border:none;border-top:2.5px solid #e85d5d;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;color:#c0392b;text-align:center;line-height:1.4;}
+.unsend-btn:active{background:#ffd5d5;}
+.unsend-sub{display:block;font-size:11px;color:#922b21;margin-top:3px;font-weight:700;}
+.prog-wrap{padding:10px 14px 0;}
+.prog-lbl{font-size:11px;font-weight:800;color:#aaa;margin-bottom:5px;display:flex;justify-content:space-between;}
+.prog-bg{background:#f0ece4;border-radius:999px;height:7px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,#e8845a,#5a7dd4);border-radius:999px;transition:width .5s ease;}
+.tth{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.tttl{font-size:16px;font-weight:900;}
+.rfbtn{border:2px solid var(--g);background:var(--g2);color:#8a3a10;border-radius:30px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
+.rfbtn:hover{background:var(--g);color:#fff;}
+.ttabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;}
+.ttabs::-webkit-scrollbar{display:none;}
+.gc{background:#fff;border-radius:16px;border:1.5px solid #f0ece4;margin-bottom:10px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.gch{padding:10px 14px;font-size:13px;font-weight:900;color:#fff;display:flex;align-items:center;gap:7px;}
+.gcb{padding:10px 14px;}
+.flbl{font-size:11px;font-weight:800;color:#aaa;margin-top:7px;margin-bottom:2px;}
+.fval{font-size:13px;color:var(--text);line-height:1.6;}
+.nd{color:#ccc;font-size:12px;font-style:italic;}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.chip{background:#fff;border:1.5px solid #f0ece4;border-radius:30px;padding:5px 12px;font-size:12px;font-weight:800;color:#888;}
+.empty{text-align:center;padding:30px;color:#ccc;font-size:14px;font-weight:700;}
+.conn-badge{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:800;margin-left:8px;background:#eaf7f5;color:#2a6e68;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-emoji">👨‍👩‍👧‍👦</span>
+  <h1>結婚生活と健康<br>グループワーク</h1>
+  <p class="hero-sub">教科書 p.88〜89 をもとに考えよう！</p>
+</div>
+
+<div class="prog-wrap" id="prog-wrap" style="display:none;">
+  <div class="prog-lbl"><span>🐾 送信済みグループ</span><span id="prog-txt">0 / 9</span></div>
+  <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<div class="modebar">
+  <button class="mbtn ons" id="mb-s" onclick="setMode('s')">🐾 生徒モード</button>
+  <button class="mbtn" id="mb-t" onclick="setMode('t')">👩‍🏫 教員モード</button>
+</div>
+
+<div class="pnl show" id="pnl-s">
+  <div style="height:12px"></div>
+  <div class="slbl">🐨 自分のグループを選んでね</div>
+  <div class="ggrid">
+    <button class="gbtn" onclick="pg(1)"><span class="gico">🐻</span>グループ1</button>
+    <button class="gbtn" onclick="pg(2)"><span class="gico">🐼</span>グループ2</button>
+    <button class="gbtn" onclick="pg(3)"><span class="gico">🦊</span>グループ3</button>
+    <button class="gbtn" onclick="pg(4)"><span class="gico">🐰</span>グループ4</button>
+    <button class="gbtn" onclick="pg(5)"><span class="gico">🐧</span>グループ5</button>
+    <button class="gbtn" onclick="pg(6)"><span class="gico">🦁</span>グループ6</button>
+    <button class="gbtn" onclick="pg(7)"><span class="gico">🐸</span>グループ7</button>
+    <button class="gbtn" onclick="pg(8)"><span class="gico">🐯</span>グループ8</button>
+    <button class="gbtn" onclick="pg(9)"><span class="gico">🦋</span>グループ9</button>
+  </div>
+  <div class="tabs">
+    <button class="tbtn t1 on" onclick="pt(1)">🏡 理想の家族</button>
+    <button class="tbtn t2" onclick="pt(2)">👨‍👩‍👦 親へのホンネ</button>
+    <button class="tbtn t3" onclick="pt(3)">🍳 家事分担</button>
+    <button class="tbtn t4" onclick="pt(4)">✨ まとめ</button>
+  </div>
+
+  <!-- タブ1：理想の家族 -->
+  <div id="tp1">
+    <div class="bbl" style="background:#fdf0ea;border:1.5px solid #f5c4a3;">
+      <span class="bface">🦁</span>
+      <div><div class="btxt" style="color:#7a3800;">理想の家族のかたちって
+どんな感じ？🦁</div><div class="bnm" style="color:#b05000;">— ライオン先生（教科書p.88〜89）</div></div>
+    </div>
+    <div class="crd lk" id="c1a">
+      <div class="chd"><div class="cico" style="background:#fdf0ea;">🏡</div><div><div class="cttl">グループで話してみよう！</div><div class="csub">共働き？専業主婦・夫？核家族？大家族？結婚しない？</div></div></div>
+      <textarea id="f1a" rows="3" placeholder="例：共働きがいい、でも子どもが小さいうちは一人に家にいてほしい…とか、そもそも結婚にこだわらなくていいんじゃないか…とか！" oninput="cc(this,'n1a')"></textarea>
+      <div class="ccnt" id="n1a">0文字</div>
+    </div>
+    <div class="crd lk" id="c1b">
+      <div class="chd"><div class="cico" style="background:#fdf0ea;">🤔</div><div><div class="cttl">グループで話してみて気づいたこと</div><div class="csub">意見の共通点・違いは？「なるほど」と思ったことは？</div></div></div>
+      <textarea id="f1b" rows="3" placeholder="グループ内で話してみてどうだった？意外と意見が割れた・なるほどと思った視点など…" oninput="cc(this,'n1b')"></textarea>
+      <div class="ccnt" id="n1b">0文字</div>
+    </div>
+    <button class="sbtn c1 lk" id="sb1" onclick="ds(1)">🏡 グループ? の回答を送る</button>
+    <div class="sent-wrap" id="sent1">
+      <div class="sent-ok" style="background:#e8845a;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！いい議論できたね！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(1)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+
+  <!-- タブ2：親へのホンネ -->
+  <div id="tp2" style="display:none;">
+    <div class="bbl" style="background:#eaeffd;border:1.5px solid #a0b4f5;">
+      <span class="bface">🐰</span>
+      <div><div class="btxt" style="color:#1a2d7a;">自分が子どもだったとき、<br>親にやってほしかったこと・やってほしくなかったことは？🐰</div><div class="bnm" style="color:#2a40a0;">— うさぎ先生（教科書p.89 親子関係）</div></div>
+    </div>
+    <div class="crd lk" id="c2a">
+      <div class="chd"><div class="cico" style="background:#eaeffd;">💛</div><div><div class="cttl">やってほしかったこと</div><div class="csub">もっとこうしてくれたらよかったな、と思うこと</div></div></div>
+      <textarea id="f2a" rows="3" placeholder="例：もっと話を聞いてほしかった、一緒に遊んでほしかった、口出しじゃなく見守ってほしかった…" oninput="cc(this,'n2a')"></textarea>
+      <div class="ccnt" id="n2a">0文字</div>
+    </div>
+    <div class="crd lk" id="c2b">
+      <div class="chd"><div class="cico" style="background:#eaeffd;">😅</div><div><div class="cttl">やってほしくなかったこと</div><div class="csub">正直「これはちょっと…」と思ったこと</div></div></div>
+      <textarea id="f2b" rows="3" placeholder="例：比べられるのが嫌だった、過干渉だった、けんかを見せてほしくなかった…" oninput="cc(this,'n2b')"></textarea>
+      <div class="ccnt" id="n2b">0文字</div>
+    </div>
+    <div class="crd lk" id="c2c">
+      <div class="chd"><div class="cico" style="background:#eaeffd;">💭</div><div><div class="cttl">自分が親になったらどうしたい？</div><div class="csub">話し合いから見えてきたこと</div></div></div>
+      <textarea id="f2c" rows="3" placeholder="グループで話してみて「自分が親になったらこうしたい」と思ったことを…" oninput="cc(this,'n2c')"></textarea>
+      <div class="ccnt" id="n2c">0文字</div>
+    </div>
+    <button class="sbtn c2 lk" id="sb2" onclick="ds(2)">👨‍👩‍👦 グループ? の回答を送る</button>
+    <div class="sent-wrap" id="sent2">
+      <div class="sent-ok" style="background:#5a7dd4;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！ホンネを話してくれてありがとう！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(2)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+
+  <!-- タブ3：家事分担 -->
+  <div id="tp3" style="display:none;">
+    <div class="bbl" style="background:#eaf7f5;border:1.5px solid #80d0c8;">
+      <span class="bface">🐸</span>
+      <div><div class="btxt" style="color:#0a3d38;">将来パートナーと家事・育児を<br>どう分担したい？🐸</div><div class="bnm" style="color:#185fa5;">— カエル先生（教科書p.88〜89）</div></div>
+    </div>
+    <div class="crd lk" id="c3a">
+      <div class="chd"><div class="cico" style="background:#eaf7f5;">🍳</div><div><div class="cttl">家事の分担、どうしたい？</div><div class="csub">料理・掃除・洗濯・買い物…誰がどうやる？</div></div></div>
+      <textarea id="f3a" rows="3" placeholder="例：得意な方がやる、曜日で分ける、全部折半、お金を稼いでいる方が少なめでいい…など、グループの意見を！" oninput="cc(this,'n3a')"></textarea>
+      <div class="ccnt" id="n3a">0文字</div>
+    </div>
+    <div class="crd lk" id="c3b">
+      <div class="chd"><div class="cico" style="background:#eaf7f5;">👶</div><div><div class="cttl">育児の分担、どうしたい？</div><div class="csub">育休・送り迎え・夜泣き対応・学校行事…</div></div></div>
+      <textarea id="f3b" rows="3" placeholder="例：育休は二人とも取りたい、夜泣きは交代で、仕事のペースに合わせて柔軟に…など！" oninput="cc(this,'n3b')"></textarea>
+      <div class="ccnt" id="n3b">0文字</div>
+    </div>
+    <div class="crd lk" id="c3c">
+      <div class="chd"><div class="cico" style="background:#eaf7f5;">💬</div><div><div class="cttl">男女で意見の違いはあった？</div><div class="csub">グループで話してみての気づき</div></div></div>
+      <textarea id="f3c" rows="3" placeholder="男女で意見が違ったこと・意外と一致したこと・「そんな考え方もあるんだ」と思ったことなど…" oninput="cc(this,'n3c')"></textarea>
+      <div class="ccnt" id="n3c">0文字</div>
+    </div>
+    <button class="sbtn c3 lk" id="sb3" onclick="ds(3)">🍳 グループ? の回答を送る</button>
+    <div class="sent-wrap" id="sent3">
+      <div class="sent-ok" style="background:#4aa8a0;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！リアルな意見ありがとう！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(3)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+
+  <!-- タブ4：まとめ -->
+  <div id="tp4" style="display:none;">
+    <div class="bbl" style="background:#fdf5ea;border:1.5px solid #f0c060;">
+      <span class="bface">🐨</span>
+      <div><div class="btxt" style="color:#5a3800;">今日の授業をふりかえって<br>自分の言葉でまとめよう！🐨</div><div class="bnm" style="color:#8a5800;">— コアラ先生</div></div>
+    </div>
+    <div class="crd lk" id="c4a">
+      <div class="chd"><div class="cico" style="background:#fdf5ea;">📝</div><div><div class="cttl">今日学んだこと・気づいたこと</div><div class="csub">一番印象に残ったことは？</div></div></div>
+      <textarea id="f4a" rows="3" placeholder="今日の授業・グループの話し合いで「なるほど」「知らなかった」「考えさせられた」と思ったことを！" oninput="cc(this,'n4a')"></textarea>
+      <div class="ccnt" id="n4a">0文字</div>
+    </div>
+    <div class="crd lk" id="c4b">
+      <div class="chd"><div class="cico" style="background:#fdf5ea;">🎯</div><div><div class="cttl">これから意識したいこと・実践したいこと</div><div class="csub">日常や将来の生活で活かせることは？</div></div></div>
+      <textarea id="f4b" rows="3" placeholder="今日の学びをいかして、これから自分がやってみたいこと・意識したいことを書いてみよう。" oninput="cc(this,'n4b')"></textarea>
+      <div class="ccnt" id="n4b">0文字</div>
+    </div>
+    <button class="sbtn c4 lk" id="sb4" onclick="ds(4)">✨ グループ? のまとめを送る</button>
+    <div class="sent-wrap" id="sent4">
+      <div class="sent-ok" style="background:#d4a05a;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！今日もお疲れさま！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(4)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- 教員パネル -->
+<div class="pnl" id="pnl-t">
+  <div style="height:12px"></div>
+  <div class="tth">
+    <div class="tttl">👩‍🏫 全グループ回答一覧<span class="conn-badge" id="conn-badge">● 接続中</span></div>
+    <button class="rfbtn" onclick="loadTeacher()">🔄 更新</button>
+  </div>
+  <div class="ttabs">
+    <button class="tbtn t1 on" onclick="ptt(1)">🏡 理想の家族</button>
+    <button class="tbtn t2" onclick="ptt(2)">👨‍👩‍👦 親へのホンネ</button>
+    <button class="tbtn t3" onclick="ptt(3)">🍳 家事分担</button>
+    <button class="tbtn t4" onclick="ptt(4)">✨ まとめ</button>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div id="tcontent"><div class="empty">🔄 更新ボタンを押すと生徒の回答が表示されます</div></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCgA-yqynPM-ezZpBZCp8DLrxN9R82zS5U",
+  authDomain: "hoken-app-26315.firebaseapp.com",
+  databaseURL: "https://hoken-app-26315-default-rtdb.firebaseio.com",
+  projectId: "hoken-app-26315",
+  storageBucket: "hoken-app-26315.firebasestorage.app",
+  messagingSenderId: "932877641447",
+  appId: "1:932877641447:web:a351fa878ed76ae4392442",
+  measurementId: "G-8CEGDB5SWB"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const ANI=["🐻","🐼","🦊","🐰","🐧","🦁","🐸","🐯","🦋"];
+const HC={1:"#e8845a",2:"#5a7dd4",3:"#4aa8a0",4:"#d4a05a"};
+const FL={
+  1:{a:"グループの理想の家族像",b:"話してみての気づき"},
+  2:{a:"親にやってほしかったこと",b:"やってほしくなかったこと",c:"自分が親になったらどうしたい？"},
+  3:{a:"家事の分担どうしたい？",b:"育児の分担どうしたい？",c:"男女で意見の違いはあった？"},
+  4:{a:"今日学んだこと・気づいたこと",b:"これから意識したいこと"}
+};
+const FM={1:["f1a","f1b"],2:["f2a","f2b","f2c"],3:["f3a","f3b","f3c"],4:["f4a","f4b"]};
+const CI={1:["c1a","c1b"],2:["c2a","c2b","c2c"],3:["c3a","c3b","c3c"],4:["c4a","c4b"]};
+let cg=null,ct=1,ctt=1;
+
+window.setMode=function(m){
+  document.getElementById("mb-s").className="mbtn"+(m==="s"?" ons":"");
+  document.getElementById("mb-t").className="mbtn"+(m==="t"?" ont":"");
+  document.getElementById("pnl-s").classList.toggle("show",m==="s");
+  document.getElementById("pnl-t").classList.toggle("show",m==="t");
+  document.getElementById("prog-wrap").style.display=m==="s"?"block":"none";
+  if(m==="t") loadTeacher();
+};
+
+window.pg=function(n){
+  cg=n;
+  document.querySelectorAll(".gbtn").forEach((b,i)=>b.classList.toggle("on",i+1===n));
+  [1,2,3,4].forEach(t=>unlock(t));
+  updateProg();
+};
+
+function unlock(t){
+  if(!cg)return;
+  CI[t].forEach(id=>document.getElementById(id)?.classList.remove("lk"));
+  const sb=document.getElementById("sb"+t);
+  if(!sb)return;
+  sb.classList.remove("lk");
+  const ic={1:"🏡",2:"👨‍👩‍👦",3:"🍳",4:"✨"};
+  const lb={1:"理想の家族",2:"親へのホンネ",3:"家事分担",4:"まとめ"};
+  sb.textContent=ic[t]+" グループ"+cg+" の"+lb[t]+"を送る";
+}
+
+window.pt=function(n){
+  ct=n;
+  [1,2,3,4].forEach(i=>{
+    document.getElementById("tp"+i).style.display=i===n?"block":"none";
+    document.querySelectorAll(".tabs .tbtn")[i-1].classList.toggle("on",i===n);
+  });
+  unlock(n);
+};
+
+window.cc=function(el,id){document.getElementById(id).textContent=el.value.length+"文字";};
+
+window.ds=async function(t){
+  if(!cg)return;
+  document.getElementById("sb"+t).classList.add("lk");
+  const d={};
+  FM[t].forEach((id,i)=>{d[String.fromCharCode(97+i)]=document.getElementById(id)?.value||"";});
+  d.submitted=true;
+  d.timestamp=Date.now();
+  try{
+    await set(ref(db,"lesson3/t"+t+"/g"+cg),d);
+    document.getElementById("sent"+t).classList.add("show");
+    document.getElementById("sb"+t).style.display="none";
+    updateProg();
+  }catch(e){
+    document.getElementById("sb"+t).classList.remove("lk");
+    alert("送信に失敗しました。もう一度試してください。");
+  }
+};
+
+window.us=async function(t){
+  if(!cg)return;
+  try{await set(ref(db,"lesson3/t"+t+"/g"+cg+"/submitted"),false);}catch(e){}
+  document.getElementById("sent"+t).classList.remove("show");
+  document.getElementById("sb"+t).style.display="flex";
+  document.getElementById("sb"+t).classList.remove("lk");
+};
+
+async function updateProg(){
+  let done=0;
+  for(let g=1;g<=9;g++){
+    for(let t=1;t<=4;t++){
+      try{const s=await get(ref(db,"lesson3/t"+t+"/g"+g+"/submitted"));if(s.val()===true){done++;break;}}catch(e){}
+    }
+  }
+  document.getElementById("prog-txt").textContent=done+" / 9";
+  document.getElementById("prog-fill").style.width=Math.round(done/9*100)+"%";
+}
+
+window.ptt=function(n){
+  ctt=n;
+  document.querySelectorAll(".ttabs .tbtn").forEach((b,i)=>b.classList.toggle("on",i+1===n));
+  loadTeacher();
+};
+
+window.loadTeacher=async function(){
+  const el=document.getElementById("tcontent");
+  el.innerHTML="<div class='empty'>読み込み中… 🐾</div>";
+  const t=ctt;
+  const labels=FL[t];
+  const keys=Object.keys(labels);
+  let html="",filled=0;
+  for(let g=1;g<=9;g++){
+    let gd=null;
+    try{const s=await get(ref(db,"lesson3/t"+t+"/g"+g));gd=s.val();}catch(e){}
+    html+="<div class='gc'><div class='gch' style='background:"+HC[t]+";'>"+ANI[g-1]+" グループ"+g+(gd&&gd.submitted?" ✓":"")+"</div><div class='gcb'>";
+    if(!gd||!gd.submitted||!Object.values(gd).some(v=>typeof v==="string"&&v.trim())){
+      html+="<span class='nd'>まだ届いていません</span>";
+    }else{
+      filled++;
+      keys.forEach(k=>{
+        const v=String(gd[k]||"").replace(/</g,"&lt;");
+        html+="<div class='flbl'>"+labels[k]+"</div><div class='fval'>"+(v||"<span class='nd'>—</span>")+"</div>";
+      });
+    }
+    html+="</div></div>";
+  }
+  document.getElementById("stats").innerHTML=filled>0
+    ?"<div class='chip'>送信済み <b style='color:#e8845a'>"+filled+"</b> / 9</div><div class='chip'>未送信 <b style='color:#e85d5d'>"+(9-filled)+"</b></div>":"";
+  el.innerHTML=html;
+  onValue(ref(db,"lesson3/t"+ctt),()=>{
+    if(document.getElementById("pnl-t").classList.contains("show")) loadTeacher();
+  },{onlyOnce:false});
+};
+
+updateProg();
+</script>
+</body>
+</html>
