@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>思春期と健康 グループワーク</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#3dba7f;--g2:#e8f9f1;--g3:#a8e6c8;--p:#8b67d4;--p2:#f0ebfc;--o:#ff8c42;--o2:#fff3eb;--b:#4aa8d8;--b2:#eaf5fc;--bg:#fffdf8;--text:#3a3330;}
+body{font-family:"M PLUS Rounded 1c",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+.hero{background:linear-gradient(135deg,#3dba7f,#8b67d4);padding:22px 16px 28px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:rgba(255,255,255,.1);border-radius:50%;}
+.hero-emoji{font-size:44px;display:block;margin-bottom:6px;animation:bop 2s ease-in-out infinite;}
+@keyframes bop{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.hero h1{font-size:18px;font-weight:900;color:#fff;line-height:1.3;position:relative;}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:4px;position:relative;}
+.modebar{display:flex;gap:8px;padding:12px 14px;background:var(--bg);position:sticky;top:0;z-index:200;border-bottom:2px solid #f0ece4;}
+.mbtn{flex:1;border:2.5px solid #e0dbd2;background:#fff;border-radius:40px;padding:10px 8px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;color:#aaa;}
+.mbtn.ons{background:var(--g);border-color:var(--g);color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.mbtn.ont{background:#e85d5d;border-color:#e85d5d;color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.pnl{display:none;padding:14px;}
+.pnl.show{display:block;}
+.slbl{font-size:12px;font-weight:800;color:#aaa;margin-bottom:8px;}
+.ggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+.gbtn{border:2.5px solid #e0dbd2;background:#fff;border-radius:14px;padding:9px 4px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;transition:all .18s;text-align:center;color:#aaa;}
+.gbtn.on{background:var(--g);border-color:var(--g);color:#fff;transform:scale(1.05);box-shadow:0 3px 10px rgba(61,186,127,.3);}
+.gico{font-size:22px;display:block;margin-bottom:2px;}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;}
+.tabs::-webkit-scrollbar{display:none;}
+.tbtn{flex-shrink:0;border:none;border-radius:30px;padding:8px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;background:#f0ece4;color:#aaa;transition:all .2s;}
+.tbtn.on{color:#fff;}
+.tbtn.t1.on{background:#ff8c42;}.tbtn.t2.on{background:#3dba7f;}.tbtn.t3.on{background:#8b67d4;}.tbtn.t4.on{background:#4aa8d8;}
+.bbl{display:flex;align-items:flex-start;gap:10px;border-radius:16px;padding:12px;margin-bottom:12px;}
+.bface{font-size:34px;flex-shrink:0;animation:wag 3s ease-in-out infinite;}
+@keyframes wag{0%,100%{transform:rotate(0);}30%{transform:rotate(-8deg);}70%{transform:rotate(8deg);}}
+.btxt{font-size:13px;font-weight:700;line-height:1.5;}
+.bnm{font-size:11px;opacity:.7;margin-top:3px;}
+.crd{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:1.5px solid #f0ece4;}
+.crd.lk{opacity:.3;pointer-events:none;}
+.chd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.cico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.cttl{font-size:13px;font-weight:800;line-height:1.3;}
+.csub{font-size:11px;color:#aaa;margin-top:2px;}
+textarea{width:100%;border:2px solid #e8e4dc;border-radius:12px;padding:11px;font-family:inherit;font-size:14px;line-height:1.6;resize:vertical;min-height:80px;background:#fefcf8;color:var(--text);transition:border-color .2s;outline:none;}
+textarea:focus{border-color:var(--g);background:#fff;}
+.ccnt{font-size:11px;color:#ccc;text-align:right;margin-top:3px;}
+
+/* ランキングUI */
+.rank-wrap{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.rank-item{display:flex;align-items:center;gap:10px;background:#fefcf8;border:2px solid #e8e4dc;border-radius:12px;padding:10px 12px;cursor:pointer;transition:all .18s;user-select:none;}
+.rank-item.lk{pointer-events:none;}
+.rank-badge{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;background:#f0ece4;color:#aaa;transition:all .2s;}
+.rank-item.sel-1 .rank-badge{background:#FFD700;color:#7a5a00;}
+.rank-item.sel-2 .rank-badge{background:#C0C0C0;color:#555;}
+.rank-item.sel-3 .rank-badge{background:#CD7F32;color:#5a3000;}
+.rank-item.sel-4 .rank-badge{background:#e8f9f1;color:#2a8a58;}
+.rank-item.sel-5 .rank-badge{background:#e8f9f1;color:#2a8a58;}
+.rank-item.sel-1{border-color:#FFD700;background:#fffce8;}
+.rank-item.sel-2{border-color:#C0C0C0;background:#f8f8f8;}
+.rank-item.sel-3{border-color:#CD7F32;background:#fff8f0;}
+.rank-label{font-size:13px;font-weight:700;color:var(--text);flex:1;}
+.rank-num{font-size:18px;font-weight:900;color:#ccc;min-width:24px;text-align:right;}
+.rank-hint{font-size:11px;color:#aaa;margin-bottom:8px;}
+
+/* 親との関係ボタン */
+.rel-btns{display:flex;gap:8px;margin-bottom:10px;}
+.rel-btn{flex:1;padding:14px 8px;border:2.5px solid #e0dbd2;background:#fff;border-radius:14px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:all .18s;text-align:center;color:#aaa;line-height:1.3;}
+.rel-btn.sel-good{background:#e8f9f1;border-color:#3dba7f;color:#0f6e56;}
+.rel-btn.sel-bad{background:#fde8e8;border-color:#e85d5d;color:#7a2020;}
+.rel-btn.sel-mid{background:#faeeda;border-color:#d4a05a;color:#5a3800;}
+.rel-btn:disabled{opacity:.3;cursor:default;}
+
+.sbtn{width:100%;padding:15px;border:none;border-radius:16px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;margin-top:4px;color:#fff;}
+.sbtn:active{transform:scale(.97);}
+.sbtn.lk{opacity:.35;pointer-events:none;}
+.sbtn.c1{background:#ff8c42;box-shadow:0 4px 14px rgba(255,140,66,.35);}
+.sbtn.c2{background:#3dba7f;box-shadow:0 4px 14px rgba(61,186,127,.35);}
+.sbtn.c3{background:#8b67d4;box-shadow:0 4px 14px rgba(139,103,212,.35);}
+.sbtn.c4{background:#4aa8d8;box-shadow:0 4px 14px rgba(74,168,216,.35);}
+.sent-wrap{display:none;margin-top:8px;border-radius:18px;overflow:hidden;border:2.5px solid #e85d5d;}
+.sent-wrap.show{display:block;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.sent-ok{padding:14px 16px;color:#fff;display:flex;align-items:center;gap:10px;}
+.sent-ok-ico{font-size:24px;}
+.sent-ok-txt{font-size:13px;font-weight:800;line-height:1.4;}
+.sent-ok-sub{font-size:11px;opacity:.85;margin-top:2px;}
+.unsend-btn{display:block;width:100%;padding:16px;background:#fff0f0;border:none;border-top:2.5px solid #e85d5d;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;color:#c0392b;text-align:center;line-height:1.4;}
+.unsend-btn:active{background:#ffd5d5;}
+.unsend-sub{display:block;font-size:11px;color:#922b21;margin-top:3px;font-weight:700;}
+.prog-wrap{padding:10px 14px 0;}
+.prog-lbl{font-size:11px;font-weight:800;color:#aaa;margin-bottom:5px;display:flex;justify-content:space-between;}
+.prog-bg{background:#f0ece4;border-radius:999px;height:7px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,#ff8c42,#8b67d4);border-radius:999px;transition:width .5s ease;}
+.tth{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.tttl{font-size:16px;font-weight:900;}
+.rfbtn{border:2px solid var(--g);background:var(--g2);color:#2a8a58;border-radius:30px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
+.rfbtn:hover{background:var(--g);color:#fff;}
+.ttabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;}
+.ttabs::-webkit-scrollbar{display:none;}
+.gc{background:#fff;border-radius:16px;border:1.5px solid #f0ece4;margin-bottom:10px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.gch{padding:10px 14px;font-size:13px;font-weight:900;color:#fff;display:flex;align-items:center;gap:7px;}
+.gcb{padding:10px 14px;}
+.flbl{font-size:11px;font-weight:800;color:#aaa;margin-top:7px;margin-bottom:2px;}
+.fval{font-size:13px;color:var(--text);line-height:1.6;}
+.nd{color:#ccc;font-size:12px;font-style:italic;}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.chip{background:#fff;border:1.5px solid #f0ece4;border-radius:30px;padding:5px 12px;font-size:12px;font-weight:800;color:#888;}
+.empty{text-align:center;padding:30px;color:#ccc;font-size:14px;font-weight:700;}
+.conn-badge{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:800;margin-left:8px;background:#e8f9f1;color:#2a8a58;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-emoji">🌱</span>
+  <h1>思春期と健康<br>グループワーク</h1>
+  <p class="hero-sub">教科書 p.82〜85 をもとに考えよう！</p>
+</div>
+
+<div class="prog-wrap" id="prog-wrap" style="display:none;">
+  <div class="prog-lbl"><span>🐾 送信済みグループ</span><span id="prog-txt">0 / 9</span></div>
+  <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<div class="modebar">
+  <button class="mbtn ons" id="mb-s" onclick="setMode('s')">🐾 生徒モード</button>
+  <button class="mbtn" id="mb-t" onclick="setMode('t')">👩‍🏫 教員モード</button>
+</div>
+
+<div class="pnl show" id="pnl-s">
+  <div style="height:12px"></div>
+  <div class="slbl">🐨 自分のグループを選んでね</div>
+  <div class="ggrid">
+    <button class="gbtn" onclick="pg(1)"><span class="gico">🐻</span>グループ1</button>
+    <button class="gbtn" onclick="pg(2)"><span class="gico">🐼</span>グループ2</button>
+    <button class="gbtn" onclick="pg(3)"><span class="gico">🦊</span>グループ3</button>
+    <button class="gbtn" onclick="pg(4)"><span class="gico">🐰</span>グループ4</button>
+    <button class="gbtn" onclick="pg(5)"><span class="gico">🐧</span>グループ5</button>
+    <button class="gbtn" onclick="pg(6)"><span class="gico">🦁</span>グループ6</button>
+    <button class="gbtn" onclick="pg(7)"><span class="gico">🐸</span>グループ7</button>
+    <button class="gbtn" onclick="pg(8)"><span class="gico">🐯</span>グループ8</button>
+    <button class="gbtn" onclick="pg(9)"><span class="gico">🦋</span>グループ9</button>
+  </div>
+  <div class="tabs">
+    <button class="tbtn t1 on" onclick="pt(1)">🏆 あるあるランキング</button>
+    <button class="tbtn t2" onclick="pt(2)">👨‍👩‍👦 親との関係</button>
+    <button class="tbtn t3" onclick="pt(3)">💜 ストレス解消法</button>
+    <button class="tbtn t4" onclick="pt(4)">✨ まとめ</button>
+  </div>
+
+  <!-- タブ1：あるあるランキング -->
+  <div id="tp1">
+    <div class="bbl" style="background:#fff3eb;border:1.5px solid #ffb067;">
+      <span class="bface">🦁</span>
+      <div><div class="btxt" style="color:#7a3800;">思春期あるある！グループで話し合って
+1位〜5位のランキングを決めよう！🦁</div><div class="bnm" style="color:#b05000;">— ライオン先生（教科書p.82〜84）</div></div>
+    </div>
+    <div class="crd lk" id="c1a">
+      <div class="chd"><div class="cico" style="background:#fff3eb;">🏆</div><div><div class="cttl">グループで1位を決めよう！</div><div class="csub">話し合って順位を決めてね。同率はなしで！</div></div></div>
+      <div class="rank-hint lk" id="rh1">👇 タップして順位を決めよう（1〜5位）</div>
+      <div class="rank-wrap lk" id="rank-wrap">
+        <div class="rank-item" data-idx="0" onclick="toggleRank(0)">
+          <div class="rank-badge" id="rb0">?</div>
+          <div class="rank-label">😤 急に理由もなくイライラする</div>
+        </div>
+        <div class="rank-item" data-idx="1" onclick="toggleRank(1)">
+          <div class="rank-badge" id="rb1">?</div>
+          <div class="rank-label">🪞 鏡を見て自分の外見が気になる</div>
+        </div>
+        <div class="rank-item" data-idx="2" onclick="toggleRank(2)">
+          <div class="rank-badge" id="rb2">?</div>
+          <div class="rank-label">😴 眠くてたまらない・夜型になった</div>
+        </div>
+        <div class="rank-item" data-idx="3" onclick="toggleRank(3)">
+          <div class="rank-badge" id="rb3">?</div>
+          <div class="rank-label">🏠 親と距離を置きたくなってきた</div>
+        </div>
+        <div class="rank-item" data-idx="4" onclick="toggleRank(4)">
+          <div class="rank-badge" id="rb4">?</div>
+          <div class="rank-label">💭 将来のことを考えると不安になる</div>
+        </div>
+      </div>
+      <div class="ccnt" id="n1a">0 / 5項目に順位をつけよう</div>
+    </div>
+    <div class="crd lk" id="c1b">
+      <div class="chd"><div class="cico" style="background:#fff3eb;">💬</div><div><div class="cttl">1位に選んだ理由・グループの意見</div><div class="csub">なぜその「あるある」が1位？話し合ったことを書いてね</div></div></div>
+      <textarea id="f1b" rows="3" placeholder="例：全員が「イライラ」に共感した！「鏡が気になる」は女子に多い意見だった…など" oninput="cc(this,'n1b')"></textarea>
+      <div class="ccnt" id="n1b">0文字</div>
+    </div>
+    <button class="sbtn c1 lk" id="sb1" onclick="ds(1)">🏆 グループ? のランキングを送る</button>
+    <div class="sent-wrap" id="sent1">
+      <div class="sent-ok" style="background:#ff8c42;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！グループの総意が出た！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(1)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+
+  <!-- タブ2：親との関係 -->
+  <div id="tp2" style="display:none;">
+    <div class="bbl" style="background:#e8f9f1;border:1.5px solid #a8e6c8;">
+      <span class="bface">🐨</span>
+      <div><div class="btxt" style="color:#0f5a38;">今の親との関係、ぶっちゃけどう？
+まず自分の立場を選んで、理由を話してみよう🐨</div><div class="bnm" style="color:#2a8a58;">— コアラ先生（教科書p.82〜83 親からの自立）</div></div>
+    </div>
+    <div class="crd lk" id="c2a">
+      <div class="chd"><div class="cico" style="background:#e8f9f1;">👆</div><div><div class="cttl">まず自分の立場を選ぼう</div><div class="csub">グループ内で「仲がいい・悪い・普通」に分かれて、それぞれ理由を話してみよう</div></div></div>
+      <div class="rel-btns lk" id="rel-btns">
+        <button class="rel-btn" onclick="selRel('good')" id="rb-good">😊<br>仲がいい</button>
+        <button class="rel-btn" onclick="selRel('bad')" id="rb-bad">😤<br>仲が悪い</button>
+        <button class="rel-btn" onclick="selRel('mid')" id="rb-mid">😐<br>普通</button>
+      </div>
+    </div>
+    <div class="crd lk" id="c2b">
+      <div class="chd"><div class="cico" style="background:#e8f9f1;">💬</div><div><div class="cttl">その理由を教えて！</div><div class="csub">なぜそう感じる？具体的なエピソードも歓迎！</div></div></div>
+      <textarea id="f2b" rows="3" placeholder="例：話をちゃんと聞いてくれるから仲がいい / 口うるさくて距離を置きたい / 普通すぎて特に何もない笑…" oninput="cc(this,'n2b')"></textarea>
+      <div class="ccnt" id="n2b">0文字</div>
+    </div>
+    <div class="crd lk" id="c2c">
+      <div class="chd"><div class="cico" style="background:#e8f9f1;">🤔</div><div><div class="cttl">グループ内の意見を聞いてみて</div><div class="csub">「なるほど！」と思ったこと・意外だったことは？</div></div></div>
+      <textarea id="f2c" rows="3" placeholder="例：意外と「普通」が多かった / 「仲がいい」の人の理由が参考になった / みんな微妙に距離感が変わってきてた…" oninput="cc(this,'n2c')"></textarea>
+      <div class="ccnt" id="n2c">0文字</div>
+    </div>
+    <button class="sbtn c2 lk" id="sb2" onclick="ds(2)">👨‍👩‍👦 グループ? の回答を送る</button>
+    <div class="sent-wrap" id="sent2">
+      <div class="sent-ok" style="background:#3dba7f;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！ホンネを話してくれてありがとう！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(2)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+
+  <!-- タブ3：ストレス解消法 -->
+  <div id="tp3" style="display:none;">
+    <div class="bbl" style="background:#f0ebfc;border:1.5px solid #c9b8f0;">
+      <span class="bface">🦊</span>
+      <div><div class="btxt" style="color:#3c3489;">自分のストレス解消法TOP3を
+グループで発表し合おう！
+それって体にいい？悪い？🦊</div><div class="bnm" style="color:#534ab7;">— キツネ先生（教科書p.83〜84 健康課題・ストレス）</div></div>
+    </div>
+    <div class="crd lk" id="c3a">
+      <div class="chd"><div class="cico" style="background:#f0ebfc;">🥇</div><div><div class="cttl">グループで集めたストレス解消法TOP3</div><div class="csub">各自のTOP1を出し合って、グループのTOP3を決めよう！</div></div></div>
+      <textarea id="f3a" rows="3" placeholder="例：1位 寝る、2位 推しの動画を見る、3位 友達とLINEする…など！" oninput="cc(this,'n3a')"></textarea>
+      <div class="ccnt" id="n3a">0文字</div>
+    </div>
+    <div class="crd lk" id="c3b">
+      <div class="chd"><div class="cico" style="background:#f0ebfc;">🔍</div><div><div class="cttl">それって体・心にいい？悪い？</div><div class="csub">グループで分析してみよう。正解なんてないよ！</div></div></div>
+      <textarea id="f3b" rows="3" placeholder="例：「寝る」は体にいい◎ / 「推し動画」は気分転換になるけど夜更かしにつながるかも△ / 「暴飲暴食」は…×笑" oninput="cc(this,'n3b')"></textarea>
+      <div class="ccnt" id="n3b">0文字</div>
+    </div>
+    <div class="crd lk" id="c3c">
+      <div class="chd"><div class="cico" style="background:#f0ebfc;">💡</div><div><div class="cttl">体にも心にもいい解消法、思いつく？</div><div class="csub">グループで「最強のストレス解消法」を考えてみよう</div></div></div>
+      <textarea id="f3c" rows="2" placeholder="例：軽い運動・好きな音楽を聴く・自然の中を歩く…" oninput="cc(this,'n3c')"></textarea>
+      <div class="ccnt" id="n3c">0文字</div>
+    </div>
+    <button class="sbtn c3 lk" id="sb3" onclick="ds(3)">💜 グループ? の回答を送る</button>
+    <div class="sent-wrap" id="sent3">
+      <div class="sent-ok" style="background:#8b67d4;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！リアルな情報ありがとう！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(3)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+
+  <!-- タブ4：まとめ -->
+  <div id="tp4" style="display:none;">
+    <div class="bbl" style="background:#eaf5fc;border:1.5px solid #85b7eb;">
+      <span class="bface">🦭</span>
+      <div><div class="btxt" style="color:#042c53;">今日の授業をふりかえって
+自分の言葉でまとめよう！🦭</div><div class="bnm" style="color:#185fa5;">— アザラシ先生</div></div>
+    </div>
+    <div class="crd lk" id="c4a">
+      <div class="chd"><div class="cico" style="background:#eaf5fc;">📝</div><div><div class="cttl">今日学んだこと・気づいたこと</div><div class="csub">一番印象に残ったことは？</div></div></div>
+      <textarea id="f4a" rows="3" placeholder="今日の授業・グループの話し合いで「なるほど！」「意外だった！」と思ったことを書いてみよう。" oninput="cc(this,'n4a')"></textarea>
+      <div class="ccnt" id="n4a">0文字</div>
+    </div>
+    <div class="crd lk" id="c4b">
+      <div class="chd"><div class="cico" style="background:#eaf5fc;">🎯</div><div><div class="cttl">これから意識したいこと</div><div class="csub">日常生活で活かせることは？</div></div></div>
+      <textarea id="f4b" rows="3" placeholder="今日の学びをいかして、これから自分がやってみたいこと・意識したいことを！" oninput="cc(this,'n4b')"></textarea>
+      <div class="ccnt" id="n4b">0文字</div>
+    </div>
+    <button class="sbtn c4 lk" id="sb4" onclick="ds(4)">✨ グループ? のまとめを送る</button>
+    <div class="sent-wrap" id="sent4">
+      <div class="sent-ok" style="background:#4aa8d8;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！今日もお疲れさま！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(4)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- 教員パネル -->
+<div class="pnl" id="pnl-t">
+  <div style="height:12px"></div>
+  <div class="tth">
+    <div class="tttl">👩‍🏫 全グループ回答一覧<span class="conn-badge">● 接続中</span></div>
+    <button class="rfbtn" onclick="loadTeacher()">🔄 更新</button>
+  </div>
+  <div class="ttabs">
+    <button class="tbtn t1 on" onclick="ptt(1)">🏆 あるあるランキング</button>
+    <button class="tbtn t2" onclick="ptt(2)">👨‍👩‍👦 親との関係</button>
+    <button class="tbtn t3" onclick="ptt(3)">💜 ストレス解消法</button>
+    <button class="tbtn t4" onclick="ptt(4)">✨ まとめ</button>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div id="tcontent"><div class="empty">🔄 更新ボタンを押すと生徒の回答が表示されます</div></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyCgA-yqynPM-ezZpBZCp8DLrxN9R82zS5U",
+  authDomain:"hoken-app-26315.firebaseapp.com",
+  databaseURL:"https://hoken-app-26315-default-rtdb.firebaseio.com",
+  projectId:"hoken-app-26315",
+  storageBucket:"hoken-app-26315.firebasestorage.app",
+  messagingSenderId:"932877641447",
+  appId:"1:932877641447:web:a351fa878ed76ae4392442",
+  measurementId:"G-8CEGDB5SWB"
+};
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
+
+const ANI=["🐻","🐼","🦊","🐰","🐧","🦁","🐸","🐯","🦋"];
+const HC={1:"#ff8c42",2:"#3dba7f",3:"#8b67d4",4:"#4aa8d8"};
+const RANK_LABELS=["😤 急にイライラ","🪞 外見が気になる","😴 眠くてたまらない","🏠 親と距離を置きたい","💭 将来が不安"];
+const RANK_MEDALS=["🥇1位","🥈2位","🥉3位","4位","5位"];
+const FL={
+  1:{rank:"ランキング（1位→5位）",reason:"1位に選んだ理由・グループの意見"},
+  2:{rel:"親との関係",reason:"その理由",notice:"グループ内で気づいたこと"},
+  3:{top3:"ストレス解消法TOP3",check:"体・心への影響分析",best:"最強のストレス解消法"},
+  4:{learned:"今日学んだこと",action:"これから意識したいこと"}
+};
+
+let cg=null,ct=1,ctt=1;
+let rankOrder=new Array(5).fill(null);
+let relSel=null;
+
+// ランキング
+window.toggleRank=function(idx){
+  const next=rankOrder.findIndex(v=>v===null);
+  const cur=rankOrder.indexOf(idx);
+  if(cur>=0){
+    rankOrder[cur]=null;
+  } else if(next>=0){
+    rankOrder[next]=idx;
+  }
+  updateRankUI();
+};
+
+function updateRankUI(){
+  const items=document.querySelectorAll(".rank-item");
+  const badges=["🥇","🥈","🥉","4","5"];
+  const selCls=["sel-1","sel-2","sel-3","sel-4","sel-5"];
+  items.forEach((item,i)=>{
+    const pos=rankOrder.indexOf(i);
+    item.className="rank-item"+(pos>=0?" "+selCls[pos]:"");
+    const rb=document.getElementById("rb"+i);
+    rb.textContent=pos>=0?badges[pos]:"?";
+  });
+  const done=rankOrder.filter(v=>v!==null).length;
+  document.getElementById("n1a").textContent=`${done} / 5項目に順位をつけよう`;
+}
+
+// 親との関係
+window.selRel=function(v){
+  relSel=v;
+  ["good","bad","mid"].forEach(k=>{
+    const btn=document.getElementById("rb-"+k);
+    btn.className="rel-btn"+(k===v?" sel-"+k:"");
+  });
+};
+
+const CI={1:["c1a","c1b"],2:["c2a","c2b","c2c"],3:["c3a","c3b","c3c"],4:["c4a","c4b"]};
+
+window.setMode=function(m){
+  document.getElementById("mb-s").className="mbtn"+(m==="s"?" ons":"");
+  document.getElementById("mb-t").className="mbtn"+(m==="t"?" ont":"");
+  document.getElementById("pnl-s").classList.toggle("show",m==="s");
+  document.getElementById("pnl-t").classList.toggle("show",m==="t");
+  document.getElementById("prog-wrap").style.display=m==="s"?"block":"none";
+  if(m==="t") loadTeacher();
+};
+
+window.pg=function(n){
+  cg=n;
+  document.querySelectorAll(".gbtn").forEach((b,i)=>b.classList.toggle("on",i+1===n));
+  [1,2,3,4].forEach(t=>unlock(t));
+  updateProg();
+};
+
+function unlock(t){
+  if(!cg)return;
+  CI[t].forEach(id=>document.getElementById(id)?.classList.remove("lk"));
+  if(t===1){
+    document.getElementById("rank-wrap")?.classList.remove("lk");
+    document.getElementById("rh1")?.classList.remove("lk");
+  }
+  if(t===2) document.getElementById("rel-btns")?.classList.remove("lk");
+  const sb=document.getElementById("sb"+t);
+  if(!sb)return;
+  sb.classList.remove("lk");
+  const ic={1:"🏆",2:"👨‍👩‍👦",3:"💜",4:"✨"};
+  const lb={1:"ランキング",2:"親との関係",3:"ストレス解消法",4:"まとめ"};
+  sb.textContent=`${ic[t]} グループ${cg} の${lb[t]}を送る`;
+}
+
+window.pt=function(n){
+  ct=n;
+  [1,2,3,4].forEach(i=>{
+    document.getElementById("tp"+i).style.display=i===n?"block":"none";
+    document.querySelectorAll(".tabs .tbtn")[i-1].classList.toggle("on",i===n);
+  });
+  unlock(n);
+};
+
+window.cc=function(el,id){const c=document.getElementById(id);if(c)c.textContent=el.value.length+"文字";};
+
+window.ds=async function(t){
+  if(!cg)return;
+  document.getElementById("sb"+t).classList.add("lk");
+  let d={submitted:true,timestamp:Date.now()};
+  if(t===1){
+    const rankResult=rankOrder.map((itemIdx,pos)=>
+      itemIdx!==null?`${RANK_MEDALS[pos]}：${RANK_LABELS[itemIdx]}`:"").filter(Boolean).join(" / ");
+    d.rank=rankResult||"未回答";
+    d.reason=document.getElementById("f1b")?.value||"";
+  } else if(t===2){
+    const relMap={good:"😊 仲がいい",bad:"😤 仲が悪い",mid:"😐 普通"};
+    d.rel=relMap[relSel]||"未選択";
+    d.reason=document.getElementById("f2b")?.value||"";
+    d.notice=document.getElementById("f2c")?.value||"";
+  } else if(t===3){
+    d.top3=document.getElementById("f3a")?.value||"";
+    d.check=document.getElementById("f3b")?.value||"";
+    d.best=document.getElementById("f3c")?.value||"";
+  } else if(t===4){
+    d.learned=document.getElementById("f4a")?.value||"";
+    d.action=document.getElementById("f4b")?.value||"";
+  }
+  try{
+    await set(ref(db,"lesson1v2/t"+t+"/g"+cg),d);
+    document.getElementById("sent"+t).classList.add("show");
+    document.getElementById("sb"+t).style.display="none";
+    updateProg();
+  }catch(e){
+    document.getElementById("sb"+t).classList.remove("lk");
+    alert("送信に失敗しました。もう一度試してください。");
+  }
+};
+
+window.us=async function(t){
+  if(!cg)return;
+  try{await set(ref(db,"lesson1v2/t"+t+"/g"+cg+"/submitted"),false);}catch(e){}
+  document.getElementById("sent"+t).classList.remove("show");
+  document.getElementById("sb"+t).style.display="flex";
+  document.getElementById("sb"+t).classList.remove("lk");
+};
+
+async function updateProg(){
+  let done=0;
+  for(let g=1;g<=9;g++){
+    for(let t=1;t<=4;t++){
+      try{const s=await get(ref(db,"lesson1v2/t"+t+"/g"+g+"/submitted"));if(s.val()===true){done++;break;}}catch(e){}
+    }
+  }
+  document.getElementById("prog-txt").textContent=done+" / 9";
+  document.getElementById("prog-fill").style.width=Math.round(done/9*100)+"%";
+}
+
+window.ptt=function(n){
+  ctt=n;
+  document.querySelectorAll(".ttabs .tbtn").forEach((b,i)=>b.classList.toggle("on",i+1===n));
+  loadTeacher();
+};
+
+window.loadTeacher=async function(){
+  const el=document.getElementById("tcontent");
+  el.innerHTML="<div class='empty'>読み込み中… 🐾</div>";
+  const t=ctt;
+  const labels=FL[t];
+  const keys=Object.keys(labels);
+  let html="",filled=0;
+  for(let g=1;g<=9;g++){
+    let gd=null;
+    try{const s=await get(ref(db,"lesson1v2/t"+t+"/g"+g));gd=s.val();}catch(e){}
+    html+="<div class='gc'><div class='gch' style='background:"+HC[t]+";'>"+ANI[g-1]+" グループ"+g+(gd&&gd.submitted?" ✓":"")+"</div><div class='gcb'>";
+    if(!gd||!gd.submitted){
+      html+="<span class='nd'>まだ届いていません</span>";
+    }else{
+      filled++;
+      keys.forEach(k=>{
+        const v=String(gd[k]||"").replace(/</g,"&lt;");
+        html+="<div class='flbl'>"+labels[k]+"</div><div class='fval'>"+(v||"<span class='nd'>—</span>")+"</div>";
+      });
+    }
+    html+="</div></div>";
+  }
+  document.getElementById("stats").innerHTML=filled>0
+    ?"<div class='chip'>送信済み <b style='color:#ff8c42'>"+filled+"</b> / 9</div><div class='chip'>未送信 <b style='color:#e85d5d'>"+(9-filled)+"</b></div>":"";
+  el.innerHTML=html;
+  onValue(ref(db,"lesson1v2/t"+ctt),()=>{
+    if(document.getElementById("pnl-t").classList.contains("show")) loadTeacher();
+  },{onlyOnce:false});
+};
+
+updateProg();
+</script>
+</body>
+</html>
