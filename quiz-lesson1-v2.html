@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>導入クイズ：思春期と健康</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#1a1a1a;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:1rem;font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;}
+.app{background:#0d0d0d;width:100%;max-width:960px;min-height:520px;border-radius:16px;padding:2.5rem 3rem;display:flex;flex-direction:column;position:relative;overflow:hidden;color:#fff;}
+.slide-num{position:absolute;top:1.25rem;right:1.5rem;font-size:14px;color:#555;}
+.intro-badge{display:inline-block;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:1.25rem;background:#1a3020;color:#4ecb87;}
+.intro-title{font-size:32px;font-weight:700;color:#fff;line-height:1.45;margin-bottom:0.6rem;}
+.intro-sub{font-size:20px;color:#aaa;line-height:1.6;margin-bottom:1.25rem;}
+.teacher-note{font-size:13px;color:#555;border-left:2px solid #333;padding-left:0.75rem;line-height:1.6;}
+.q-tag{display:inline-block;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:1.25rem;background:#1a3020;color:#4ecb87;}
+.q-text{font-size:32px;font-weight:700;color:#fff;line-height:1.5;white-space:pre-line;margin-bottom:2rem;flex:1;}
+.btn-row{display:flex;gap:16px;margin-top:auto;}
+.ans-btn{flex:1;padding:20px 12px;border:2.5px solid;border-radius:14px;font-family:inherit;font-size:24px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center;background:transparent;}
+.btn-o{border-color:#2a6e4a;color:#4ecb87;}
+.btn-x{border-color:#7a2020;color:#f07070;}
+.btn-o:hover:not(:disabled){background:#1a3d2a;}
+.btn-x:hover:not(:disabled){background:#3a1010;}
+.ans-btn:disabled{opacity:.3;cursor:default;}
+.big-answer{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:16px;z-index:10;opacity:0;pointer-events:none;transition:opacity .15s;}
+.big-answer.show{opacity:1;pointer-events:auto;}
+.big-mark{font-size:160px;font-weight:700;line-height:1;}
+.anim-pop{animation:pop .35s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes pop{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.bg-ok{background:#0a2a18;}.bg-ng{background:#2a0a0a;}
+.col-ok{color:#4ecb87;}.col-ng{color:#f07070;}
+.explain-box{position:absolute;inset:0;border-radius:16px;padding:2.5rem 3rem;display:flex;flex-direction:column;justify-content:center;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s;}
+.explain-box.show{opacity:1;pointer-events:auto;}
+.explain-mark{font-size:72px;font-weight:700;line-height:1;margin-bottom:1rem;}
+.explain-text{font-size:30px;font-weight:700;line-height:1.75;white-space:pre-line;color:#fff;}
+.explain-hint{font-size:15px;color:#555;margin-top:1.75rem;}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.25rem;width:100%;max-width:960px;}
+.nav-btn{border:1px solid #333;background:#1a1a1a;border-radius:8px;padding:12px 28px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color:#aaa;transition:all .15s;}
+.nav-btn:hover{background:#2a2a2a;color:#fff;}
+.nav-btn:disabled{opacity:.25;cursor:default;}
+.dots-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.dots{display:flex;gap:5px;flex-wrap:wrap;max-width:200px;justify-content:center;}
+.dot{width:9px;height:9px;border-radius:50%;background:#333;flex-shrink:0;transition:background .2s;}
+.dot.cur{background:#4ecb87;}.dot.done-ok{background:#4ecb87;}.dot.done-ng{background:#f07070;}
+.prog{font-size:12px;color:#555;}
+/* 全問正解 */
+#celebrate{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.85);}
+#celebrate.show{display:flex;}
+#celebrate canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.celebrate-msg{position:relative;z-index:10;text-align:center;animation:celebIn .6s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes celebIn{from{transform:scale(.3) rotate(-10deg);opacity:0;}to{transform:scale(1) rotate(0deg);opacity:1;}}
+.celebrate-emoji{font-size:80px;display:block;margin-bottom:0.5rem;animation:bounce 1s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-15px);}}
+.celebrate-title{font-size:52px;font-weight:700;color:#4ecb87;text-shadow:0 0 30px rgba(78,203,135,.8);margin-bottom:0.5rem;}
+.celebrate-sub{font-size:24px;color:#fff;margin-bottom:0.5rem;opacity:.9;}
+.celebrate-score{font-size:20px;color:#aaa;margin-bottom:2rem;}
+.celebrate-close{border:2px solid #4ecb87;background:transparent;color:#4ecb87;border-radius:12px;padding:14px 40px;font-family:inherit;font-size:18px;font-weight:700;cursor:pointer;transition:all .2s;}
+.celebrate-close:hover{background:#4ecb87;color:#000;}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <span class="slide-num" id="snum"></span>
+  <div id="content" style="display:flex;flex-direction:column;flex:1;"></div>
+  <div class="big-answer" id="big-answer"><div class="big-mark" id="big-mark"></div></div>
+  <div class="explain-box" id="explain-box">
+    <div class="explain-mark" id="explain-mark"></div>
+    <div class="explain-text" id="explain-text"></div>
+    <div class="explain-hint">← → キーまたは下のボタンで次へ</div>
+  </div>
+</div>
+<div class="nav">
+  <button class="nav-btn" id="prev" onclick="move(-1)" disabled>← 前へ</button>
+  <div class="dots-wrap">
+    <div class="dots" id="dots"></div>
+    <div class="prog" id="prog"></div>
+  </div>
+  <button class="nav-btn" id="next" onclick="move(1)">次へ →</button>
+</div>
+
+<div id="celebrate">
+  <canvas id="fw-canvas"></canvas>
+  <div class="celebrate-msg">
+    <span class="celebrate-emoji">🌱</span>
+    <div class="celebrate-title">全問正解！！</div>
+    <div class="celebrate-sub">おめでとう！！🎉</div>
+    <div class="celebrate-score">6問全部正解！思春期マスター！</div>
+    <button class="celebrate-close" onclick="closeCelebrate()">閉じる</button>
+  </div>
+</div>
+
+<script>
+const SLIDES=[
+  {type:"intro",title:"最初にちょっと質問します。",sub:"みんなで考えてみよう。",note:"答えを確認しながら授業を進めます。"},
+  {type:"ox",q:"急に理由もなくイライラするのは\n意志が弱いせいだ",ans:"x",
+   explain:"脳の「感情を司る部分」が活発になる一方、\n「自分をコントロールする部分」は25歳ごろまで\nゆっくり成長します。イライラは脳の成長過程です。"},
+  {type:"ox",q:"10歳〜30歳代の死因の第1位は\n自殺だ",ans:"o",
+   explain:"日本では若い世代の死因の第1位が自殺です。\n思春期は精神的に不安定になりやすい時期で、\n周囲のサポートや相談先を知ることが大切です。"},
+  {type:"ox",q:"無理なダイエットを続けると\n月経が止まることがある",ans:"o",
+   explain:"栄養不足や過度な運動で月経が止まることがあります。\n将来の不妊や骨粗しょう症のリスクにもなるため、\n早めに医療機関に相談することが重要です。"},
+  {type:"ox",q:"思春期のイライラや衝動は\n大人になると自然に落ち着く",ans:"o",
+   explain:"「自分をコントロールする脳の部分」が成熟するにつれて\n感情のコントロールが上手になっていきます。\nただしストレスへの対処法を身につけることも大切です。"},
+  {type:"ox",q:"基礎体温を毎日測ると\n自分の体のリズムがわかる",ans:"o",
+   explain:"女性の性周期は基礎体温の変化で把握できます。\n体の異常にも早く気づけるため、\n日頃から記録しておくことが健康管理に役立ちます。"},
+  {type:"ox",q:"思春期は「自分はどんな人間か」\nを考え始める時期ではない",ans:"x",
+   explain:"思春期は「自分がどういう人間か、\nどういう人間になりたいか」を考える大事な時期です。\nこれを「自我と価値観の形成」といいます。"},
+];
+
+const TOTAL_Q=SLIDES.filter(s=>s.type==="ox").length;
+let cur=0;
+const chosen=new Array(SLIDES.length).fill(null);
+let fwAnim=null;
+
+function launchFireworks(){
+  const canvas=document.getElementById("fw-canvas");
+  const ctx=canvas.getContext("2d");
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const particles=[];
+  const COLORS=["#4ecb87","#3dba7f","#60b8ff","#a89ef5","#ffd700","#ff9060","#fff"];
+  function createBurst(x,y){
+    const color=COLORS[Math.floor(Math.random()*COLORS.length)];
+    const count=60+Math.floor(Math.random()*40);
+    for(let i=0;i<count;i++){
+      const angle=Math.random()*Math.PI*2;
+      const speed=2+Math.random()*6;
+      particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:0.012+Math.random()*0.01,size:2+Math.random()*4,color});
+    }
+  }
+  for(let i=0;i<6;i++) setTimeout(()=>createBurst(100+Math.random()*(canvas.width-200),80+Math.random()*(canvas.height*0.5)),i*180);
+  let bc=0;
+  const bi=setInterval(()=>{createBurst(100+Math.random()*(canvas.width-200),60+Math.random()*(canvas.height*0.55));bc++;if(bc>20)clearInterval(bi);},400);
+  function loop(){
+    ctx.fillStyle="rgba(0,0,0,0.18)";ctx.fillRect(0,0,canvas.width,canvas.height);
+    for(let i=particles.length-1;i>=0;i--){
+      const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=0.08;p.vx*=0.98;p.life-=p.decay;
+      if(p.life<=0){particles.splice(i,1);continue;}
+      ctx.globalAlpha=p.life;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();
+    }
+    ctx.globalAlpha=1;fwAnim=requestAnimationFrame(loop);
+  }
+  loop();
+}
+function showCelebrate(){document.getElementById("celebrate").classList.add("show");launchFireworks();}
+function closeCelebrate(){
+  document.getElementById("celebrate").classList.remove("show");
+  if(fwAnim)cancelAnimationFrame(fwAnim);
+  const canvas=document.getElementById("fw-canvas");
+  canvas.getContext("2d").clearRect(0,0,canvas.width,canvas.height);
+}
+function checkAllCorrect(){
+  const qs=SLIDES.map((s,i)=>s.type==="ox"?i:-1).filter(i=>i>=0);
+  if(!qs.every(i=>chosen[i]!==null))return;
+  if(qs.every(i=>SLIDES[i].ans===chosen[i]))setTimeout(showCelebrate,600);
+}
+
+function getDisplay(s,v){return s.ans===v?{sym:"○",bg:"bg-ok",col:"col-ok"}:{sym:"×",bg:"bg-ng",col:"col-ng"};}
+function isOk(s,v){return v&&s.ans===v;}
+
+function showAnswer(v){
+  const s=SLIDES[cur];chosen[cur]=v;
+  const d=getDisplay(s,v);
+  const ba=document.getElementById("big-answer");
+  ba.className="big-answer "+d.bg+" show";
+  const bm=document.getElementById("big-mark");
+  const nb=bm.cloneNode(false);nb.className="big-mark anim-pop "+d.col;nb.textContent=d.sym;
+  bm.parentNode.replaceChild(nb,bm);
+  setTimeout(()=>{
+    ba.className="big-answer";
+    const eb=document.getElementById("explain-box");
+    eb.className="explain-box "+d.bg+" show";
+    document.getElementById("explain-mark").className="explain-mark "+d.col;
+    document.getElementById("explain-mark").textContent=d.sym;
+    document.getElementById("explain-text").textContent=s.explain;
+    renderDots();checkAllCorrect();
+  },900);
+}
+
+function renderDots(){
+  const qs=SLIDES.map((s,i)=>s.type==="ox"?i:-1).filter(i=>i>=0);
+  document.getElementById("dots").innerHTML=qs.map(i=>{
+    let c="dot";
+    if(i===cur)c+=" cur";
+    else if(chosen[i]!==null)c+=isOk(SLIDES[i],chosen[i])?" done-ok":" done-ng";
+    return `<div class="${c}"></div>`;
+  }).join("");
+}
+
+function render(){
+  const s=SLIDES[cur];
+  document.getElementById("snum").textContent=`${cur+1} / ${SLIDES.length}`;
+  document.getElementById("prev").disabled=cur===0;
+  document.getElementById("next").disabled=cur===SLIDES.length-1;
+  const qN=SLIDES.slice(0,cur+1).filter(x=>x.type==="ox").length;
+  document.getElementById("prog").textContent=s.type==="ox"?`Q${qN} / ${TOTAL_Q}`:"← → で進む";
+  document.getElementById("big-answer").className="big-answer";
+  const eb=document.getElementById("explain-box");
+  if(chosen[cur]!==null&&s.type==="ox"){
+    const d=getDisplay(s,chosen[cur]);
+    eb.className="explain-box "+d.bg+" show";
+    document.getElementById("explain-mark").className="explain-mark "+d.col;
+    document.getElementById("explain-mark").textContent=d.sym;
+    document.getElementById("explain-text").textContent=s.explain;
+  }else{eb.className="explain-box";}
+  renderDots();
+  let html="";
+  if(s.type==="intro"){
+    html=`<div class="intro-badge">導入</div><div class="intro-title">${s.title}</div><div class="intro-sub">${s.sub}</div><div class="teacher-note">教員メモ：${s.note}</div>`;
+  }else{
+    const lk=chosen[cur]!==null?"disabled":"";
+    html=`<div class="q-tag">思春期と健康</div><div class="q-text">${s.q}</div><div class="btn-row"><button class="ans-btn btn-o" onclick="showAnswer('o')" ${lk}>○</button><button class="ans-btn btn-x" onclick="showAnswer('x')" ${lk}>×</button></div>`;
+  }
+  document.getElementById("content").innerHTML=html;
+}
+
+function move(d){cur=Math.max(0,Math.min(SLIDES.length-1,cur+d));render();}
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight")move(1);
+  if(e.key==="ArrowLeft")move(-1);
+});
+render();
+</script>
+</body>
+</html>
