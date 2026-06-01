@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>復習クイズ：妊娠・出産と健康</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#1a1a1a;min-height:100vh;padding:1rem;font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.wrap{width:100%;max-width:760px;}
+.card{background:#0d0d0d;border-radius:16px;padding:2rem 2.5rem;min-height:480px;display:flex;flex-direction:column;position:relative;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.q-num{font-size:13px;color:#888;margin-bottom:1rem;}
+.q-text{font-size:26px;font-weight:700;line-height:1.55;white-space:pre-line;color:#fff;flex:1;margin-bottom:2rem;}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:auto;}
+.choice{padding:14px 16px;border:2px solid #333;background:#1a1a1a;border-radius:12px;font-size:15px;font-weight:500;cursor:pointer;color:#ccc;transition:all .15s;text-align:left;line-height:1.4;font-family:inherit;}
+.choice:hover:not(:disabled){border-color:#888;color:#fff;background:#252525;}
+.choice:disabled{cursor:default;}
+.choice.correct{background:#0a2a18;border-color:#4ecb87;color:#4ecb87;}
+.choice.wrong{background:#2a0a0a;border-color:#f07070;color:#f07070;}
+.choice.show-correct{background:#0a2a18;border-color:#4ecb87;color:#4ecb87;opacity:.6;}
+.result-box{margin-top:1.25rem;border-radius:12px;padding:1.25rem 1.5rem;animation:fadeUp .25s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.result-ok{background:#0a2a18;border:1px solid #2a6e4a;}
+.result-ng{background:#2a0a0a;border:1px solid #7a2020;}
+.result-mark{font-size:22px;font-weight:700;margin-bottom:6px;}
+.result-mark.ok{color:#4ecb87;}
+.result-mark.ng{color:#f07070;}
+.result-explain{font-size:15px;color:#ddd;line-height:1.7;white-space:pre-line;}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.25rem;}
+.nav-btn{border:1px solid #444;background:#1a1a1a;border-radius:8px;padding:11px 28px;font-size:14px;font-weight:500;cursor:pointer;color:#aaa;transition:all .15s;font-family:inherit;}
+.nav-btn:hover{background:#2a2a2a;color:#fff;}
+.nav-btn:disabled{opacity:.25;cursor:default;}
+.dots{display:flex;gap:5px;flex-wrap:wrap;max-width:260px;justify-content:center;}
+.dot{width:9px;height:9px;border-radius:50%;background:#333;transition:background .2s;flex-shrink:0;}
+.dot.cur{background:#e85d8a;}
+.dot.done-ok{background:#4ecb87;}
+.dot.done-ng{background:#f07070;}
+.prog{font-size:12px;color:#555;margin-top:4px;text-align:center;}
+/* 結果画面 */
+#result-screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:480px;text-align:center;}
+#result-screen.show{display:flex;}
+.result-emoji{font-size:72px;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.result-title{font-size:36px;font-weight:700;color:#fff;margin-bottom:0.5rem;}
+.result-score{font-size:20px;color:#aaa;margin-bottom:1.5rem;}
+.retry-btn{border:2px solid #e85d8a;background:transparent;color:#e85d8a;border-radius:12px;padding:14px 40px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.retry-btn:hover{background:#e85d8a;color:#000;}
+/* 花火 */
+#celebrate{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.85);}
+#celebrate.show{display:flex;}
+#celebrate canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.celeb-msg{position:relative;z-index:10;text-align:center;animation:celebIn .6s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes celebIn{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.celeb-emoji{font-size:72px;display:block;margin-bottom:.5rem;animation:bounce 1s ease-in-out infinite;}
+.celeb-title{font-size:48px;font-weight:700;color:#f07090;text-shadow:0 0 30px rgba(240,112,144,.8);margin-bottom:.4rem;}
+.celeb-sub{font-size:22px;color:#fff;margin-bottom:2rem;}
+.celeb-close{border:2px solid #f07090;background:transparent;color:#f07090;border-radius:12px;padding:12px 36px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.celeb-close:hover{background:#f07090;color:#000;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" id="quiz-card">
+    <div class="q-num" id="q-num"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div id="result-box" style="display:none;"></div>
+  </div>
+  <div class="card" id="result-screen">
+    <div class="result-emoji" id="res-emoji"></div>
+    <div class="result-title" id="res-title"></div>
+    <div class="result-score" id="res-score"></div>
+    <button class="retry-btn" onclick="retry()">もう一度チャレンジ！</button>
+  </div>
+  <div class="nav" id="nav-wrap">
+    <button class="nav-btn" id="prev" onclick="move(-1)" disabled>← 前へ</button>
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div class="dots" id="dots"></div>
+      <div class="prog" id="prog"></div>
+    </div>
+    <button class="nav-btn" id="next-btn" onclick="nextQ()" disabled>次の問題 →</button>
+  </div>
+</div>
+
+<div id="celebrate">
+  <canvas id="fw-canvas"></canvas>
+  <div class="celeb-msg">
+    <span class="celeb-emoji">👶</span>
+    <div class="celeb-title">全問正解！！</div>
+    <div class="celeb-sub">妊娠・出産マスター🎉</div>
+    <button class="celeb-close" onclick="closeCeleb()">閉じる</button>
+  </div>
+</div>
+
+<script>
+const QS = [
+  {
+    q: "妊娠・出産の過程として\n正しい順番はどれ？",
+    choices: ["受精→排卵→着床→妊娠成立","排卵→受精→着床→妊娠成立","着床→排卵→受精→妊娠成立","排卵→着床→受精→妊娠成立"],
+    ans: 1,
+    explain: "正解は「排卵→受精→着床→妊娠成立」です。\n卵子が排卵された後、卵管で精子と受精し、\n約1週間かけて子宮に到達して着床することで\n妊娠が成立します。"
+  },
+  {
+    q: "受精が行われる場所はどこ？",
+    choices: ["子宮","卵巣","卵管","子宮頸部"],
+    ans: 2,
+    explain: "受精が行われるのは「卵管」（卵管膨大部）です。\n卵巣から排卵された卵子が卵管に取り込まれ、\nそこで精子と出会い受精します。"
+  },
+  {
+    q: "母体と胎児をつなぎ、酸素や栄養を\n届ける器官の組み合わせとして正しいのは？",
+    choices: ["胎盤と産道","胎盤と臍帯","子宮と卵管","羊水と臍帯"],
+    ans: 1,
+    explain: "正解は「胎盤と臍帯」です。\n胎盤は母体と胎児の間で酸素・栄養の交換を行い、\n臍帯（へその緒）が胎盤と胎児をつなぎます。"
+  },
+  {
+    q: "妊娠中の母体の変化として\n正しいものはどれ？",
+    choices: ["排卵が続く","月経が止まる","基礎体温が下がる","胎盤が消える"],
+    ans: 1,
+    explain: "妊娠が成立すると「月経が止まります」。\nホルモンの変化により排卵・月経が抑制されます。\n基礎体温は高温期が続きます。"
+  },
+  {
+    q: "出産後6〜8週間の\n母体が回復する時期を何という？",
+    choices: ["授乳期","妊娠初期","産褥期","新生児期"],
+    ans: 2,
+    explain: "正解は「産褥期」です。\n出産後6〜8週間、子宮が妊娠前の状態に戻る時期です。\nマタニティブルーや産後うつが起きやすい時期でもあります。"
+  },
+  {
+    q: "生後何日未満の赤ちゃんを\n「新生児」という？",
+    choices: ["7日未満","14日未満","28日未満","1年未満"],
+    ans: 2,
+    explain: "生後「28日未満」の赤ちゃんを新生児といいます。\nその後、生後1年未満を「乳児」といいます。"
+  },
+  {
+    q: "妊娠初期（8〜11週）の\n胎児の状態として正しいのは？",
+    choices: ["肺が完成している","脳や心臓などの器官が形成される","胎動を感じる","外での生存が可能になる"],
+    ans: 1,
+    explain: "妊娠8〜11週は「器官形成期」です。\n脳・心臓・目などの器官が形成されます。\n心拍も確認できるようになります。"
+  },
+  {
+    q: "妊婦健診の費用について\n正しいのはどれ？",
+    choices: ["全額自己負担","健康保険が全額カバーする","自治体から助成券が交付される","無料で何度でも受けられる"],
+    ans: 2,
+    explain: "自治体から「助成券」が交付されるため、\n自己負担を少なく受診できます。\n母子健康手帳を受け取る際に一緒に交付されます。"
+  },
+  {
+    q: "母子健康手帳について\n正しいのはどれ？",
+    choices: ["アメリカで最初に作られた","出産後に交付される","1942年に日本で世界初として作られた","医師しか記入できない"],
+    ans: 2,
+    explain: "母子健康手帳は1942年に日本で世界初として作られました。\nその後アジア・アフリカなど世界中に広まっています。\n妊娠確認後に市区町村に妊娠届を出すと交付されます。"
+  },
+  {
+    q: "妊娠中に避けるべき行動として\n正しいのはどれ？",
+    choices: ["適度な散歩","葉酸のサプリを飲む","飲酒・喫煙","定期的に妊婦健診を受ける"],
+    ans: 2,
+    explain: "飲酒・喫煙は胎児の発育に影響を与えます。\nアルコールは少量でもリスクがあるとされており、\n妊娠中は飲まないことが推奨されています。\n喫煙も低出生体重児のリスクを高めます。"
+  },
+];
+
+let cur = 0;
+let answers = new Array(QS.length).fill(null);
+let fwAnim = null;
+
+function renderDots() {
+  document.getElementById("dots").innerHTML = QS.map((_, i) => {
+    let c = "dot";
+    if (i === cur) c += " cur";
+    else if (answers[i] !== null) c += answers[i] === QS[i].ans ? " done-ok" : " done-ng";
+    return `<div class="${c}"></div>`;
+  }).join("");
+}
+
+function render() {
+  const q = QS[cur];
+  document.getElementById("q-num").textContent = `Q${cur + 1} / ${QS.length}`;
+  document.getElementById("q-text").textContent = q.q;
+  document.getElementById("prev").disabled = cur === 0;
+
+  const chosen = answers[cur];
+  const answered = chosen !== null;
+
+  document.getElementById("next-btn").disabled = !answered;
+  document.getElementById("next-btn").textContent = cur === QS.length - 1 ? "結果を見る" : "次の問題 →";
+
+  // 選択肢
+  document.getElementById("choices").innerHTML = q.choices.map((c, i) => {
+    let cls = "choice";
+    if (answered) {
+      if (i === q.ans) cls += " correct";
+      else if (i === chosen) cls += " wrong";
+    }
+    return `<button class="${cls}" onclick="pick(${i})" ${answered ? "disabled" : ""}>${c}</button>`;
+  }).join("");
+
+  // 解説
+  const rb = document.getElementById("result-box");
+  if (answered) {
+    const ok = chosen === q.ans;
+    rb.style.display = "block";
+    rb.innerHTML = `<div class="result-box ${ok ? "result-ok" : "result-ng"}">
+      <div class="result-mark ${ok ? "ok" : "ng"}">${ok ? "○　正解！" : "×　不正解"}</div>
+      <div class="result-explain">${q.explain}</div>
+    </div>`;
+  } else {
+    rb.style.display = "none";
+    rb.innerHTML = "";
+  }
+
+  renderDots();
+}
+
+function pick(i) {
+  if (answers[cur] !== null) return;
+  answers[cur] = i;
+  render();
+}
+
+function move(d) {
+  cur = Math.max(0, Math.min(QS.length - 1, cur + d));
+  render();
+}
+
+function nextQ() {
+  if (cur === QS.length - 1) {
+    showResult();
+  } else {
+    cur++;
+    render();
+  }
+}
+
+function showResult() {
+  const correct = answers.filter((a, i) => a === QS[i].ans).length;
+  document.getElementById("quiz-card").style.display = "none";
+  document.getElementById("nav-wrap").style.display = "none";
+  const rs = document.getElementById("result-screen");
+  rs.classList.add("show");
+
+  let emoji, title;
+  if (correct === QS.length) {
+    emoji = "🎉"; title = "完璧！全問正解！！";
+    setTimeout(launchFireworks, 300);
+  } else if (correct >= 8) {
+    emoji = "😊"; title = "すごい！もう少しで満点！";
+  } else if (correct >= 6) {
+    emoji = "🙂"; title = "なかなかいい！";
+  } else {
+    emoji = "📖"; title = "もう一度復習しよう！";
+  }
+
+  document.getElementById("res-emoji").textContent = emoji;
+  document.getElementById("res-title").textContent = title;
+  document.getElementById("res-score").textContent = `${correct} / ${QS.length} 問正解`;
+}
+
+function retry() {
+  cur = 0;
+  answers = new Array(QS.length).fill(null);
+  document.getElementById("quiz-card").style.display = "flex";
+  document.getElementById("nav-wrap").style.display = "flex";
+  document.getElementById("result-screen").classList.remove("show");
+  render();
+}
+
+function launchFireworks() {
+  const canvas = document.getElementById("fw-canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  const particles = [];
+  const COLORS = ["#f07090","#ff8c42","#ffd700","#4ecb87","#60b8ff","#a89ef5","#fff"];
+  function burst(x, y) {
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    for (let i = 0; i < 80; i++) {
+      const a = Math.random() * Math.PI * 2, s = 2 + Math.random() * 6;
+      particles.push({ x, y, vx: Math.cos(a)*s, vy: Math.sin(a)*s, life: 1, decay: .012 + Math.random()*.01, size: 2+Math.random()*4, color });
+    }
+  }
+  for (let i = 0; i < 6; i++) setTimeout(() => burst(100 + Math.random() * (canvas.width-200), 80 + Math.random() * (canvas.height*.5)), i * 180);
+  let bc = 0;
+  const bi = setInterval(() => { burst(100+Math.random()*(canvas.width-200), 60+Math.random()*(canvas.height*.55)); bc++; if(bc>20) clearInterval(bi); }, 400);
+  function loop() {
+    ctx.fillStyle = "rgba(0,0,0,0.18)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    for (let i = particles.length-1; i >= 0; i--) {
+      const p = particles[i]; p.x+=p.vx; p.y+=p.vy; p.vy+=.08; p.vx*=.98; p.life-=p.decay;
+      if (p.life <= 0) { particles.splice(i,1); continue; }
+      ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size*p.life, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha = 1; fwAnim = requestAnimationFrame(loop);
+  }
+  document.getElementById("celebrate").classList.add("show");
+  loop();
+}
+
+function closeCeleb() {
+  document.getElementById("celebrate").classList.remove("show");
+  if (fwAnim) cancelAnimationFrame(fwAnim);
+}
+
+render();
+</script>
+</body>
+</html>
