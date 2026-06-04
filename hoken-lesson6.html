@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>加齢と健康 グループワーク</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#e07b39;--g2:#fff3eb;--g3:#ffc899;--p:#c45f8a;--p2:#fceef4;--b:#4aa8d8;--b2:#eaf5fc;--o:#3dba7f;--o2:#e8f9f1;--bg:#fffdf8;--text:#3a3330;}
+body{font-family:"M PLUS Rounded 1c",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+.hero{background:linear-gradient(135deg,#e07b39,#c45f8a);padding:22px 16px 28px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:rgba(255,255,255,.1);border-radius:50%;}
+.hero-emoji{font-size:44px;display:block;margin-bottom:6px;animation:bop 2s ease-in-out infinite;}
+@keyframes bop{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.hero h1{font-size:18px;font-weight:900;color:#fff;line-height:1.3;position:relative;}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:4px;position:relative;}
+.modebar{display:flex;gap:8px;padding:12px 14px;background:var(--bg);position:sticky;top:0;z-index:200;border-bottom:2px solid #f0ece4;}
+.mbtn{flex:1;border:2.5px solid #e0dbd2;background:#fff;border-radius:40px;padding:10px 8px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;color:#aaa;}
+.mbtn.ons{background:var(--g);border-color:var(--g);color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.mbtn.ont{background:#e85d5d;border-color:#e85d5d;color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.pnl{display:none;padding:14px;}
+.pnl.show{display:block;}
+.slbl{font-size:12px;font-weight:800;color:#aaa;margin-bottom:8px;}
+.ggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+.gbtn{border:2.5px solid #e0dbd2;background:#fff;border-radius:14px;padding:9px 4px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;transition:all .18s;text-align:center;color:#aaa;}
+.gbtn.on{background:var(--g);border-color:var(--g);color:#fff;transform:scale(1.05);box-shadow:0 3px 10px rgba(224,123,57,.3);}
+.gico{font-size:22px;display:block;margin-bottom:2px;}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;}
+.tabs::-webkit-scrollbar{display:none;}
+.tbtn{flex-shrink:0;border:none;border-radius:30px;padding:8px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;background:#f0ece4;color:#aaa;transition:all .2s;}
+.tbtn.on{color:#fff;}
+.tbtn.t1.on{background:#e07b39;}.tbtn.t2.on{background:#c45f8a;}.tbtn.t3.on{background:#3dba7f;}.tbtn.t4.on{background:#4aa8d8;}
+.bbl{display:flex;align-items:flex-start;gap:10px;border-radius:16px;padding:12px;margin-bottom:12px;}
+.bface{font-size:34px;flex-shrink:0;animation:wag 3s ease-in-out infinite;}
+@keyframes wag{0%,100%{transform:rotate(0);}30%{transform:rotate(-8deg);}70%{transform:rotate(8deg);}}
+.btxt{font-size:13px;font-weight:700;line-height:1.5;}
+.bnm{font-size:11px;opacity:.7;margin-top:3px;}
+.crd{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:1.5px solid #f0ece4;}
+.crd.lk{opacity:.3;pointer-events:none;}
+.chd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.cico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.cttl{font-size:13px;font-weight:800;line-height:1.3;}
+.csub{font-size:11px;color:#aaa;margin-top:2px;}
+textarea{width:100%;border:2px solid #e8e4dc;border-radius:12px;padding:11px;font-family:inherit;font-size:14px;line-height:1.6;resize:vertical;min-height:80px;background:#fefcf8;color:var(--text);transition:border-color .2s;outline:none;}
+textarea:focus{border-color:var(--g);background:#fff;}
+.ccnt{font-size:11px;color:#ccc;text-align:right;margin-top:3px;}
+.sbtn{width:100%;padding:15px;border:none;border-radius:16px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;margin-top:4px;color:#fff;}
+.sbtn:active{transform:scale(.97);}
+.sbtn.lk{opacity:.35;pointer-events:none;}
+.sbtn.c1{background:#e07b39;box-shadow:0 4px 14px rgba(224,123,57,.35);}
+.sbtn.c2{background:#c45f8a;box-shadow:0 4px 14px rgba(196,95,138,.35);}
+.sbtn.c3{background:#3dba7f;box-shadow:0 4px 14px rgba(61,186,127,.35);}
+.sbtn.c4{background:#4aa8d8;box-shadow:0 4px 14px rgba(74,168,216,.35);}
+.sent-wrap{display:none;margin-top:8px;border-radius:18px;overflow:hidden;border:2.5px solid #e85d5d;}
+.sent-wrap.show{display:block;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.sent-ok{padding:14px 16px;color:#fff;display:flex;align-items:center;gap:10px;}
+.sent-ok-ico{font-size:24px;}
+.sent-ok-txt{font-size:13px;font-weight:800;line-height:1.4;}
+.sent-ok-sub{font-size:11px;opacity:.85;margin-top:2px;}
+.unsend-btn{display:block;width:100%;padding:16px;background:#fff0f0;border:none;border-top:2.5px solid #e85d5d;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;color:#c0392b;text-align:center;line-height:1.4;}
+.unsend-btn:active{background:#ffd5d5;}
+.unsend-sub{display:block;font-size:11px;color:#922b21;margin-top:3px;font-weight:700;}
+.prog-wrap{padding:10px 14px 0;}
+.prog-lbl{font-size:11px;font-weight:800;color:#aaa;margin-bottom:5px;display:flex;justify-content:space-between;}
+.prog-bg{background:#f0ece4;border-radius:999px;height:7px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,#e07b39,#c45f8a);border-radius:999px;transition:width .5s ease;}
+.tth{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.tttl{font-size:16px;font-weight:900;}
+.rfbtn{border:2px solid var(--g);background:var(--g2);color:#7a3800;border-radius:30px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
+.rfbtn:hover{background:var(--g);color:#fff;}
+.ttabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;}
+.ttabs::-webkit-scrollbar{display:none;}
+.gc{background:#fff;border-radius:16px;border:1.5px solid #f0ece4;margin-bottom:10px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.gch{padding:10px 14px;font-size:13px;font-weight:900;color:#fff;display:flex;align-items:center;gap:7px;}
+.gcb{padding:10px 14px;}
+.flbl{font-size:11px;font-weight:800;color:#aaa;margin-top:7px;margin-bottom:2px;}
+.fval{font-size:13px;color:var(--text);line-height:1.6;}
+.nd{color:#ccc;font-size:12px;font-style:italic;}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.chip{background:#fff;border:1.5px solid #f0ece4;border-radius:30px;padding:5px 12px;font-size:12px;font-weight:800;color:#888;}
+.empty{text-align:center;padding:30px;color:#ccc;font-size:14px;font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-emoji">🌿</span>
+  <h1>加齢と健康<br>グループワーク</h1>
+  <p class="hero-sub">教科書 p.94〜95 をもとに考えよう！</p>
+</div>
+
+<div class="prog-wrap" id="prog-wrap" style="display:none;">
+  <div class="prog-lbl"><span>🐾 送信済みグループ</span><span id="prog-txt">0 / 9</span></div>
+  <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<div class="modebar">
+  <button class="mbtn ons" id="mb-s" onclick="setMode('s')">🐾 生徒モード</button>
+  <button class="mbtn" id="mb-t" onclick="setMode('t')">👩‍🏫 教員モード</button>
+</div>
+
+<!-- 生徒パネル -->
+<div class="pnl show" id="pnl-s">
+  <div style="height:12px"></div>
+  <div class="slbl">🐨 自分のグループを選んでね</div>
+  <div class="ggrid">
+    <button class="gbtn" onclick="pg(1)"><span class="gico">🐻</span>グループ1</button>
+    <button class="gbtn" onclick="pg(2)"><span class="gico">🐼</span>グループ2</button>
+    <button class="gbtn" onclick="pg(3)"><span class="gico">🦊</span>グループ3</button>
+    <button class="gbtn" onclick="pg(4)"><span class="gico">🐰</span>グループ4</button>
+    <button class="gbtn" onclick="pg(5)"><span class="gico">🐧</span>グループ5</button>
+    <button class="gbtn" onclick="pg(6)"><span class="gico">🦁</span>グループ6</button>
+    <button class="gbtn" onclick="pg(7)"><span class="gico">🐸</span>グループ7</button>
+    <button class="gbtn" onclick="pg(8)"><span class="gico">🐯</span>グループ8</button>
+    <button class="gbtn" onclick="pg(9)"><span class="gico">🦋</span>グループ9</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tbtn t1 on" onclick="pt(1)">🍊 身近な「老い」</button>
+    <button class="tbtn t2" onclick="pt(2)">🌸 80歳のわたし</button>
+    <button class="tbtn t3" onclick="pt(3)">💚 高校生にできること</button>
+    <button class="tbtn t4" onclick="pt(4)">✨ まとめ</button>
+  </div>
+
+  <!-- タブ1：身近な「老い」 -->
+  <div id="tp1">
+    <div class="bbl" style="background:#fff3eb;border:1.5px solid #ffc899;">
+      <span class="bface">🦊</span>
+      <div>
+        <div class="btxt" style="color:#7a3800;">身近な高齢者（祖父母・近所の人など）を<br>思い浮かべてみよう。<br>「若いころと何か変わったな」と感じたことある？🦊</div>
+        <div class="bnm" style="color:#b05000;">— キツネ先生（教科書p.94〜95）</div>
+      </div>
+    </div>
+    <div class="crd lk" id="c1a">
+      <div class="chd"><div class="cico" style="background:#fff3eb;">💬</div><div><div class="cttl">グループで出た「老いを感じた場面」</div><div class="csub">外見・行動・言葉…どんな変化に気づいた？</div></div></div>
+      <textarea id="f1a" rows="3" placeholder="例：「階段がしんどそうになった」「物忘れが増えた気がする」「昔より小さくなった」「字が読みにくそう」…など！" oninput="cc(this,'n1a')"></textarea>
+      <div class="ccnt" id="n1a">0文字</div>
+    </div>
+    <div class="crd lk" id="c1b">
+      <div class="chd"><div class="cico" style="background:#fff3eb;">🤔</div><div><div class="cttl">「老いている」と「元気な高齢者」の違いって何だと思う？</div><div class="csub">グループで気づいたことを話し合ってみよう</div></div></div>
+      <textarea id="f1b" rows="3" placeholder="例：運動しているかどうか / 人と関わっているか / 生きがいがあるか / 食事に気をつけているか…" oninput="cc(this,'n1b')"></textarea>
+      <div class="ccnt" id="n1b">0文字</div>
+    </div>
+    <button class="sbtn c1 lk" id="sb1" onclick="ds(1)">🍊 グループ? の回答を送る</button>
+    <div class="sent-wrap" id="sent1">
+      <div class="sent-ok" style="background:#e07b39;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！いい気づきができたね！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(1)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+
+  <!-- タブ2：80歳のわたし -->
+  <div id="tp2" style="display:none;">
+    <div class="bbl" style="background:#fceef4;border:1.5px solid #f0a8c8;">
+      <span class="bface">🌸</span>
+      <div>
+        <div class="btxt" style="color:#7a1040;">想像してみよう——<br>あなたが80歳になったとき、<br>どんな生活を送っていたい？🌸</div>
+        <div class="bnm" style="color:#b04070;">— サクラ先生（教科書p.94〜95）</div>
+      </div>
+    </div>
+    <div class="crd lk" id="c2a">
+      <div class="chd"><div class="cico" style="background:#fceef4;">💭</div><div><div class="cttl">80歳でやっていたいこと・あり続けたい姿は？</div><div class="csub">グループで発表し合ってみよう</div></div></div>
+      <textarea id="f2a" rows="3" placeholder="例：「旅行に行ける体でいたい」「孫と遊べる元気さ」「趣味を続けたい」「ひとりで生活できる」…" oninput="cc(this,'n2a')"></textarea>
+      <div class="ccnt" id="n2a">0文字</div>
+    </div>
+    <div class="crd lk" id="c2b">
+      <div class="chd"><div class="cico" style="background:#fceef4;">🏃</div><div><div class="cttl">そのために「今」から始められることは？</div><div class="csub">身体・心・人間関係…いろんな視点で考えてみよう</div></div></div>
+      <textarea id="f2b" rows="3" placeholder="例：運動習慣をつける / 友人を大切にする / 食事のバランス / 睡眠をとる / 趣味をもつ / 地域活動に参加する…" oninput="cc(this,'n2b')"></textarea>
+      <div class="ccnt" id="n2b">0文字</div>
+    </div>
+    <div class="crd lk" id="c2c">
+      <div class="chd"><div class="cico" style="background:#fceef4;">💬</div><div><div class="cttl">男女・グループで意見の違いはあった？</div><div class="csub">「なるほど」と思った他のメンバーの意見を書いてみよう</div></div></div>
+      <textarea id="f2c" rows="3" placeholder="自分とは違う視点・予想外の意見・共感した意見など…" oninput="cc(this,'n2c')"></textarea>
+      <div class="ccnt" id="n2c">0文字</div>
+    </div>
+    <button class="sbtn c2 lk" id="sb2" onclick="ds(2)">🌸 グループ? の回答を送る</button>
+    <div class="sent-wrap" id="sent2">
+      <div class="sent-ok" style="background:#c45f8a;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！素敵な未来を描いてくれてありがとう！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(2)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+
+  <!-- タブ3：高校生にできること -->
+  <div id="tp3" style="display:none;">
+    <div class="bbl" style="background:#e8f9f1;border:1.5px solid #a8e6c8;">
+      <span class="bface">🐢</span>
+      <div>
+        <div class="btxt" style="color:#0f5a38;">高齢者の健康や生きがいを支えるために<br>高校生の自分にできることって何だろう？🐢<br>グループで具体的に考えてみよう！</div>
+        <div class="bnm" style="color:#2a8a58;">— カメ先生（教科書p.94〜95）</div>
+      </div>
+    </div>
+    <div class="crd lk" id="c3a">
+      <div class="chd"><div class="cico" style="background:#e8f9f1;">🤝</div><div><div class="cttl">今すぐできること</div><div class="csub">家庭・学校・地域でできることをグループで出し合おう</div></div></div>
+      <textarea id="f3a" rows="3" placeholder="例：祖父母と話す時間を増やす / 荷物を持つなど手助けをする / 地域のボランティアに参加する / 話し相手になる…" oninput="cc(this,'n3a')"></textarea>
+      <div class="ccnt" id="n3a">0文字</div>
+    </div>
+    <div class="crd lk" id="c3b">
+      <div class="chd"><div class="cico" style="background:#e8f9f1;">💡</div><div><div class="cttl">高齢者と若者がもっとつながれる社会にするには？</div><div class="csub">社会・制度・地域の仕組みとして考えてみよう</div></div></div>
+      <textarea id="f3b" rows="3" placeholder="例：世代間交流のイベント / 高齢者が参加しやすい習い事 / SNSで孤独を防ぐ仕組み / 学校と地域の連携…" oninput="cc(this,'n3b')"></textarea>
+      <div class="ccnt" id="n3b">0文字</div>
+    </div>
+    <button class="sbtn c3 lk" id="sb3" onclick="ds(3)">💚 グループ? の回答を送る</button>
+    <div class="sent-wrap" id="sent3">
+      <div class="sent-ok" style="background:#3dba7f;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！すばらしいアイデアをありがとう！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(3)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+
+  <!-- タブ4：まとめ -->
+  <div id="tp4" style="display:none;">
+    <div class="bbl" style="background:#eaf5fc;border:1.5px solid #85b7eb;">
+      <span class="bface">🦭</span>
+      <div>
+        <div class="btxt" style="color:#042c53;">今日の授業をふりかえって<br>自分の言葉でまとめよう！🦭</div>
+        <div class="bnm" style="color:#185fa5;">— アザラシ先生</div>
+      </div>
+    </div>
+    <div class="crd lk" id="c4a">
+      <div class="chd"><div class="cico" style="background:#eaf5fc;">📝</div><div><div class="cttl">今日学んだこと・気づいたこと</div><div class="csub">一番印象に残ったことを書こう</div></div></div>
+      <textarea id="f4a" rows="3" placeholder="例：「健康寿命と平均寿命の差が大きいことに驚いた」「社会的なつながりがこんなに大事だとは」「老いには個人差があると知った」…" oninput="cc(this,'n4a')"></textarea>
+      <div class="ccnt" id="n4a">0文字</div>
+    </div>
+    <div class="crd lk" id="c4b">
+      <div class="chd"><div class="cico" style="background:#eaf5fc;">🌱</div><div><div class="cttl">これから意識したいこと</div><div class="csub">日常や将来に活かせること</div></div></div>
+      <textarea id="f4b" rows="3" placeholder="例：「身近な高齢者ともっと話したい」「今から運動習慣をつけようと思った」「将来の自分のために健康寿命を意識したい」…" oninput="cc(this,'n4b')"></textarea>
+      <div class="ccnt" id="n4b">0文字</div>
+    </div>
+    <button class="sbtn c4 lk" id="sb4" onclick="ds(4)">✨ グループ? のまとめを送る</button>
+    <div class="sent-wrap" id="sent4">
+      <div class="sent-ok" style="background:#4aa8d8;"><span class="sent-ok-ico">🎉</span><div><div class="sent-ok-txt">送信完了！今日もよく考えてくれました！</div><div class="sent-ok-sub">内容を変えたいときは下のボタンを押してね</div></div></div>
+      <button class="unsend-btn" onclick="us(4)">✏️ 提出を解除して編集する<span class="unsend-sub">タップすると入力画面に戻ります</span></button>
+    </div>
+  </div>
+</div><!-- /pnl-s -->
+
+<!-- 教員パネル -->
+<div class="pnl" id="pnl-t">
+  <div style="height:12px"></div>
+  <div class="tth">
+    <div class="tttl">📊 回答一覧</div>
+    <button class="rfbtn" onclick="renderT()">🔄 更新</button>
+  </div>
+  <div class="ttabs">
+    <button class="tbtn t1 on" onclick="tt(1)">🍊 タブ1</button>
+    <button class="tbtn t2" onclick="tt(2)">🌸 タブ2</button>
+    <button class="tbtn t3" onclick="tt(3)">💚 タブ3</button>
+    <button class="tbtn t4" onclick="tt(4)">✨ まとめ</button>
+  </div>
+  <div id="t-content"></div>
+</div>
+
+<script>
+const SK = 'hoken6_';
+const groups = ['🐻','🐼','🦊','🐰','🐧','🦁','🐸','🐯','🦋'];
+const groupNames = ['グループ1','グループ2','グループ3','グループ4','グループ5','グループ6','グループ7','グループ8','グループ9'];
+let curG = null, curTab = 1, curTTab = 1;
+
+function setMode(m) {
+  document.getElementById('pnl-s').style.display = m==='s'?'block':'none';
+  document.getElementById('pnl-t').style.display = m==='t'?'block':'none';
+  document.getElementById('mb-s').className='mbtn'+(m==='s'?' ons':'');
+  document.getElementById('mb-t').className='mbtn'+(m==='t'?' ont':'');
+  if (m==='t') { renderT(); updateProgBar(); }
+}
+
+function pg(n) {
+  curG = n;
+  document.querySelectorAll('.gbtn').forEach((b,i)=>{b.className='gbtn'+(i===n-1?' on':'');});
+  unlockCards();
+  updateSendBtns();
+  loadSaved();
+}
+
+function pt(t) {
+  curTab = t;
+  document.querySelectorAll('.tbtn').forEach((b,i)=>{
+    const ti=i+1;
+    b.className='tbtn t'+ti+(ti===t?' on':'');
+  });
+  [1,2,3,4].forEach(i=>{ document.getElementById('tp'+i).style.display=i===t?'block':'none'; });
+}
+
+function unlockCards() {
+  document.querySelectorAll('.crd.lk, .sbtn.lk').forEach(el=>el.classList.remove('lk'));
+}
+
+function cc(el, id) {
+  document.getElementById(id).textContent = el.value.length + '文字';
+}
+
+function sk(tab, field) { return SK + 'g' + curG + '_t' + tab + '_' + field; }
+
+function loadSaved() {
+  [['1',['a','b']],['2',['a','b','c']],['3',['a','b']],['4',['a','b']]].forEach(([t,fs])=>{
+    fs.forEach(f=>{
+      const v = localStorage.getItem(sk(t,f));
+      const el = document.getElementById('f'+t+f);
+      const cnt = document.getElementById('n'+t+f);
+      if (v && el) { el.value = v; if(cnt) cnt.textContent = v.length+'文字'; }
+    });
+    const sent = localStorage.getItem(sk(t,'sent'));
+    if (sent==='1') showSent(parseInt(t));
+  });
+}
+
+function ds(tab) {
+  if (!curG) return;
+  const fields = {1:['a','b'],2:['a','b','c'],3:['a','b'],4:['a','b']};
+  fields[tab].forEach(f=>{
+    const el = document.getElementById('f'+tab+f);
+    if (el) localStorage.setItem(sk(tab,f), el.value);
+  });
+  localStorage.setItem(sk(tab,'sent'),'1');
+  showSent(tab);
+  updateProgBar();
+}
+
+function showSent(tab) {
+  document.getElementById('sent'+tab).classList.add('show');
+  const sb = document.getElementById('sb'+tab);
+  if (sb) sb.classList.add('lk');
+}
+
+function us(tab) {
+  localStorage.removeItem(sk(tab,'sent'));
+  document.getElementById('sent'+tab).classList.remove('show');
+  const sb = document.getElementById('sb'+tab);
+  if (sb) sb.classList.remove('lk');
+}
+
+function updateSendBtns() {
+  [1,2,3,4].forEach(t=>{
+    const sb = document.getElementById('sb'+t);
+    if (sb) sb.textContent = ['','🍊','🌸','💚','✨'][t] + ' グループ' + curG + ' の回答を送る';
+    if (sb && t===4) sb.textContent = '✨ グループ' + curG + ' のまとめを送る';
+  });
+}
+
+function updateProgBar() {
+  let count = 0;
+  for (let g=1; g<=9; g++) {
+    if (localStorage.getItem(SK+'g'+g+'_t4_sent')==='1') count++;
+  }
+  const pct = count/9*100;
+  const pf = document.getElementById('prog-fill');
+  const pt2 = document.getElementById('prog-txt');
+  const pw = document.getElementById('prog-wrap');
+  if (pf) { pf.style.width=pct+'%'; }
+  if (pt2) pt2.textContent = count + ' / 9';
+  if (pw) pw.style.display = 'block';
+}
+
+function tt(t) {
+  curTTab = t;
+  document.querySelectorAll('.ttabs .tbtn').forEach((b,i)=>{
+    const ti=i+1;
+    b.className='tbtn t'+ti+(ti===t?' on':'');
+  });
+  renderT();
+}
+
+const tabLabels = {
+  1: {title:'🍊 タブ1：身近な「老い」', fields:[{id:'a',label:'グループで出た変化'},{id:'b',label:'元気な高齢者との違い'}]},
+  2: {title:'🌸 タブ2：80歳のわたし', fields:[{id:'a',label:'80歳でやっていたいこと'},{id:'b',label:'今からできること'},{id:'c',label:'他のメンバーの意見で気づいたこと'}]},
+  3: {title:'💚 タブ3：高校生にできること', fields:[{id:'a',label:'今すぐできること'},{id:'b',label:'社会・仕組みとして'}]},
+  4: {title:'✨ まとめ', fields:[{id:'a',label:'学んだこと・気づき'},{id:'b',label:'これから意識したいこと'}]},
+};
+
+function renderT() {
+  const t = curTTab;
+  const info = tabLabels[t];
+  let html = `<div style="font-size:14px;font-weight:900;margin-bottom:12px;">${info.title}</div>`;
+  let anyData = false;
+  for (let g=1; g<=9; g++) {
+    const sent = localStorage.getItem(SK+'g'+g+'_t'+t+'_sent')==='1';
+    const vals = info.fields.map(f=>({label:f.label, val:localStorage.getItem(SK+'g'+g+'_t'+t+'_'+f.id)||''}));
+    const hasVal = vals.some(v=>v.val.trim());
+    if (!hasVal) continue;
+    anyData = true;
+    html += `<div class="gc">
+      <div class="gch" style="background:${['','#e07b39','#c45f8a','#3dba7f','#4aa8d8'][t]};">
+        ${groups[g-1]} ${groupNames[g-1]}${sent?' ✅':''}
+      </div>
+      <div class="gcb">`;
+    vals.forEach(v=>{
+      html += `<div class="flbl">${v.label}</div>
+        <div class="fval">${v.val.trim()||'<span class="nd">未入力</span>'}</div>`;
+    });
+    html += `</div></div>`;
+  }
+  if (!anyData) html += `<div class="empty">まだ回答がありません</div>`;
+  document.getElementById('t-content').innerHTML = html;
+}
+
+// init
+pt(1);
+updateProgBar();
+</script>
+</body>
+</html>
