@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>加齢と健康 導入クイズ</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"M PLUS Rounded 1c",sans-serif;background:#fffdf8;color:#3a3330;min-height:100vh;}
+.hero{background:linear-gradient(135deg,#e07b39,#c45f8a);padding:26px 16px 32px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:rgba(255,255,255,.1);border-radius:50%;}
+.hero-emoji{font-size:52px;display:block;margin-bottom:8px;animation:bop 2s ease-in-out infinite;}
+@keyframes bop{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.hero h1{font-size:20px;font-weight:900;color:#fff;line-height:1.3;position:relative;}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.85);margin-top:6px;position:relative;}
+.container{padding:20px 16px;}
+.progress-wrap{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.progress-bg{flex:1;background:#f0ece4;border-radius:999px;height:8px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#e07b39,#c45f8a);border-radius:999px;transition:width .5s ease;width:0%;}
+.progress-label{font-size:12px;font-weight:800;color:#aaa;white-space:nowrap;}
+.qcard{background:#fff;border-radius:22px;padding:22px;box-shadow:0 6px 24px rgba(0,0,0,.09);border:2px solid #f0ece4;margin-bottom:16px;display:none;}
+.qcard.show{display:block;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.qnum{font-size:12px;font-weight:800;color:#aaa;margin-bottom:8px;}
+.qtxt{font-size:17px;font-weight:800;line-height:1.55;margin-bottom:20px;color:#3a3330;}
+.btn-row{display:flex;gap:12px;}
+.obtn{flex:1;border:none;border-radius:16px;padding:16px;font-family:inherit;font-size:18px;font-weight:900;cursor:pointer;transition:all .2s;color:#fff;}
+.obtn.maru{background:linear-gradient(135deg,#e07b39,#e8943a);}
+.obtn.batsu{background:linear-gradient(135deg,#4a90d8,#6baee8);}
+.obtn:active{transform:scale(.95);}
+.result{display:none;margin-top:18px;border-radius:16px;padding:16px;animation:fadeUp .25s ease;}
+.result.show{display:block;}
+.result.correct{background:#e8f9f1;border:2px solid #3dba7f;}
+.result.wrong{background:#ffeaea;border:2px solid #e85d5d;}
+.result-head{font-size:15px;font-weight:900;margin-bottom:6px;}
+.result.correct .result-head{color:#0f6e56;}
+.result.wrong .result-head{color:#c0392b;}
+.result-body{font-size:13px;font-weight:700;line-height:1.6;color:#555;}
+.next-btn{display:block;width:100%;margin-top:14px;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#e07b39,#c45f8a);color:#fff;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;transition:all .2s;}
+.next-btn:active{transform:scale(.97);}
+.score-card{display:none;background:#fff;border-radius:22px;padding:28px;box-shadow:0 6px 24px rgba(0,0,0,.09);border:2px solid #f0ece4;text-align:center;}
+.score-card.show{display:block;animation:fadeUp .4s ease;}
+.score-emoji{font-size:64px;margin-bottom:12px;}
+.score-ttl{font-size:22px;font-weight:900;color:#3a3330;margin-bottom:6px;}
+.score-sub{font-size:14px;color:#888;font-weight:700;}
+.firework{position:fixed;pointer-events:none;top:0;left:0;width:100%;height:100%;z-index:999;}
+canvas{position:absolute;top:0;left:0;width:100%;height:100%;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <span class="hero-emoji">👴</span>
+  <h1>加齢と健康<br>導入クイズ</h1>
+  <p class="hero-sub">教科書 p.94〜95 ／ ○か×か考えよう！</p>
+</div>
+
+<div class="container">
+  <div class="progress-wrap">
+    <div class="progress-bg"><div class="progress-fill" id="prog"></div></div>
+    <div class="progress-label" id="prog-lbl">0 / 7</div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="qcard show" id="q1">
+    <div class="qnum">Q1 / 7</div>
+    <div class="qtxt">日本は世界で最も高齢化率が高い国のひとつだ</div>
+    <div class="btn-row">
+      <button class="obtn maru" onclick="ans(1,true)">⭕</button>
+      <button class="obtn batsu" onclick="ans(1,false)">❌</button>
+    </div>
+    <div class="result" id="r1"></div>
+    <button class="next-btn" id="n1" style="display:none" onclick="next(2)">次の問題へ →</button>
+  </div>
+
+  <!-- Q2 -->
+  <div class="qcard" id="q2">
+    <div class="qnum">Q2 / 7</div>
+    <div class="qtxt">日本人の「健康寿命」と「平均寿命」の差は約1〜2年だ</div>
+    <div class="btn-row">
+      <button class="obtn maru" onclick="ans(2,true)">⭕</button>
+      <button class="obtn batsu" onclick="ans(2,false)">❌</button>
+    </div>
+    <div class="result" id="r2"></div>
+    <button class="next-btn" id="n2" style="display:none" onclick="next(3)">次の問題へ →</button>
+  </div>
+
+  <!-- Q3 -->
+  <div class="qcard" id="q3">
+    <div class="qnum">Q3 / 7</div>
+    <div class="qtxt">介護が必要になる原因の第1位は「骨折・転倒」だ</div>
+    <div class="btn-row">
+      <button class="obtn maru" onclick="ans(3,true)">⭕</button>
+      <button class="obtn batsu" onclick="ans(3,false)">❌</button>
+    </div>
+    <div class="result" id="r3"></div>
+    <button class="next-btn" id="n3" style="display:none" onclick="next(4)">次の問題へ →</button>
+  </div>
+
+  <!-- Q4 -->
+  <div class="qcard" id="q4">
+    <div class="qnum">Q4 / 7</div>
+    <div class="qtxt">筋力は何歳からトレーニングを始めても増やすことができる</div>
+    <div class="btn-row">
+      <button class="obtn maru" onclick="ans(4,true)">⭕</button>
+      <button class="obtn batsu" onclick="ans(4,false)">❌</button>
+    </div>
+    <div class="result" id="r4"></div>
+    <button class="next-btn" id="n4" style="display:none" onclick="next(5)">次の問題へ →</button>
+  </div>
+
+  <!-- Q5 -->
+  <div class="qcard" id="q5">
+    <div class="qnum">Q5 / 7</div>
+    <div class="qtxt">認知症の最大リスク因子は「遺伝（家系）」であるため、生活習慣では予防できない</div>
+    <div class="btn-row">
+      <button class="obtn maru" onclick="ans(5,true)">⭕</button>
+      <button class="obtn batsu" onclick="ans(5,false)">❌</button>
+    </div>
+    <div class="result" id="r5"></div>
+    <button class="next-btn" id="n5" style="display:none" onclick="next(6)">次の問題へ →</button>
+  </div>
+
+  <!-- Q6 -->
+  <div class="qcard" id="q6">
+    <div class="qnum">Q6 / 7</div>
+    <div class="qtxt">友人や地域との「社会的なつながり」が少ない高齢者は、死亡リスクが高くなるという研究がある</div>
+    <div class="btn-row">
+      <button class="obtn maru" onclick="ans(6,true)">⭕</button>
+      <button class="obtn batsu" onclick="ans(6,false)">❌</button>
+    </div>
+    <div class="result" id="r6"></div>
+    <button class="next-btn" id="n6" style="display:none" onclick="next(7)">次の問題へ →</button>
+  </div>
+
+  <!-- Q7 -->
+  <div class="qcard" id="q7">
+    <div class="qnum">Q7 / 7</div>
+    <div class="qtxt">「老い」は必ず一定のペースで進むため、個人差はほとんどない</div>
+    <div class="btn-row">
+      <button class="obtn maru" onclick="ans(7,true)">⭕</button>
+      <button class="obtn batsu" onclick="ans(7,false)">❌</button>
+    </div>
+    <div class="result" id="r7"></div>
+    <button class="next-btn" id="n7" style="display:none" onclick="showScore()">結果を見る 🎉</button>
+  </div>
+
+  <!-- Score -->
+  <div class="score-card" id="score">
+    <div class="score-emoji" id="score-emoji">🎊</div>
+    <div class="score-ttl" id="score-ttl"></div>
+    <div class="score-sub" id="score-sub"></div>
+  </div>
+</div>
+
+<div class="firework" id="fw" style="display:none"><canvas id="cv"></canvas></div>
+
+<script>
+const data = [
+  {ans:true,  head:"⭕ 正解！",  body:"日本は世界最高水準の高齢化率（約29%）を誇ります。高齢化率が7%を超えると「高齢化社会」、14%で「高齢社会」、21%で「超高齢社会」。日本は21%をとっくに超えています！"},
+  {ans:false, head:"❌ 不正解…",body:"実際の差は男性約9年・女性約12年。つまり人生の最後の約10年間、何らかの健康上の問題を抱えながら生活していることになります。この差を縮めることが大切！"},
+  {ans:false, head:"❌ 不正解…",body:"介護が必要になる原因の第1位は「認知症」（約18%）です。次いで「脳血管疾患（脳卒中）」「骨折・転倒」と続きます。認知症は長年の生活習慣とも深く関連しています。"},
+  {ans:true,  head:"⭕ 正解！",  body:"筋肉は何歳からでも鍛えれば増えます！80代・90代の高齢者でも筋トレの効果が確認されています。「もう年だから」は禁物。早く始めるほど効果的ですが、遅すぎることはありません。"},
+  {ans:false, head:"❌ 不正解…",body:"遺伝の影響は一部ありますが、運動不足・高血圧・糖尿病・喫煙・社会的孤立などの生活習慣が大きなリスク因子です。若いうちからの生活習慣が、将来の認知症リスクを左右します！"},
+  {ans:true,  head:"⭕ 正解！",  body:"孤独・孤立は喫煙と同程度の健康リスクがあるという研究があります。家族・友人・地域とのつながりは「社会的健康」として、身体的健康と同じくらい重要とされています。"},
+  {ans:false, head:"❌ 不正解…",body:"老いの進み方には大きな個人差があります。同じ80歳でも、フルマラソンを走る人もいれば介護が必要な人もいます。遺伝・生活習慣・社会的環境などによって、老化のスピードは大きく異なります。"},
+];
+
+let score = 0;
+let answered = {};
+
+function ans(q, userAns) {
+  if (answered[q]) return;
+  answered[q] = true;
+  const d = data[q-1];
+  const correct = (userAns === d.ans);
+  if (correct) score++;
+  const r = document.getElementById('r'+q);
+  r.className = 'result show ' + (correct ? 'correct' : 'wrong');
+  r.innerHTML = `<div class="result-head">${correct ? '⭕ 正解！' : '❌ 不正解…'}</div><div class="result-body">${d.body}</div>`;
+  // disable buttons
+  document.querySelectorAll('#q'+q+' .obtn').forEach(b => b.style.opacity = '.4');
+  document.getElementById('n'+q).style.display = 'block';
+  updateProg();
+}
+
+function next(q) {
+  document.getElementById('q'+(q-1)).style.display = 'none';
+  const next = document.getElementById('q'+q);
+  next.classList.add('show');
+  next.style.display = 'block';
+}
+
+function updateProg() {
+  const done = Object.keys(answered).length;
+  document.getElementById('prog').style.width = (done/7*100) + '%';
+  document.getElementById('prog-lbl').textContent = done + ' / 7';
+}
+
+function showScore() {
+  document.getElementById('q7').style.display = 'none';
+  const sc = document.getElementById('score');
+  sc.classList.add('show');
+  let emoji, ttl, sub;
+  if (score === 7) {
+    emoji = '🏆'; ttl = '全問正解！すごい！'; sub = '加齢と健康の知識は完璧！今日の授業でさらに深めよう！';
+    firework();
+  } else if (score >= 5) {
+    emoji = '🌟'; ttl = score + ' / 7 正解！'; sub = 'かなり詳しい！残りも今日の授業で確認しよう。';
+  } else if (score >= 3) {
+    emoji = '😊'; ttl = score + ' / 7 正解！'; sub = '半分以上正解！今日の授業で知識をもっと広げよう。';
+  } else {
+    emoji = '🌱'; ttl = score + ' / 7 正解'; sub = '意外な事実がたくさん！今日の授業でしっかり学ぼう。';
+  }
+  document.getElementById('score-emoji').textContent = emoji;
+  document.getElementById('score-ttl').textContent = ttl;
+  document.getElementById('score-sub').textContent = sub;
+}
+
+// Firework
+function firework() {
+  const fw = document.getElementById('fw');
+  fw.style.display = 'block';
+  const cv = document.getElementById('cv');
+  cv.width = window.innerWidth;
+  cv.height = window.innerHeight;
+  const ctx = cv.getContext('2d');
+  const particles = [];
+  for (let i = 0; i < 120; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 6 + 2;
+    particles.push({
+      x: cv.width/2, y: cv.height/3,
+      vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed - 3,
+      alpha: 1, color: `hsl(${Math.random()*360},90%,60%)`,
+      size: Math.random()*4+2
+    });
+  }
+  function loop() {
+    ctx.clearRect(0,0,cv.width,cv.height);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += 0.15; p.alpha -= 0.015;
+      ctx.globalAlpha = Math.max(0, p.alpha);
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+      ctx.fill();
+    });
+    if (particles[0].alpha > 0) requestAnimationFrame(loop);
+    else fw.style.display = 'none';
+  }
+  loop();
+}
+</script>
+</body>
+</html>
