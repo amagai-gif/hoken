@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>復習クイズ：高齢者に対応した取り組み</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#1a1a1a;min-height:100vh;padding:1rem;font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.wrap{width:100%;max-width:760px;}
+.card{background:#0d0d0d;border-radius:16px;padding:2rem 2.5rem;min-height:480px;display:flex;flex-direction:column;position:relative;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.q-num{font-size:13px;color:#888;margin-bottom:1rem;}
+.q-text{font-size:24px;font-weight:700;line-height:1.6;white-space:pre-line;color:#fff;flex:1;margin-bottom:2rem;}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:auto;}
+.choice{padding:14px 16px;border:2px solid #333;background:#1a1a1a;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;color:#ccc;transition:all .15s;text-align:left;line-height:1.4;font-family:inherit;}
+.choice:hover:not(:disabled){border-color:#888;color:#fff;background:#252525;}
+.choice:disabled{cursor:default;}
+.choice.correct{background:#0a2a18;border-color:#4ecb87;color:#4ecb87;}
+.choice.wrong{background:#2a0a0a;border-color:#f07070;color:#f07070;}
+.choice.show-correct{background:#0a2a18;border-color:#4ecb87;color:#4ecb87;opacity:.6;}
+.result-box{margin-top:1.25rem;border-radius:12px;padding:1.25rem 1.5rem;animation:fadeUp .25s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.result-ok{background:#0a2a18;border:1px solid #2a6e4a;}
+.result-ng{background:#2a0a0a;border:1px solid #7a2020;}
+.result-mark{font-size:20px;font-weight:700;margin-bottom:6px;}
+.result-mark.ok{color:#4ecb87;}
+.result-mark.ng{color:#f07070;}
+.result-explain{font-size:14px;color:#ddd;line-height:1.7;white-space:pre-line;}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.25rem;}
+.nav-btn{border:1px solid #444;background:#1a1a1a;border-radius:8px;padding:11px 28px;font-size:14px;font-weight:500;cursor:pointer;color:#aaa;transition:all .15s;font-family:inherit;}
+.nav-btn:hover{background:#2a2a2a;color:#fff;}
+.nav-btn:disabled{opacity:.25;cursor:default;}
+.dots{display:flex;gap:5px;flex-wrap:wrap;max-width:260px;justify-content:center;}
+.dot{width:9px;height:9px;border-radius:50%;background:#333;transition:background .2s;flex-shrink:0;}
+.dot.cur{background:#6d8cdb;}
+.dot.done-ok{background:#4ecb87;}
+.dot.done-ng{background:#f07070;}
+.prog{font-size:12px;color:#555;margin-top:4px;text-align:center;}
+#result-screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:480px;text-align:center;}
+#result-screen.show{display:flex;}
+.result-emoji{font-size:72px;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.result-title{font-size:36px;font-weight:700;color:#fff;margin-bottom:0.5rem;}
+.result-score{font-size:20px;color:#aaa;margin-bottom:1.5rem;}
+.retry-btn{border:2px solid #6d8cdb;background:transparent;color:#6d8cdb;border-radius:12px;padding:14px 40px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.retry-btn:hover{background:#6d8cdb;color:#000;}
+#celebrate{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.85);}
+#celebrate.show{display:flex;}
+#celebrate canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.celeb-msg{position:relative;z-index:10;text-align:center;animation:celebIn .6s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes celebIn{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.celeb-emoji{font-size:72px;display:block;margin-bottom:.5rem;animation:bounce 1s ease-in-out infinite;}
+.celeb-title{font-size:48px;font-weight:700;color:#6d8cdb;text-shadow:0 0 30px rgba(109,140,219,.8);margin-bottom:.4rem;}
+.celeb-sub{font-size:22px;color:#fff;margin-bottom:2rem;}
+.celeb-close{border:2px solid #6d8cdb;background:transparent;color:#6d8cdb;border-radius:12px;padding:12px 36px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.celeb-close:hover{background:#6d8cdb;color:#000;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" id="quiz-card">
+    <div class="q-num" id="q-num"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div id="result-box" style="display:none;"></div>
+  </div>
+  <div class="card" id="result-screen">
+    <div class="result-emoji" id="res-emoji"></div>
+    <div class="result-title" id="res-title"></div>
+    <div class="result-score" id="res-score"></div>
+    <button class="retry-btn" onclick="retry()">もう一度チャレンジ！</button>
+  </div>
+  <div class="nav" id="nav-wrap">
+    <button class="nav-btn" id="prev" onclick="move(-1)" disabled>← 前へ</button>
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div class="dots" id="dots"></div>
+      <div class="prog" id="prog"></div>
+    </div>
+    <button class="nav-btn" id="next-btn" onclick="nextQ()" disabled>次の問題 →</button>
+  </div>
+</div>
+<div id="celebrate">
+  <canvas id="fw-canvas"></canvas>
+  <div class="celeb-msg">
+    <span class="celeb-emoji">🎉</span>
+    <div class="celeb-title">全問正解！！</div>
+    <div class="celeb-sub">高齢者支援マスター！</div>
+    <button class="celeb-close" onclick="closeCeleb()">閉じる</button>
+  </div>
+</div>
+<script>
+const QS=[
+  {q:"高齢者が安心して暮らすために大切なのはどれ？",
+   choices:["毎日たくさん運動すること","近所や家族とつながりを持つこと","いつも同じ生活を続けること","お金を使わないこと"],
+   ans:1,explain:"高齢者にとって大切なのは、孤立を防ぎ、気持ちや相談相手を持てることです。近所や家族とのつながりが安心感につながります。"},
+  {q:"高齢者の安全な住環境として\nよい例はどれ？",
+   choices:["段差をなくして転倒を防ぐ","家の中に家具を増やす","夜道を明るくしない","浴室の床を濡れたままにする"],
+   ans:0,explain:"段差をなくしたり手すりをつけたりすると、転倒事故を防ぎやすくなります。安全な住環境は健康に大きな影響があります。"},
+  {q:"高齢者が豊かな生活を送るための支えとして\n正しいものはどれ？",
+   choices:["必要なときに手助けすること","なんでも代わりにやってしまうこと","決めつけて行動すること","相談なしに変更すること"],
+   ans:0,explain:"高齢者の自立を尊重しながら、困ったときに助ける姿勢が大切です。できるだけ本人の意思を聞くことも重要です。"},
+  {q:"地域で高齢者を支える取り組みとして\n適切でないものはどれ？",
+   choices:["見守りや声かけをする","交流イベントを開く","地域の情報を共有する","高齢者だけで孤立させる"],
+   ans:3,explain:"高齢者を孤立させることは支えになりません。見守りや交流、情報共有など地域のつながりをつくることが大切です。"},
+  {q:"高齢者の健康を支える活動として\n最も適切なのはどれ？",
+   choices:["栄養バランスの良い食事をすすめる","過度な運動を押しつける","食事を制限しすぎる","毎日同じメニューにする"],
+   ans:0,explain:"栄養バランスの良い食事は、高齢者の体力や免疫力を支えます。無理な運動や偏った食事はかえって負担になります。"},
+  {q:"高齢者の相談を聞くときに大切なのは？",
+   choices:["よく話を聞き、気持ちを受けとめる","すぐに解決方法を教える","話を遮って自分の意見を伝える","あまり関わらない"],
+   ans:0,explain:"高齢者が話しやすいように、まずはよく話を聞き、気持ちを受けとめることが支援の第一歩です。"}
+];
+let cur=0;
+let answers=new Array(QS.length).fill(null);
+let fwAnim=null;
+function renderDots(){document.getElementById("dots").innerHTML=QS.map((_,i)=>{let c="dot";if(i===cur)c+=" cur";else if(answers[i]!==null)c+=answers[i]===QS[i].ans?" done-ok":" done-ng";return`<div class="${c}"></div>`;}).join("");}
+function render(){
+  const q=QS[cur];
+  document.getElementById("q-num").textContent=`Q${cur+1} / ${QS.length}`;
+  document.getElementById("q-text").textContent=q.q;
+  document.getElementById("prev").disabled=cur===0;
+  const chosen=answers[cur];
+  const answered=chosen!==null;
+  document.getElementById("next-btn").disabled=!answered;
+  document.getElementById("next-btn").textContent=cur===QS.length-1?"結果を見る":"次の問題 →";
+  document.getElementById("choices").innerHTML=q.choices.map((c,i)=>{
+    let cls="choice";
+    if(answered){if(i===q.ans)cls+=" correct";else if(i===chosen)cls+=" wrong";}
+    return`<button class="${cls}" onclick="pick(${i})" ${answered?"disabled":""}>${c}</button>`;
+  }).join("");
+  const rb=document.getElementById("result-box");
+  if(answered){
+    const ok=chosen===q.ans;
+    rb.style.display="block";
+    rb.innerHTML=`<div class="result-box ${ok?"result-ok":"result-ng"}"><div class="result-mark ${ok?"ok":"ng"}">${ok?"○　正解！":"×　不正解"}</div><div class="result-explain">${q.explain}</div></div>`;
+  } else {rb.style.display="none";rb.innerHTML="";}
+  renderDots();
+  document.getElementById("prog").textContent=`Q${cur+1} / ${QS.length}`;
+}
+function pick(i){if(answers[cur]!==null)return;answers[cur]=i;render();}
+function move(d){cur=Math.max(0,Math.min(QS.length-1,cur+d));render();}
+function nextQ(){if(cur===QS.length-1){showResult();}else{cur++;render();}}
+function showResult(){
+  const correct=answers.filter((a,i)=>a===QS[i].ans).length;
+  document.getElementById("quiz-card").style.display="none";
+  document.getElementById("nav-wrap").style.display="none";
+  const rs=document.getElementById("result-screen");
+  rs.classList.add("show");
+  let emoji,title;
+  if(correct===QS.length){emoji="🎉";title="完璧！全問正解！！";setTimeout(launchFw,300);} 
+  else if(correct>=5){emoji="😊";title="よくできました！";} 
+  else if(correct>=3){emoji="🙂";title="なかなかいい！";} 
+  else {emoji="📖";title="もう一度復習しよう！";}
+  document.getElementById("res-emoji").textContent=emoji;
+  document.getElementById("res-title").textContent=title;
+  document.getElementById("res-score").textContent=`${correct} / ${QS.length} 問正解`;
+}
+function retry(){cur=0;answers=new Array(QS.length).fill(null);document.getElementById("quiz-card").style.display="flex";document.getElementById("nav-wrap").style.display="flex";document.getElementById("result-screen").classList.remove("show");render();}
+function launchFw(){
+  const canvas=document.getElementById("fw-canvas");
+  const ctx=canvas.getContext("2d");
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const particles=[];
+  const COLORS=["#6d8cdb","#4ecb87","#60b8ff","#a89ef5","#ffd700","#ff9060","#fff"];
+  function burst(x,y){const color=COLORS[Math.floor(Math.random()*COLORS.length)];for(let i=0;i<80;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*6;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,decay:.012+Math.random()*.01,size:2+Math.random()*4,color});}}
+  for(let i=0;i<6;i++)setTimeout(()=>burst(100+Math.random()*(canvas.width-200),80+Math.random()*(canvas.height*.5)),i*180);
+  let bc=0;const bi=setInterval(()=>{burst(100+Math.random()*(canvas.width-200),60+Math.random()*(canvas.height*.55));bc++;if(bc>20)clearInterval(bi);},400);
+  function loop(){ctx.fillStyle="rgba(0,0,0,0.18)";ctx.fillRect(0,0,canvas.width,canvas.height);for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.vx*=.98;p.life-=p.decay;if(p.life<=0){particles.splice(i,1);continue;}ctx.globalAlpha=p.life;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;fwAnim=requestAnimationFrame(loop);}
+  document.getElementById("celebrate").classList.add("show");loop();
+}
+function closeCeleb(){document.getElementById("celebrate").classList.remove("show");if(fwAnim)cancelAnimationFrame(fwAnim);}
+render();
+</script>
+</body>
+</html>
