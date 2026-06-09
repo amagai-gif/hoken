@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>復習クイズ②：働くことと健康</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#1a1a1a;min-height:100vh;padding:1rem;font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.wrap{width:100%;max-width:760px;}
+.card{background:#0d0d0d;border-radius:16px;padding:2rem 2.5rem;min-height:480px;display:flex;flex-direction:column;position:relative;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.q-num{font-size:13px;color:#888;margin-bottom:0.5rem;}
+.q-badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:0.75rem;}
+.q-badge.std{background:#0d1f2a;color:#2dc6d6;}
+.q-badge.fun{background:#1a0d2a;color:#b07ef5;}
+.q-text{font-size:22px;font-weight:700;line-height:1.6;white-space:pre-line;color:#fff;flex:1;margin-bottom:1.5rem;}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:auto;}
+.choice{padding:14px 16px;border:2px solid #333;background:#1a1a1a;border-radius:12px;font-size:13px;font-weight:500;cursor:pointer;color:#ccc;transition:all .15s;text-align:left;line-height:1.4;font-family:inherit;}
+.choice:hover:not(:disabled){border-color:#888;color:#fff;background:#252525;}
+.choice:disabled{cursor:default;}
+.choice.correct{background:#0a2a18;border-color:#4ecb87;color:#4ecb87;}
+.choice.wrong{background:#2a0a0a;border-color:#f07070;color:#f07070;}
+.result-box{margin-top:1.25rem;border-radius:12px;padding:1.25rem 1.5rem;animation:fadeUp .25s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.result-ok{background:#0a2a18;border:1px solid #2a6e4a;}
+.result-ng{background:#2a0a0a;border:1px solid #7a2020;}
+.result-mark{font-size:20px;font-weight:700;margin-bottom:6px;}
+.result-mark.ok{color:#4ecb87;}
+.result-mark.ng{color:#f07070;}
+.result-explain{font-size:13px;color:#ddd;line-height:1.7;white-space:pre-line;}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.25rem;}
+.nav-btn{border:1px solid #444;background:#1a1a1a;border-radius:8px;padding:11px 28px;font-size:14px;font-weight:500;cursor:pointer;color:#aaa;transition:all .15s;font-family:inherit;}
+.nav-btn:hover{background:#2a2a2a;color:#fff;}
+.nav-btn:disabled{opacity:.25;cursor:default;}
+.dots{display:flex;gap:5px;flex-wrap:wrap;max-width:260px;justify-content:center;}
+.dot{width:9px;height:9px;border-radius:50%;background:#333;transition:background .2s;flex-shrink:0;}
+.dot.cur{background:#2dc6d6;}
+.dot.fun-dot{border:2px solid #b07ef5;background:#1a0d2a;}
+.dot.done-ok{background:#4ecb87;}
+.dot.done-ng{background:#f07070;}
+.prog{font-size:12px;color:#555;margin-top:4px;text-align:center;}
+#result-screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:480px;text-align:center;}
+#result-screen.show{display:flex;}
+.result-emoji{font-size:72px;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.result-title{font-size:36px;font-weight:700;color:#fff;margin-bottom:0.5rem;}
+.result-score{font-size:20px;color:#aaa;margin-bottom:1.5rem;}
+.retry-btn{border:2px solid #2dc6d6;background:transparent;color:#2dc6d6;border-radius:12px;padding:14px 40px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.retry-btn:hover{background:#2dc6d6;color:#000;}
+#celebrate{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.85);}
+#celebrate.show{display:flex;}
+#celebrate canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.celeb-msg{position:relative;z-index:10;text-align:center;animation:celebIn .6s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes celebIn{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.celeb-emoji{font-size:72px;display:block;margin-bottom:.5rem;animation:bounce 1s ease-in-out infinite;}
+.celeb-title{font-size:48px;font-weight:700;color:#2dc6d6;text-shadow:0 0 30px rgba(45,198,214,.8);margin-bottom:.4rem;}
+.celeb-sub{font-size:22px;color:#fff;margin-bottom:2rem;}
+.celeb-close{border:2px solid #2dc6d6;background:transparent;color:#2dc6d6;border-radius:12px;padding:12px 36px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.celeb-close:hover{background:#2dc6d6;color:#000;}
+.legend{display:flex;gap:14px;margin-bottom:10px;flex-wrap:wrap;}
+.legend-item{font-size:11px;color:#666;display:flex;align-items:center;gap:5px;}
+.leg-dot{width:10px;height:10px;border-radius:50%;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="legend">
+    <div class="legend-item"><div class="leg-dot" style="background:#2dc6d6;"></div> 教科書内容</div>
+    <div class="legend-item"><div class="leg-dot" style="border:2px solid #b07ef5;background:#1a0d2a;"></div> 研究・時事ネタ</div>
+  </div>
+  <div class="card" id="quiz-card">
+    <div class="q-num" id="q-num"></div>
+    <div id="q-badge-wrap"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div id="result-box" style="display:none;"></div>
+  </div>
+  <div class="card" id="result-screen">
+    <div class="result-emoji" id="res-emoji"></div>
+    <div class="result-title" id="res-title"></div>
+    <div class="result-score" id="res-score"></div>
+    <button class="retry-btn" onclick="retry()">もう一度チャレンジ！</button>
+  </div>
+  <div class="nav" id="nav-wrap">
+    <button class="nav-btn" id="prev" onclick="move(-1)" disabled>← 前へ</button>
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div class="dots" id="dots"></div>
+      <div class="prog" id="prog"></div>
+    </div>
+    <button class="nav-btn" id="next-btn" onclick="nextQ()" disabled>次の問題 →</button>
+  </div>
+</div>
+<div id="celebrate">
+  <canvas id="fw-canvas"></canvas>
+  <div class="celeb-msg">
+    <span class="celeb-emoji">🎉</span>
+    <div class="celeb-title">全問正解！！</div>
+    <div class="celeb-sub">働く知識、完全制覇！</div>
+    <button class="celeb-close" onclick="closeCeleb()">閉じる</button>
+  </div>
+</div>
+<script>
+const QS=[
+  /* 教科書系 */
+  {fun:false,q:"労働基準法で定められた\n1週間の法定労働時間はどれ？",
+   choices:["35時間","40時間","48時間","60時間"],
+   ans:1,explain:"労働基準法第32条により、1週40時間・1日8時間が法定労働時間です。\nこれを超える残業には36協定の締結と割増賃金が必要です。"},
+
+  /* 研究・時事系 */
+  {fun:true,q:"🔬 週4日勤務（32時間）を\n試験導入したマイクロソフト日本法人の\n生産性変化はどれ？",
+   choices:["約10%低下","変化なし","約40%向上","約20%低下"],
+   ans:2,explain:"2019年の「ワークライフチョイス」実験で\n生産性が39.9%向上しました。\n「時間を短くすると集中力が増す」という逆説が実証されました。"},
+
+  /* 教科書系 */
+  {fun:false,q:"「過労死ライン」とされる\n月の時間外労働の目安はどれ？",
+   choices:["月40時間以上","月60時間以上","月80時間以上","月120時間以上"],
+   ans:2,explain:"月80時間以上の時間外労働は「過労死ライン」と呼ばれ\n脳卒中・心筋梗塞のリスクが急増します。\n2019年の働き方改革で上限が法制化されました。"},
+
+  /* 研究・時事系 */
+  {fun:true,q:"🧠 睡眠研究から判明した\n最も仕事効率が高い睡眠時間はどれ？",
+   choices:["5〜6時間","6〜7時間","7〜9時間","10時間以上"],
+   ans:2,explain:"睡眠科学の研究では成人の最適睡眠は7〜9時間とされています。\n6時間睡眠を2週間続けると認知機能は48時間徹夜レベルに低下しますが\n本人は「慣れた」と感じているのが怖いところ。"},
+
+  /* 研究・時事系 */
+  {fun:true,q:"💡 好きなことに「お金（報酬）」が加わると\nやる気が逆に下がる現象を何という？",
+   choices:["プレゼンティーイズム","過正当化効果（アンダーマイニング効果）","バーンアウト症候群","マズローの欲求段階"],
+   ans:1,explain:"「過正当化効果（アンダーマイニング効果）」は\n内発的動機（好き・楽しい）が外的報酬で弱まる現象です。\n「好きなことを仕事にすると辛くなる」の心理的背景のひとつです。\nやりがいと報酬のバランスが大切です。"},
+
+  /* 教科書系 */
+  {fun:false,q:"仕事のメンタルヘルス「4つのケア」のうち\n「ラインケア」とは何か？",
+   choices:["産業医が行う医療的支援","上司・管理職が部下の健康を気にかけること","外部の相談窓口を利用すること","自分でストレスに気づき対処すること"],
+   ans:1,explain:"ラインケアとは職場の上司・管理職が\n部下の変化に気づき、声をかけ、必要なら専門家につなぐことです。\n早期発見・早期対応が深刻化を防ぐ鍵です。"},
+
+  /* 研究・時事系 */
+  {fun:true,q:"🌏 世界幸福度ランキング上位国の\n労働に関する特徴として正しいのはどれ？",
+   choices:["週60時間以上働く人が多い","有給休暇取得率が高く労働時間が短い傾向","残業ゼロを法律で義務化している","リモートワーク禁止の国が多い"],
+   ans:1,explain:"フィンランド・デンマークなど幸福度上位国では\n年間実労働時間が1,600〜1,700時間台（日本は約1,900時間）で\n有給取得率もほぼ100%に近い国が多いです。\n「よく休む」ことが幸福と生産性につながっています。"},
+
+  /* 教科書系 */
+  {fun:false,q:"ストレスへの対処法として\n最も効果的とされる組み合わせはどれ？",
+   choices:["問題を無視して気晴らしだけする","原因への対処＋気持ちの整理の両方を使う","薬だけに頼る","一人で抱え込んで解決する"],
+   ans:1,explain:"「問題焦点型コーピング（原因への直接対処）」と\n「情動焦点型コーピング（気持ちの整理・発散）」を\n状況に合わせて組み合わせるのが最も効果的です。\n誰かに相談することも立派な対処法です。"},
+];
+let cur=0;
+let answers=new Array(QS.length).fill(null);
+let fwAnim=null;
+function renderDots(){
+  document.getElementById("dots").innerHTML=QS.map((_,i)=>{
+    let c="dot";
+    if(QS[i].fun) c+=" fun-dot";
+    if(i===cur)c+=" cur";
+    else if(answers[i]!==null)c+=answers[i]===QS[i].ans?" done-ok":" done-ng";
+    return`<div class="${c}"></div>`;
+  }).join("");
+}
+function render(){
+  const q=QS[cur];
+  document.getElementById("q-num").textContent=`Q${cur+1} / ${QS.length}`;
+  document.getElementById("q-badge-wrap").innerHTML=q.fun
+    ?`<div class="q-badge fun">🔬 研究・時事ネタ</div>`
+    :`<div class="q-badge std">📖 教科書内容</div>`;
+  document.getElementById("q-text").textContent=q.q;
+  document.getElementById("prev").disabled=cur===0;
+  const chosen=answers[cur];
+  const answered=chosen!==null;
+  document.getElementById("next-btn").disabled=!answered;
+  document.getElementById("next-btn").textContent=cur===QS.length-1?"結果を見る":"次の問題 →";
+  document.getElementById("choices").innerHTML=q.choices.map((c,i)=>{
+    let cls="choice";
+    if(answered){if(i===q.ans)cls+=" correct";else if(i===chosen)cls+=" wrong";}
+    return`<button class="${cls}" onclick="pick(${i})" ${answered?"disabled":""}>${c}</button>`;
+  }).join("");
+  const rb=document.getElementById("result-box");
+  if(answered){
+    const ok=chosen===q.ans;
+    rb.style.display="block";
+    rb.innerHTML=`<div class="result-box ${ok?"result-ok":"result-ng"}"><div class="result-mark ${ok?"ok":"ng"}">${ok?"○　正解！":"×　不正解"}</div><div class="result-explain">${q.explain}</div></div>`;
+  }else{rb.style.display="none";rb.innerHTML="";}
+  renderDots();
+  document.getElementById("prog").textContent=`Q${cur+1} / ${QS.length}`;
+}
+function pick(i){if(answers[cur]!==null)return;answers[cur]=i;render();}
+function move(d){cur=Math.max(0,Math.min(QS.length-1,cur+d));render();}
+function nextQ(){if(cur===QS.length-1){showResult();}else{cur++;render();}}
+function showResult(){
+  const correct=answers.filter((a,i)=>a===QS[i].ans).length;
+  document.getElementById("quiz-card").style.display="none";
+  document.getElementById("nav-wrap").style.display="none";
+  const rs=document.getElementById("result-screen");
+  rs.classList.add("show");
+  let emoji,title;
+  if(correct===QS.length){emoji="🎉";title="完璧！全問正解！！";setTimeout(launchFw,300);}
+  else if(correct>=6){emoji="😊";title="よくできました！";}
+  else if(correct>=4){emoji="🙂";title="なかなかいい！";}
+  else{emoji="📖";title="もう一度復習しよう！";}
+  document.getElementById("res-emoji").textContent=emoji;
+  document.getElementById("res-title").textContent=title;
+  document.getElementById("res-score").textContent=`${correct} / ${QS.length} 問正解`;
+}
+function retry(){cur=0;answers=new Array(QS.length).fill(null);document.getElementById("quiz-card").style.display="flex";document.getElementById("nav-wrap").style.display="flex";document.getElementById("result-screen").classList.remove("show");render();}
+function launchFw(){
+  const canvas=document.getElementById("fw-canvas");
+  const ctx=canvas.getContext("2d");
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const particles=[];
+  const COLORS=["#2dc6d6","#b07ef5","#4ecb87","#60b8ff","#ffd700","#ff9060","#fff"];
+  function burst(x,y){const color=COLORS[Math.floor(Math.random()*COLORS.length)];for(let i=0;i<80;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*6;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,decay:.012+Math.random()*.01,size:2+Math.random()*4,color});}}
+  for(let i=0;i<6;i++)setTimeout(()=>burst(100+Math.random()*(canvas.width-200),80+Math.random()*(canvas.height*.5)),i*180);
+  let bc=0;const bi=setInterval(()=>{burst(100+Math.random()*(canvas.width-200),60+Math.random()*(canvas.height*.55));bc++;if(bc>20)clearInterval(bi);},400);
+  function loop(){ctx.fillStyle="rgba(0,0,0,0.18)";ctx.fillRect(0,0,canvas.width,canvas.height);for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.vx*=.98;p.life-=p.decay;if(p.life<=0){particles.splice(i,1);continue;}ctx.globalAlpha=p.life;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;fwAnim=requestAnimationFrame(loop);}
+  document.getElementById("celebrate").classList.add("show");loop();
+}
+function closeCeleb(){document.getElementById("celebrate").classList.remove("show");if(fwAnim)cancelAnimationFrame(fwAnim);}
+render();
+</script>
+</body>
+</html>

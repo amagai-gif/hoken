@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>導入クイズ②：働くことと健康</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#1a1a1a;min-height:100vh;padding:1rem;font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.app{background:#0d0d0d;width:100%;max-width:960px;min-height:520px;border-radius:16px;padding:2.5rem 3rem;display:flex;flex-direction:column;position:relative;overflow:hidden;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.slide-num{position:absolute;top:1.25rem;right:1.5rem;font-size:14px;color:#555;}
+.intro-badge{display:inline-block;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:1.25rem;background:#0d1f2a;color:#2dc6d6;}
+.intro-title{font-size:32px;font-weight:700;color:#fff;line-height:1.45;margin-bottom:0.6rem;}
+.intro-sub{font-size:20px;color:#aaa;line-height:1.6;margin-bottom:1.25rem;}
+.teacher-note{font-size:13px;color:#555;border-left:2px solid #333;padding-left:0.75rem;line-height:1.6;}
+.q-tag{display:inline-block;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:1.25rem;background:#0d1f2a;color:#2dc6d6;}
+.fun-tag{display:inline-block;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:1.25rem;background:#1a0d2a;color:#b07ef5;}
+.q-text{font-size:30px;font-weight:700;color:#fff;line-height:1.5;white-space:pre-line;margin-bottom:2rem;flex:1;}
+.btn-row{display:flex;gap:16px;margin-top:auto;}
+.ans-btn{flex:1;padding:20px 12px;border:2.5px solid;border-radius:14px;font-family:inherit;font-size:24px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center;background:transparent;}
+.btn-o{border-color:#2a6e4a;color:#4ecb87;}
+.btn-x{border-color:#7a2020;color:#f07070;}
+.btn-o:hover:not(:disabled){background:#1a3d2a;}
+.btn-x:hover:not(:disabled){background:#3a1010;}
+.ans-btn:disabled{opacity:.3;cursor:default;}
+.big-answer{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:16px;z-index:10;opacity:0;pointer-events:none;transition:opacity .15s;}
+.big-answer.show{opacity:1;pointer-events:auto;}
+.big-mark{font-size:160px;font-weight:700;line-height:1;}
+.anim-pop{animation:pop .35s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes pop{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.bg-ok{background:#0a2a18;}.bg-ng{background:#2a0a0a;}
+.col-ok{color:#4ecb87;}.col-ng{color:#f07070;}
+.explain-box{position:absolute;inset:0;border-radius:16px;padding:2.5rem 3rem;display:flex;flex-direction:column;justify-content:center;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s;}
+.explain-box.show{opacity:1;pointer-events:auto;}
+.explain-mark{font-size:72px;font-weight:700;line-height:1;margin-bottom:1rem;}
+.explain-text{font-size:26px;font-weight:700;line-height:1.75;white-space:pre-line;color:#fff;}
+.explain-hint{font-size:15px;color:#555;margin-top:1.75rem;}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.25rem;width:100%;max-width:960px;}
+.nav-btn{border:1px solid #333;background:#1a1a1a;border-radius:8px;padding:12px 28px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color:#aaa;transition:all .15s;}
+.nav-btn:hover{background:#2a2a2a;color:#fff;}
+.nav-btn:disabled{opacity:.25;cursor:default;}
+.dots-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.dots{display:flex;gap:5px;flex-wrap:wrap;max-width:200px;justify-content:center;}
+.dot{width:9px;height:9px;border-radius:50%;background:#333;flex-shrink:0;transition:background .2s;}
+.dot.cur{background:#2dc6d6;}.dot.done-ok{background:#4ecb87;}.dot.done-ng{background:#f07070;}
+.dot.fun{border:2px solid #b07ef5;}
+.prog{font-size:12px;color:#555;}
+#celebrate{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.85);}
+#celebrate.show{display:flex;}
+#celebrate canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.celeb-msg{position:relative;z-index:10;text-align:center;animation:celebIn .6s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes celebIn{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.celeb-emoji{font-size:80px;display:block;margin-bottom:.5rem;animation:bounce 1s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-15px);}}
+.celeb-title{font-size:48px;font-weight:700;color:#2dc6d6;text-shadow:0 0 30px rgba(45,198,214,.8);margin-bottom:.4rem;}
+.celeb-sub{font-size:22px;color:#fff;margin-bottom:2rem;}
+.celeb-close{border:2px solid #2dc6d6;background:transparent;color:#2dc6d6;border-radius:12px;padding:12px 36px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.celeb-close:hover{background:#2dc6d6;color:#000;}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <span class="slide-num" id="snum"></span>
+  <div id="content" style="display:flex;flex-direction:column;flex:1;"></div>
+  <div class="big-answer" id="big-answer"><div class="big-mark" id="big-mark"></div></div>
+  <div class="explain-box" id="explain-box">
+    <div class="explain-mark" id="explain-mark"></div>
+    <div class="explain-text" id="explain-text"></div>
+    <div class="explain-hint">← → キーまたは下のボタンで次へ</div>
+  </div>
+</div>
+<div class="nav">
+  <button class="nav-btn" id="prev" onclick="move(-1)" disabled>← 前へ</button>
+  <div class="dots-wrap">
+    <div class="dots" id="dots"></div>
+    <div class="prog" id="prog"></div>
+  </div>
+  <button class="nav-btn" id="next" onclick="move(1)">次へ →</button>
+</div>
+<div id="celebrate">
+  <canvas id="fw-canvas"></canvas>
+  <div class="celeb-msg">
+    <span class="celeb-emoji">🚀</span>
+    <div class="celeb-title">全問正解！！</div>
+    <div class="celeb-sub">働くことと健康、完全制覇🎉</div>
+    <button class="celeb-close" onclick="closeCeleb()">閉じる</button>
+  </div>
+</div>
+<script>
+/* fun=true のスライドは「教科書外・驚き系」 */
+const SLIDES=[
+  {type:"intro",title:"ちょっと待った！その「常識」、本当？",sub:"え、そうなの！？な事実が出てきます。",note:"教科書の内容 + 驚きの研究結果を混ぜています。生徒の反応を楽しんでください。"},
+
+  /* 教科書系 */
+  {type:"ox",fun:false,q:"労働基準法では\n1日の労働時間は8時間まで\nと定められている",ans:"o",
+   explain:"労働基準法第32条により\n1日8時間・週40時間が法定労働時間です。\nこれを超えた残業には割増賃金が必要です。"},
+
+  /* 驚き系 */
+  {type:"ox",fun:true,q:"🌙 睡眠を6時間にするだけで\n仕事のパフォーマンスは\n48時間徹夜と同じくらい落ちる",ans:"o",
+   explain:"ペンシルバニア大学の研究では\n6時間睡眠を2週間続けると認知機能が\n2日間の完全徹夜と同レベルに低下することが判明。\nしかも本人は「眠くない」と感じていた…！"},
+
+  /* 教科書系 */
+  {type:"ox",fun:false,q:"ストレスは体に常に悪影響を与えるため\nゼロにすることが理想だ",ans:"x",
+   explain:"適度なストレスはやる気・集中力を高める効果があります。\n問題は「過剰・慢性的なストレス」です。\nストレスをゼロにすることは不可能で、うまく付き合うのが大切。"},
+
+  /* 驚き系 */
+  {type:"ox",fun:true,q:"🏢 週4日勤務（32時間）を\n試験導入した企業では\n生産性が約40%上がった",ans:"o",
+   explain:"マイクロソフト日本法人が2019年に実施した\n「週4日勤務」実験の結果です。\n生産性が39.9%向上し、電力消費も削減されました。\n「時間を減らすと集中する」というのは本当でした！"},
+
+  /* 驚き系 */
+  {type:"ox",fun:true,q:"🌞 20分の昼寝は\nコーヒー1杯より\n集中力回復に効果的だ",ans:"o",
+   explain:"NASAの研究では26分の昼寝でパイロットの\nパフォーマンスが34%向上しました。\nコーヒーの効果が出るまで約20〜30分かかるため\n「コーヒーを飲んで昼寝する」が最強の組み合わせとも言われます！"},
+
+  /* 教科書系 */
+  {type:"ox",fun:false,q:"日本は有給休暇の取得率が\n世界の中でも低い水準だ",ans:"o",
+   explain:"日本の有給取得率は約60%で\n主要国の中で最低水準（エクスペディア調査）。\n「休むと申し訳ない」という空気が背景にあります。"},
+
+  /* 驚き系 */
+  {type:"ox",fun:true,q:"📱 スマホを「机の上に伏せて置く」だけでも\n脳のパフォーマンスが下がるという\n研究結果がある",ans:"o",
+   explain:"テキサス大学の研究（2017年）では\nスマホが視界に入るだけで認知力が低下することが判明。\n集中したいときはスマホを別の部屋に置くのが\n最も効果的と言われています。"},
+];
+const TOTAL_Q=SLIDES.filter(s=>s.type==="ox").length;
+let cur=0;
+const chosen=new Array(SLIDES.length).fill(null);
+let fwAnim=null;
+function launchFireworks(){
+  const canvas=document.getElementById("fw-canvas");
+  const ctx=canvas.getContext("2d");
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const particles=[];
+  const COLORS=["#2dc6d6","#b07ef5","#4ecb87","#60b8ff","#ffd700","#ff9060","#fff"];
+  function burst(x,y){const color=COLORS[Math.floor(Math.random()*COLORS.length)];for(let i=0;i<80;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*6;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,decay:.012+Math.random()*.01,size:2+Math.random()*4,color});}}
+  for(let i=0;i<6;i++)setTimeout(()=>burst(100+Math.random()*(canvas.width-200),80+Math.random()*(canvas.height*.5)),i*180);
+  let bc=0;const bi=setInterval(()=>{burst(100+Math.random()*(canvas.width-200),60+Math.random()*(canvas.height*.55));bc++;if(bc>20)clearInterval(bi);},400);
+  function loop(){ctx.fillStyle="rgba(0,0,0,0.18)";ctx.fillRect(0,0,canvas.width,canvas.height);for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.vx*=.98;p.life-=p.decay;if(p.life<=0){particles.splice(i,1);continue;}ctx.globalAlpha=p.life;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;fwAnim=requestAnimationFrame(loop);}
+  loop();
+}
+function showCeleb(){document.getElementById("celebrate").classList.add("show");launchFireworks();}
+function closeCeleb(){document.getElementById("celebrate").classList.remove("show");if(fwAnim)cancelAnimationFrame(fwAnim);}
+function checkAll(){const qs=SLIDES.map((s,i)=>s.type==="ox"?i:-1).filter(i=>i>=0);if(!qs.every(i=>chosen[i]!==null))return;if(qs.every(i=>SLIDES[i].ans===chosen[i]))setTimeout(showCeleb,600);}
+function getDisplay(s,v){return s.ans===v?{sym:"○",bg:"bg-ok",col:"col-ok"}:{sym:"×",bg:"bg-ng",col:"col-ng"};}
+function isOk(s,v){return v&&s.ans===v;}
+function showAnswer(v){
+  const s=SLIDES[cur];chosen[cur]=v;
+  const d=getDisplay(s,v);
+  const ba=document.getElementById("big-answer");
+  ba.className="big-answer "+d.bg+" show";
+  const bm=document.getElementById("big-mark");
+  const nb=bm.cloneNode(false);nb.className="big-mark anim-pop "+d.col;nb.textContent=d.sym;
+  bm.parentNode.replaceChild(nb,bm);
+  setTimeout(()=>{
+    ba.className="big-answer";
+    const eb=document.getElementById("explain-box");
+    eb.className="explain-box "+d.bg+" show";
+    document.getElementById("explain-mark").className="explain-mark "+d.col;
+    document.getElementById("explain-mark").textContent=d.sym;
+    document.getElementById("explain-text").textContent=s.explain;
+    renderDots();checkAll();
+  },900);
+}
+function renderDots(){
+  const qs=SLIDES.map((s,i)=>s.type==="ox"?i:-1).filter(i=>i>=0);
+  document.getElementById("dots").innerHTML=qs.map(i=>{
+    let c="dot";
+    if(SLIDES[i].fun) c+=" fun";
+    if(i===cur)c+=" cur";
+    else if(chosen[i]!==null)c+=isOk(SLIDES[i],chosen[i])?" done-ok":" done-ng";
+    return`<div class="${c}"></div>`;
+  }).join("");
+}
+function render(){
+  const s=SLIDES[cur];
+  document.getElementById("snum").textContent=`${cur+1} / ${SLIDES.length}`;
+  document.getElementById("prev").disabled=cur===0;
+  document.getElementById("next").disabled=cur===SLIDES.length-1;
+  const qN=SLIDES.slice(0,cur+1).filter(x=>x.type==="ox").length;
+  document.getElementById("prog").textContent=s.type==="ox"?`Q${qN} / ${TOTAL_Q}`:"← → で進む";
+  document.getElementById("big-answer").className="big-answer";
+  const eb=document.getElementById("explain-box");
+  if(chosen[cur]!==null&&s.type==="ox"){
+    const d=getDisplay(s,chosen[cur]);
+    eb.className="explain-box "+d.bg+" show";
+    document.getElementById("explain-mark").className="explain-mark "+d.col;
+    document.getElementById("explain-mark").textContent=d.sym;
+    document.getElementById("explain-text").textContent=s.explain;
+  }else{eb.className="explain-box";}
+  renderDots();
+  let html="";
+  if(s.type==="intro"){
+    html=`<div class="intro-badge">導入②</div><div class="intro-title">${s.title}</div><div class="intro-sub">${s.sub}</div><div class="teacher-note">教員メモ：${s.note}</div>`;
+  }else{
+    const tag=s.fun
+      ?`<div class="fun-tag">🔬 研究・データ</div>`
+      :`<div class="q-tag">働くことと健康</div>`;
+    const lk=chosen[cur]!==null?"disabled":"";
+    html=`${tag}<div class="q-text">${s.q}</div><div class="btn-row"><button class="ans-btn btn-o" onclick="showAnswer('o')" ${lk}>○</button><button class="ans-btn btn-x" onclick="showAnswer('x')" ${lk}>×</button></div>`;
+  }
+  document.getElementById("content").innerHTML=html;
+}
+function move(d){cur=Math.max(0,Math.min(SLIDES.length-1,cur+d));render();}
+document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")move(1);if(e.key==="ArrowLeft")move(-1);});
+render();
+</script>
+</body>
+</html>
