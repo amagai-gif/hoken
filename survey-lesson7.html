@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>クラスアンケート：家族と介護</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#3dba7f;--g2:#e8f9f1;--p:#5a8ad4;--bg:#fffdf8;--text:#3a3330;}
+body{font-family:"M PLUS Rounded 1c",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+.hero{background:linear-gradient(135deg,#5a8ad4,#3dba7f);padding:20px 16px 24px;text-align:center;}
+.hero h1{font-size:17px;font-weight:900;color:#fff;line-height:1.3;}
+.hero p{font-size:12px;color:rgba(255,255,255,.85);margin-top:4px;}
+.modebar{display:flex;gap:8px;padding:12px 14px;background:var(--bg);position:sticky;top:0;z-index:200;border-bottom:2px solid #f0ece4;}
+.mbtn{flex:1;border:2.5px solid #e0dbd2;background:#fff;border-radius:40px;padding:10px 8px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;color:#aaa;}
+.mbtn.ons{background:var(--g);border-color:var(--g);color:#fff;}
+.mbtn.ont{background:#e85d5d;border-color:#e85d5d;color:#fff;}
+.pnl{display:none;padding:14px;}
+.pnl.show{display:block;}
+/* 生徒モード */
+.q-card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,.08);border:1.5px solid #f0ece4;}
+.q-num{font-size:11px;font-weight:800;color:var(--p);margin-bottom:6px;}
+.q-text{font-size:15px;font-weight:800;color:var(--text);margin-bottom:12px;line-height:1.4;}
+.choices{display:flex;flex-direction:column;gap:8px;}
+.choice-btn{width:100%;padding:14px 16px;border:2.5px solid #e0dbd2;background:#fff;border-radius:12px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;text-align:left;color:#888;transition:all .18s;}
+.choice-btn:hover{border-color:var(--g);color:var(--text);}
+.choice-btn.sel{border-color:var(--g);background:var(--g2);color:#0f6e56;}
+.choice-btn.sel2{border-color:#e85d5d;background:#fde8e8;color:#7a2020;}
+.submit-wrap{padding:0 14px 20px;}
+.submit-btn{width:100%;padding:16px;border:none;border-radius:16px;font-family:inherit;font-size:16px;font-weight:900;cursor:pointer;background:var(--g);color:#fff;box-shadow:0 4px 14px rgba(61,186,127,.35);transition:all .2s;}
+.submit-btn:disabled{opacity:.35;cursor:default;}
+.submit-btn:active{transform:scale(.97);}
+.done-box{background:var(--g2);border:2px solid var(--g);border-radius:16px;padding:20px;text-align:center;margin:0 14px;}
+.done-emoji{font-size:48px;display:block;margin-bottom:8px;}
+.done-text{font-size:16px;font-weight:900;color:#0f6e56;}
+.done-sub{font-size:12px;color:#2a8a58;margin-top:4px;}
+/* 教員モード */
+.chart-wrap{margin-bottom:20px;}
+.chart-title{font-size:14px;font-weight:900;color:var(--text);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #f0ece4;}
+.chart-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.chart-label{font-size:13px;font-weight:700;color:var(--text);min-width:80px;flex-shrink:0;}
+.chart-bar-wrap{flex:1;background:#f0ece4;border-radius:999px;height:32px;overflow:hidden;position:relative;}
+.chart-bar{height:100%;border-radius:999px;transition:width .6s ease;display:flex;align-items:center;padding-left:10px;min-width:36px;}
+.chart-bar span{font-size:12px;font-weight:900;color:#fff;white-space:nowrap;}
+.chart-pct{font-size:13px;font-weight:800;min-width:40px;text-align:right;color:var(--text);}
+.stat-box{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.stat-chip{background:#fff;border:1.5px solid #f0ece4;border-radius:30px;padding:5px 12px;font-size:12px;font-weight:800;color:#888;}
+.rfbtn{border:2px solid var(--g);background:var(--g2);color:#0f6e56;border-radius:30px;padding:8px 16px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:16px;}
+.rfbtn:hover{background:var(--g);color:#fff;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>クラスアンケート<br>家族・介護について</h1>
+  <p>全4問・選んで送信するだけ！</p>
+</div>
+<div class="modebar">
+  <button class="mbtn ons" id="mb-s" onclick="setMode('s')">🙋 生徒モード</button>
+  <button class="mbtn" id="mb-t" onclick="setMode('t')">📊 集計モード</button>
+</div>
+
+<!-- 生徒モード -->
+<div class="pnl show" id="pnl-s">
+  <div style="height:12px"></div>
+  <div id="survey-form">
+    <div class="q-card">
+      <div class="q-num">Q1</div>
+      <div class="q-text">今、祖父母と同居している？</div>
+      <div class="choices">
+        <button class="choice-btn" onclick="pick(1,'a')">👨‍👩‍👴‍👵 している</button>
+        <button class="choice-btn" onclick="pick(1,'b')">🏠 していない</button>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Q2</div>
+      <div class="q-text">社会人になったら親と同居したい？</div>
+      <div class="choices">
+        <button class="choice-btn" onclick="pick(2,'a')">✅ したい</button>
+        <button class="choice-btn" onclick="pick(2,'b')">🙅 したくない</button>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Q3</div>
+      <div class="q-text">別居の場合、親との住まいの距離を気にする？</div>
+      <div class="choices">
+        <button class="choice-btn" onclick="pick(3,'a')">📍 気にする</button>
+        <button class="choice-btn" onclick="pick(3,'b')">🗺️ 気にしない</button>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Q4</div>
+      <div class="q-text">親に介護が必要になったら自分で面倒をみる？</div>
+      <div class="choices">
+        <button class="choice-btn" onclick="pick(4,'a')">💪 みる</button>
+        <button class="choice-btn" onclick="pick(4,'b')">🏥 みない（専門家に任せる）</button>
+      </div>
+    </div>
+  </div>
+  <div class="submit-wrap" id="submit-wrap">
+    <button class="submit-btn" id="submit-btn" onclick="submitAnswers()" disabled>回答を送信する</button>
+  </div>
+  <div class="done-box" id="done-box" style="display:none;">
+    <span class="done-emoji">🎉</span>
+    <div class="done-text">送信完了！ありがとう！</div>
+    <div class="done-sub">集計モードで結果を確認してみよう</div>
+  </div>
+</div>
+
+<!-- 集計モード -->
+<div class="pnl" id="pnl-t">
+  <div style="height:12px"></div>
+  <button class="rfbtn" onclick="loadResults()">🔄 最新の集計を見る</button>
+  <div class="stat-box" id="stat-box"></div>
+  <div id="charts"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyCgA-yqynPM-ezZpBZCp8DLrxN9R82zS5U",
+  authDomain:"hoken-app-26315.firebaseapp.com",
+  databaseURL:"https://hoken-app-26315-default-rtdb.firebaseio.com",
+  projectId:"hoken-app-26315",
+  storageBucket:"hoken-app-26315.firebasestorage.app",
+  messagingSenderId:"932877641447",
+  appId:"1:932877641447:web:a351fa878ed76ae4392442"
+};
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
+
+const answers={1:null,2:null,3:null,4:null};
+let submitted=false;
+
+const Q_LABELS={
+  1:{title:"Q1 祖父母と同居している？",a:"している",b:"していない"},
+  2:{title:"Q2 社会人になったら親と同居したい？",a:"したい",b:"したくない"},
+  3:{title:"Q3 親との距離を気にする？",a:"気にする",b:"気にしない"},
+  4:{title:"Q4 親の介護を自分でみる？",a:"みる",b:"みない"},
+};
+const COLORS={a:"#3dba7f",b:"#5a8ad4"};
+
+window.setMode=function(m){
+  document.getElementById("mb-s").className="mbtn"+(m==="s"?" ons":"");
+  document.getElementById("mb-t").className="mbtn"+(m==="t"?" ont":"");
+  document.getElementById("pnl-s").classList.toggle("show",m==="s");
+  document.getElementById("pnl-t").classList.toggle("show",m==="t");
+  if(m==="t") loadResults();
+};
+
+window.pick=function(q,choice){
+  if(submitted) return;
+  answers[q]=choice;
+  const btns=document.querySelectorAll(`.q-card:nth-child(${q}) .choice-btn`);
+  btns.forEach((b,i)=>{
+    b.classList.remove("sel","sel2");
+    if((i===0&&choice==="a")||(i===1&&choice==="b"))
+      b.classList.add(choice==="a"?"sel":"sel2");
+  });
+  const allAnswered=Object.values(answers).every(v=>v!==null);
+  document.getElementById("submit-btn").disabled=!allAnswered;
+};
+
+window.submitAnswers=async function(){
+  if(submitted) return;
+  submitted=true;
+  document.getElementById("submit-btn").disabled=true;
+  const id="u_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
+  try{
+    await set(ref(db,"survey7/responses/"+id),{
+      q1:answers[1], q2:answers[2], q3:answers[3], q4:answers[4],
+      ts:Date.now()
+    });
+    document.getElementById("survey-form").style.display="none";
+    document.getElementById("submit-wrap").style.display="none";
+    document.getElementById("done-box").style.display="block";
+  }catch(e){
+    submitted=false;
+    document.getElementById("submit-btn").disabled=false;
+    alert("送信に失敗しました。もう一度試してください。");
+  }
+};
+
+window.loadResults=async function(){
+  const el=document.getElementById("charts");
+  el.innerHTML="<div style='text-align:center;padding:20px;color:#aaa;font-size:14px;'>読み込み中…</div>";
+  try{
+    const snap=await get(ref(db,"survey7/responses"));
+    const data=snap.val()||{};
+    const responses=Object.values(data);
+    const total=responses.length;
+
+    document.getElementById("stat-box").innerHTML=
+      `<div class="stat-chip">回答数 <b style="color:#3dba7f">${total}</b> 人</div>
+       <div class="stat-chip">未回答 <b style="color:#e85d5d">${Math.max(0,36-total)}</b> 人</div>`;
+
+    if(total===0){el.innerHTML="<div style='text-align:center;padding:20px;color:#aaa;font-size:14px;'>まだ回答がありません</div>";return;}
+
+    let html="";
+    for(let q=1;q<=4;q++){
+      const key="q"+q;
+      const label=Q_LABELS[q];
+      const cntA=responses.filter(r=>r[key]==="a").length;
+      const cntB=responses.filter(r=>r[key]==="b").length;
+      const pctA=total>0?Math.round(cntA/total*100):0;
+      const pctB=total>0?Math.round(cntB/total*100):0;
+      html+=`<div class="chart-wrap">
+        <div class="chart-title">${label.title}</div>
+        <div class="chart-row">
+          <div class="chart-label">${label.a}</div>
+          <div class="chart-bar-wrap">
+            <div class="chart-bar" style="width:${pctA}%;background:${COLORS.a};">
+              <span>${cntA}人</span>
+            </div>
+          </div>
+          <div class="chart-pct">${pctA}%</div>
+        </div>
+        <div class="chart-row">
+          <div class="chart-label">${label.b}</div>
+          <div class="chart-bar-wrap">
+            <div class="chart-bar" style="width:${pctB}%;background:${COLORS.b};">
+              <span>${cntB}人</span>
+            </div>
+          </div>
+          <div class="chart-pct">${pctB}%</div>
+        </div>
+      </div>`;
+    }
+    el.innerHTML=html;
+  }catch(e){
+    el.innerHTML="<div style='text-align:center;padding:20px;color:#e85d5d;font-size:14px;'>読み込みに失敗しました</div>";
+  }
+};
+</script>
+</body>
+</html>
