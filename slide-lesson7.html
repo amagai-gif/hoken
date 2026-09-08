@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>老人のせいで税金が高い？両論スライド</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#f5f5f0;min-height:100vh;font-family:"M PLUS Rounded 1c",sans-serif;color:#3a3330;padding:1rem;display:flex;flex-direction:column;align-items:center;}
+.wrap{width:100%;max-width:860px;}
+.slide{display:none;}.slide.active{display:block;}
+.card{background:#fff;border-radius:16px;border:1.5px solid #e8e4dc;overflow:hidden;margin-bottom:1rem;box-shadow:0 4px 20px rgba(0,0,0,.08);}
+.card-head{padding:1.25rem 1.5rem;border-bottom:1.5px solid #e8e4dc;}
+.badge{display:inline-block;font-size:12px;font-weight:800;padding:4px 12px;border-radius:20px;margin-bottom:8px;}
+.claim{font-size:20px;font-weight:800;color:#3a3330;line-height:1.45;}
+.claim-sub{font-size:13px;color:#aaa;margin-top:4px;}
+.card-body{padding:1rem 1.5rem;}
+.point{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #f0ece4;}
+.point:last-child{border-bottom:none;}
+.pnum{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;margin-top:2px;}
+.ptext{font-size:14px;color:#3a3330;line-height:1.65;margin-bottom:5px;font-weight:700;}
+.pdata{font-size:12px;color:#aaa;margin-bottom:6px;}
+.kw-wrap{display:flex;flex-wrap:wrap;gap:4px;}
+.kw{font-size:11px;padding:3px 9px;border-radius:20px;border:1.5px solid;cursor:pointer;font-family:inherit;font-weight:800;background:#fff;text-decoration:none;}
+.nav-row{display:flex;align-items:center;justify-content:space-between;margin-top:1rem;}
+.nav-btn{padding:11px 28px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;border:1.5px solid #ccc;background:#fff;color:#888;transition:all .15s;}
+.nav-btn:hover:not(:disabled){background:#3a3330;color:#fff;border-color:#3a3330;}
+.nav-btn:disabled{opacity:.25;cursor:default;}
+.dots{display:flex;gap:6px;}
+.dot{width:9px;height:9px;border-radius:50%;border:1.5px solid #ccc;background:transparent;cursor:pointer;transition:background .15s;}
+.dot.on{background:#3a3330;border-color:#3a3330;}
+.discuss-box{background:#f8f6f2;border:1.5px solid #e8e4dc;border-radius:12px;padding:12px 14px;margin-bottom:10px;}
+.discuss-label{font-size:12px;font-weight:800;color:#888;margin-bottom:8px;}
+.discuss-options{display:flex;flex-direction:column;gap:6px;}
+.opt-btn{width:100%;padding:13px 14px;border:2px solid #e0dbd2;border-radius:12px;background:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-align:left;color:#888;transition:all .18s;}
+.opt-btn:hover{border-color:#3a3330;color:#3a3330;}
+.opt-btn.sel-a{border-color:#e85d5d;background:#fde8e8;color:#7a2020;}
+.opt-btn.sel-b{border-color:#3dba7f;background:#e8f9f1;color:#0f6e56;}
+.opt-btn.sel-c{border-color:#5a8ad4;background:#e6f1fb;color:#185fa5;}
+textarea{width:100%;border:2px solid #e8e4dc;border-radius:12px;padding:11px;font-family:inherit;font-size:14px;line-height:1.6;resize:vertical;min-height:80px;background:#fff;color:#3a3330;outline:none;margin-top:6px;}
+textarea:focus{border-color:#5a8ad4;}
+.done-msg{display:none;background:#e8f9f1;border:2px solid #3dba7f;border-radius:12px;padding:14px;text-align:center;font-size:14px;font-weight:800;color:#0f6e56;margin-top:8px;}
+.submit-btn{width:100%;padding:14px;border:none;border-radius:12px;background:#5a8ad4;color:#fff;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;margin-top:8px;transition:all .2s;box-shadow:0 4px 14px rgba(90,138,212,.35);}
+.submit-btn:active{transform:scale(.97);}
+.hint{font-size:12px;color:#aaa;text-align:center;margin-top:8px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- スライド1: タイトル -->
+<div class="slide active" id="s0">
+  <div class="card">
+    <div class="card-head" style="background:#f8f6f2;text-align:center;padding:2rem 1.5rem;">
+      <div style="font-size:40px;margin-bottom:12px;">💴　👴</div>
+      <div style="font-size:22px;font-weight:900;color:#3a3330;margin-bottom:10px;">「老人のせいで税金が高い」<br>…本当？</div>
+      <div style="font-size:14px;color:#888;line-height:1.8;">社会保障費のほとんどは高齢者向けに使われている。<br>だから「老人のせいで若者の負担が増えている」という声がある。<br><br>でも、本当にそうなのだろうか？<br>2つの立場から考えてみよう。</div>
+    </div>
+    <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="background:#fde8e8;border:1.5px solid #e85d5d;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:24px;margin-bottom:8px;">😤</div>
+        <div style="font-size:14px;font-weight:800;color:#7a2020;margin-bottom:4px;">A「そう思う」</div>
+        <div style="font-size:12px;color:#7a2020;">負担が増え続けているのは事実</div>
+      </div>
+      <div style="background:#e8f9f1;border:1.5px solid #3dba7f;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:24px;margin-bottom:8px;">🤔</div>
+        <div style="font-size:14px;font-weight:800;color:#0f6e56;margin-bottom:4px;">B「ちょっと待って」</div>
+        <div style="font-size:12px;color:#0f6e56;">高齢者だけのせいじゃない</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- スライド2: A案 -->
+<div class="slide" id="s1">
+  <div class="card">
+    <div class="card-head" style="background:#fde8e8;">
+      <div class="badge" style="background:#e85d5d;color:#fff;">😤　A「そう思う」側の理由</div>
+      <div class="claim">高齢者が増えるほど<br>若者の負担が増えている</div>
+      <div class="claim-sub">これは数字を見れば明らかだ</div>
+    </div>
+    <div class="card-body">
+      <div class="point">
+        <div class="pnum" style="background:#fde8e8;color:#e85d5d;">1</div>
+        <div>
+          <div class="ptext">介護にかかるお金が<strong>約20年で3倍</strong>になった</div>
+          <div class="pdata">2000年：約4.4兆円 → 2024年：約14.3兆円</div>
+          <div class="kw-wrap"><a class="kw" style="border-color:#e85d5d;color:#e85d5d;" href="https://www.google.com/search?q=介護給付費+推移" target="_blank">介護給付費って？</a></div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="pnum" style="background:#fde8e8;color:#e85d5d;">2</div>
+        <div>
+          <div class="ptext">国のお金の<strong>約3割</strong>が社会保障に使われていて、そのうち<strong>6割が高齢者向け</strong></div>
+          <div class="pdata">医療・介護・年金のほとんどが高齢者のため</div>
+          <div class="kw-wrap"><a class="kw" style="border-color:#e85d5d;color:#e85d5d;" href="https://www.google.com/search?q=社会保障給付費+高齢者+割合" target="_blank">社会保障費の内訳は？</a></div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="pnum" style="background:#fde8e8;color:#e85d5d;">3</div>
+        <div>
+          <div class="ptext">40歳から払う介護保険料が<strong>毎月6,225円</strong>（2024年）で過去最高</div>
+          <div class="pdata">今後もさらに上がると予測されている</div>
+          <div class="kw-wrap"><a class="kw" style="border-color:#e85d5d;color:#e85d5d;" href="https://www.google.com/search?q=介護保険料+推移+40歳" target="_blank">なぜ40歳から払うの？</a></div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="pnum" style="background:#fde8e8;color:#e85d5d;">4</div>
+        <div>
+          <div class="ptext">昔は<strong>9人で1人の高齢者</strong>を支えていたが、今は<strong>2人で1人</strong>を支えている</div>
+          <div class="pdata">「胴上げ型→騎馬戦型→肩車型社会」と呼ばれる</div>
+          <div class="kw-wrap"><a class="kw" style="border-color:#e85d5d;color:#e85d5d;" href="https://www.google.com/search?q=肩車型社会+意味" target="_blank">肩車型社会って？</a></div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="pnum" style="background:#fde8e8;color:#e85d5d;">5</div>
+        <div>
+          <div class="ptext">このまま高齢者が増え続ければ、<strong>若い世代の負担はさらに増える</strong></div>
+          <div class="pdata">財務省は「社会保障費の増加が財政悪化の最大の原因」と指摘</div>
+          <div class="kw-wrap"><a class="kw" style="border-color:#e85d5d;color:#e85d5d;" href="https://www.google.com/search?q=財政悪化+社会保障費+原因" target="_blank">財政悪化って？</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- スライド3: B案 -->
+<div class="slide" id="s2">
+  <div class="card">
+    <div class="card-head" style="background:#e8f9f1;">
+      <div class="badge" style="background:#3dba7f;color:#fff;">🤔　B「ちょっと待って」側の理由</div>
+      <div class="claim">高齢者だけを責めても<br>問題は解決しない</div>
+      <div class="claim-sub">見落としている視点があるかもしれない</div>
+    </div>
+    <div class="card-body">
+      <div class="point">
+        <div class="pnum" style="background:#e8f9f1;color:#3dba7f;">1</div>
+        <div>
+          <div class="ptext">今の高齢者も<strong>若い頃に何十年も税金や保険料を払い続けてきた</strong></div>
+          <div class="pdata">社会保障は「もらうだけ」ではなく「払ってきたお金を受け取る権利」でもある</div>
+          <div class="kw-wrap"><a class="kw" style="border-color:#3dba7f;color:#3dba7f;" href="https://www.google.com/search?q=社会保障+世代間扶養+意味" target="_blank">世代間の支え合いって？</a></div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="pnum" style="background:#e8f9f1;color:#3dba7f;">2</div>
+        <div>
+          <div class="ptext">もし介護保険がなければ<strong>家族が仕事をやめて介護</strong>しなければならない</div>
+          <div class="pdata">今でも年間約10万人が介護のために仕事をやめている（介護離職）</div>
+          <div class="kw-wrap"><a class="kw" style="border-color:#3dba7f;color:#3dba7f;" href="https://www.google.com/search?q=介護離職+年間+人数" target="_blank">介護離職って？</a></div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="pnum" style="background:#e8f9f1;color:#3dba7f;">3</div>
+        <div>
+          <div class="ptext">本当の原因は<strong>少子化（子どもが生まれなくなったこと）</strong>で、高齢者が増えたのではなく<strong>若者が減った</strong>のが主な問題</div>
+          <div class="pdata">出生率が下がり続けた結果として支える人が減った</div>
+          <div class="kw-wrap"><a class="kw" style="border-color:#3dba7f;color:#3dba7f;" href="https://www.google.com/search?q=少子化+原因+日本" target="_blank">少子化の原因は？</a></div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="pnum" style="background:#e8f9f1;color:#3dba7f;">4</div>
+        <div>
+          <div class="ptext">高齢者も<strong>ボランティア・働く・地域活動</strong>などで社会を支えている</div>
+          <div class="pdata">日本の高齢者の就労率は世界トップクラス</div>
+          <div class="kw-wrap"><a class="kw" style="border-color:#3dba7f;color:#3dba7f;" href="https://www.google.com/search?q=高齢者+就労率+世界比較" target="_blank">高齢者も働いてるの？</a></div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="pnum" style="background:#e8f9f1;color:#3dba7f;">5</div>
+        <div>
+          <div class="ptext"><strong>自分たちも必ず高齢者になる</strong>。今の制度がなければ将来の自分が困ることになる</div>
+          <div class="pdata">「老人vs若者」ではなく「全員が支え合う仕組み」として考える必要がある</div>
+          <div class="kw-wrap"><a class="kw" style="border-color:#3dba7f;color:#3dba7f;" href="https://www.google.com/search?q=全世代型社会保障+意味" target="_blank">将来の自分はどうなる？</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- スライド4: グループ討論 -->
+<div class="slide" id="s3">
+  <div class="card">
+    <div class="card-head" style="text-align:center;background:#f8f6f2;padding:1.25rem 1.5rem;">
+      <div style="font-size:22px;font-weight:900;color:#3a3330;margin-bottom:6px;">グループで話し合おう</div>
+      <div style="font-size:13px;color:#aaa;">A・Bどちらに近い？理由も含めてグループの答えを出そう</div>
+    </div>
+    <div class="card-body">
+      <div class="discuss-box">
+        <div class="discuss-label">① あなたのグループの立場は？</div>
+        <div class="discuss-options">
+          <button class="opt-btn" id="opt-a" onclick="selectOpt('a')">😤　A「高齢者が負担を増やしている」に近い</button>
+          <button class="opt-btn" id="opt-b" onclick="selectOpt('b')">🤔　B「高齢者だけのせいではない」に近い</button>
+          <button class="opt-btn" id="opt-c" onclick="selectOpt('c')">🤝　どちらも一理ある（両方の視点が必要）</button>
+        </div>
+      </div>
+      <div class="discuss-box">
+        <div class="discuss-label">② そう思う理由・根拠は？（AまたはBの中から選んで）</div>
+        <textarea id="reason-text" rows="3" placeholder="例：A案の「肩車型社会」の話が一番説得力があると思う。今2人で1人を支えているのは現実として重い。ただしB案の「少子化が主因」という点も大事だと思った…"></textarea>
+      </div>
+      <div class="discuss-box">
+        <div class="discuss-label">③ では「本当の解決策」は何だと思う？グループで考えよう</div>
+        <textarea id="solution-text" rows="3" placeholder="例：少子化を解消して若者を増やすのが根本的な解決。そのために子育て支援にもっとお金を使うべき。あと高齢者も元気なうちは働いて支える側になれる社会にする…"></textarea>
+      </div>
+      <div class="done-msg" id="done-msg">グループの意見がまとまった！発表してみよう</div>
+      <button class="submit-btn" onclick="checkDone()">グループの意見をまとめる</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="nav-row">
+  <button class="nav-btn" id="prev-btn" onclick="move(-1)" disabled>← 前へ</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="next-btn" onclick="move(1)">次へ →</button>
+</div>
+<div class="hint">キーワードをタップすると検索できます</div>
+</div>
+
+<script>
+const TOTAL=4;
+let cur=0;
+let selectedOpt=null;
+
+function renderDots(){
+  document.getElementById("dots").innerHTML=Array.from({length:TOTAL},(_,i)=>
+    `<div class="dot${i===cur?" on":""}" onclick="goto(${i})"></div>`
+  ).join("");
+}
+function goto(n){
+  document.getElementById("s"+cur).classList.remove("active");
+  cur=Math.max(0,Math.min(TOTAL-1,n));
+  document.getElementById("s"+cur).classList.add("active");
+  document.getElementById("prev-btn").disabled=cur===0;
+  document.getElementById("next-btn").disabled=cur===TOTAL-1;
+  document.getElementById("next-btn").textContent=cur===TOTAL-1?"以上！":"次へ →";
+  renderDots();
+}
+function move(d){goto(cur+d);}
+function selectOpt(v){
+  selectedOpt=v;
+  ["a","b","c"].forEach(x=>{
+    document.getElementById("opt-"+x).className="opt-btn"+(x===v?" sel-"+v:"");
+  });
+}
+function checkDone(){
+  if(!selectedOpt){alert("まず立場を選んでください！");return;}
+  const r=document.getElementById("reason-text").value.trim();
+  const s=document.getElementById("solution-text").value.trim();
+  if(!r){document.getElementById("reason-text").style.borderColor="#e85d5d";document.getElementById("reason-text").focus();return;}
+  if(!s){document.getElementById("solution-text").style.borderColor="#e85d5d";document.getElementById("solution-text").focus();return;}
+  document.getElementById("done-msg").style.display="block";
+}
+renderDots();
+</script>
+</body>
+</html>
