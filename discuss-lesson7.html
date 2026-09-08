@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>グループ討論：介護保険と自分</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#5a8ad4;--g2:#e6f1fb;--bg:#fffdf8;--text:#3a3330;}
+body{font-family:"M PLUS Rounded 1c",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+.hero{background:linear-gradient(135deg,#5a8ad4,#3dba7f);padding:20px 16px 24px;text-align:center;}
+.hero h1{font-size:17px;font-weight:900;color:#fff;line-height:1.3;}
+.hero p{font-size:12px;color:rgba(255,255,255,.85);margin-top:4px;}
+.modebar{display:flex;gap:8px;padding:12px 14px;background:var(--bg);position:sticky;top:0;z-index:200;border-bottom:2px solid #f0ece4;}
+.mbtn{flex:1;border:2.5px solid #e0dbd2;background:#fff;border-radius:40px;padding:10px 8px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;color:#aaa;transition:all .2s;}
+.mbtn.ons{background:var(--g);border-color:var(--g);color:#fff;}
+.mbtn.ont{background:#e85d5d;border-color:#e85d5d;color:#fff;}
+.pnl{display:none;padding:14px;}.pnl.show{display:block;}
+/* 生徒モード */
+.slbl{font-size:12px;font-weight:800;color:#aaa;margin-bottom:8px;}
+.ggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+.gbtn{border:2.5px solid #e0dbd2;background:#fff;border-radius:14px;padding:9px 4px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;text-align:center;color:#aaa;transition:all .18s;}
+.gbtn.on{background:var(--g);border-color:var(--g);color:#fff;transform:scale(1.05);}
+.gico{font-size:22px;display:block;margin-bottom:2px;}
+.q-card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,.08);border:1.5px solid #f0ece4;}
+.q-card.lk{opacity:.3;pointer-events:none;}
+.q-num{font-size:11px;font-weight:800;color:var(--g);margin-bottom:6px;}
+.q-text{font-size:15px;font-weight:800;color:var(--text);margin-bottom:12px;line-height:1.4;}
+.opts{display:flex;flex-direction:column;gap:7px;}
+.opt-btn{width:100%;padding:13px 14px;border:2.5px solid #e0dbd2;background:#fff;border-radius:12px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;text-align:left;color:#888;transition:all .18s;}
+.opt-btn:hover{border-color:var(--g);color:var(--text);}
+.opt-btn.on{border-color:var(--g);background:var(--g2);color:#185fa5;}
+textarea{width:100%;border:2px solid #e8e4dc;border-radius:12px;padding:11px;font-family:inherit;font-size:14px;line-height:1.6;resize:vertical;min-height:80px;background:#fefcf8;color:var(--text);outline:none;margin-top:8px;}
+textarea:focus{border-color:var(--g);}
+.sbtn{width:100%;padding:15px;border:none;border-radius:16px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;background:var(--g);color:#fff;box-shadow:0 4px 14px rgba(90,138,212,.35);margin-top:4px;transition:all .2s;}
+.sbtn:disabled{opacity:.35;cursor:default;}
+.sbtn:active{transform:scale(.97);}
+.sent-wrap{display:none;margin-top:8px;border-radius:16px;overflow:hidden;border:2px solid #3dba7f;}
+.sent-wrap.show{display:block;}
+.sent-ok{padding:14px 16px;background:#3dba7f;color:#fff;display:flex;align-items:center;gap:10px;}
+.sent-ok-ico{font-size:24px;}
+.sent-ok-txt{font-size:13px;font-weight:800;line-height:1.4;}
+/* 教員モード */
+.tth{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.tttl{font-size:16px;font-weight:900;}
+.rfbtn{border:2px solid var(--g);background:var(--g2);color:#185fa5;border-radius:30px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
+.rfbtn:hover{background:var(--g);color:#fff;}
+.rstbtn{border:2px solid #e85d5d;background:#fde8e8;color:#c0392b;border-radius:30px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.chip{background:#fff;border:1.5px solid #f0ece4;border-radius:30px;padding:5px 12px;font-size:12px;font-weight:800;color:#888;}
+/* 集計グラフ */
+.chart-section{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;border:1.5px solid #f0ece4;box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.chart-title{font-size:13px;font-weight:800;margin-bottom:10px;color:var(--text);}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.bar-label{font-size:12px;font-weight:700;color:var(--text);min-width:120px;flex-shrink:0;line-height:1.3;}
+.bar-wrap{flex:1;background:#f0ece4;border-radius:999px;height:28px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:999px;display:flex;align-items:center;padding-left:8px;transition:width .5s ease;min-width:0;}
+.bar-fill span{font-size:11px;font-weight:800;color:#fff;white-space:nowrap;}
+.bar-pct{font-size:12px;font-weight:800;min-width:36px;text-align:right;color:var(--text);}
+/* 意見一覧 */
+.ans-list{display:flex;flex-direction:column;gap:8px;}
+.ans-card{background:#fff;border-radius:12px;border:1.5px solid #f0ece4;overflow:hidden;}
+.ans-head{padding:8px 14px;background:var(--g);font-size:13px;font-weight:900;color:#fff;display:flex;align-items:center;gap:8px;}
+.ans-body{padding:10px 14px;font-size:13px;color:var(--text);line-height:1.6;}
+.ans-tag{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;margin-right:4px;margin-bottom:4px;}
+.nd{color:#ccc;font-size:12px;font-style:italic;}
+.empty{text-align:center;padding:30px;color:#ccc;font-size:14px;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>グループ討論<br>介護保険と自分</h1>
+  <p>グループで話し合って回答を送信しよう</p>
+</div>
+<div class="modebar">
+  <button class="mbtn ons" id="mb-s" onclick="setMode('s')">🙋 生徒モード</button>
+  <button class="mbtn" id="mb-t" onclick="setMode('t')">📊 教員モード</button>
+</div>
+
+<!-- 生徒モード -->
+<div class="pnl show" id="pnl-s">
+  <div style="height:12px"></div>
+  <div class="slbl">🐨 自分のグループを選んでね</div>
+  <div class="ggrid">
+    <button class="gbtn" onclick="pg(1)"><span class="gico">🐻</span>グループ1</button>
+    <button class="gbtn" onclick="pg(2)"><span class="gico">🐼</span>グループ2</button>
+    <button class="gbtn" onclick="pg(3)"><span class="gico">🦊</span>グループ3</button>
+    <button class="gbtn" onclick="pg(4)"><span class="gico">🐰</span>グループ4</button>
+    <button class="gbtn" onclick="pg(5)"><span class="gico">🐧</span>グループ5</button>
+    <button class="gbtn" onclick="pg(6)"><span class="gico">🦁</span>グループ6</button>
+    <button class="gbtn" onclick="pg(7)"><span class="gico">🐸</span>グループ7</button>
+    <button class="gbtn" onclick="pg(8)"><span class="gico">🐯</span>グループ8</button>
+    <button class="gbtn" onclick="pg(9)"><span class="gico">🦋</span>グループ9</button>
+  </div>
+
+  <div class="q-card lk" id="q1-card">
+    <div class="q-num">Q1</div>
+    <div class="q-text">毎月6,225円の介護保険料、払う価値ある？<br>グループの多数意見は？</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="pick('q1',this,'✅ ある（いざとなったら助かる）')">✅　ある（いざとなったら助かる）</button>
+      <button class="opt-btn" onclick="pick('q1',this,'❌ ない（若いうちは使わないから損）')">❌　ない（若いうちは使わないから損）</button>
+      <button class="opt-btn" onclick="pick('q1',this,'🤔 意見が割れた')">🤔　意見が割れた</button>
+    </div>
+  </div>
+
+  <div class="q-card lk" id="q2-card">
+    <div class="q-num">Q2</div>
+    <div class="q-text">親の介護が必要になったら？<br>グループの多数意見は？</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="pick('q2',this,'① 家族で面倒をみる')">① 家族で面倒をみる</button>
+      <button class="opt-btn" onclick="pick('q2',this,'② 施設に任せる')">② 施設に任せる</button>
+      <button class="opt-btn" onclick="pick('q2',this,'③ お金で解決する')">③ お金で解決する</button>
+      <button class="opt-btn" onclick="pick('q2',this,'🤔 意見が割れた')">🤔　意見が割れた</button>
+    </div>
+  </div>
+
+  <div class="q-card lk" id="q3-card">
+    <div class="q-num">Q3</div>
+    <div class="q-text">今日の討論を通じて気づいたこと・驚いたことは？</div>
+    <textarea id="q3-text" rows="3" placeholder="例：介護保険がないと全額自己負担と知って驚いた。毎月6,225円は高いと思ったけど、1割負担で使えると思うとお得かもしれない…"></textarea>
+  </div>
+
+  <div style="padding:0 0 4px;">
+    <button class="sbtn" id="submit-btn" onclick="submitAll()" disabled>グループ? の回答を送る</button>
+  </div>
+  <div class="sent-wrap" id="sent-wrap">
+    <div class="sent-ok">
+      <span class="sent-ok-ico">🎉</span>
+      <div>
+        <div class="sent-ok-txt">送信完了！発表の準備をしよう！</div>
+        <div style="font-size:11px;opacity:.85;margin-top:2px;">教員モードで全グループの結果が見られます</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 教員モード -->
+<div class="pnl" id="pnl-t">
+  <div style="height:12px"></div>
+  <div class="tth">
+    <div class="tttl">📊 集計結果・意見一覧</div>
+    <div style="display:flex;gap:6px;">
+      <button class="rfbtn" onclick="loadTeacher()">🔄 更新</button>
+      <button class="rstbtn" onclick="resetData()">🗑️ リセット</button>
+    </div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div id="teacher-content"><div class="empty">🔄 更新ボタンを押すと結果が表示されます</div></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyCgA-yqynPM-ezZpBZCp8DLrxN9R82zS5U",
+  authDomain:"hoken-app-26315.firebaseapp.com",
+  databaseURL:"https://hoken-app-26315-default-rtdb.firebaseio.com",
+  projectId:"hoken-app-26315",
+  storageBucket:"hoken-app-26315.firebasestorage.app",
+  messagingSenderId:"932877641447",
+  appId:"1:932877641447:web:a351fa878ed76ae4392442"
+};
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
+
+const ANI=["🐻","🐼","🦊","🐰","🐧","🦁","🐸","🐯","🦋"];
+const Q1_COLORS={"✅ ある（いざとなったら助かる）":"#3dba7f","❌ ない（若いうちは使わないから損）":"#e85d5d","🤔 意見が割れた":"#f0a060"};
+const Q2_COLORS={"① 家族で面倒をみる":"#5a8ad4","② 施設に任せる":"#3dba7f","③ お金で解決する":"#8b67d4","🤔 意見が割れた":"#f0a060"};
+
+let cg=null;
+const answers={q1:null,q2:null,q3:""};
+
+window.setMode=function(m){
+  document.getElementById("mb-s").className="mbtn"+(m==="s"?" ons":"");
+  document.getElementById("mb-t").className="mbtn"+(m==="t"?" ont":"");
+  document.getElementById("pnl-s").classList.toggle("show",m==="s");
+  document.getElementById("pnl-t").classList.toggle("show",m==="t");
+  if(m==="t") loadTeacher();
+};
+
+window.pg=function(n){
+  cg=n;
+  document.querySelectorAll(".gbtn").forEach((b,i)=>b.classList.toggle("on",i+1===n));
+  ["q1-card","q2-card","q3-card"].forEach(id=>document.getElementById(id).classList.remove("lk"));
+  const sb=document.getElementById("submit-btn");
+  sb.textContent=`グループ${n} の回答を送る`;
+  updateSubmitBtn();
+};
+
+window.pick=function(q,btn,val){
+  btn.closest(".opts").querySelectorAll(".opt-btn").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+  answers[q]=val;
+  updateSubmitBtn();
+};
+
+function updateSubmitBtn(){
+  const ok=cg&&answers.q1&&answers.q2;
+  document.getElementById("submit-btn").disabled=!ok;
+}
+
+window.submitAll=async function(){
+  if(!cg||!answers.q1||!answers.q2) return;
+  answers.q3=document.getElementById("q3-text").value.trim();
+  document.getElementById("submit-btn").disabled=true;
+  try{
+    await set(ref(db,`discuss7/g${cg}`),{
+      q1:answers.q1, q2:answers.q2, q3:answers.q3||"（記述なし）",
+      submitted:true, ts:Date.now()
+    });
+    document.getElementById("sent-wrap").classList.add("show");
+    document.getElementById("submit-btn").style.display="none";
+  }catch(e){
+    document.getElementById("submit-btn").disabled=false;
+    alert("送信に失敗しました。もう一度試してください。");
+  }
+};
+
+window.loadTeacher=async function(){
+  const el=document.getElementById("teacher-content");
+  el.innerHTML="<div class='empty'>読み込み中… 🐾</div>";
+  try{
+    const snap=await get(ref(db,"discuss7"));
+    const data=snap.val()||{};
+    const total=Object.keys(data).length;
+
+    document.getElementById("stats").innerHTML=
+      `<div class="chip">送信済み <b style="color:#5a8ad4">${total}</b> / 9</div>
+       <div class="chip">未送信 <b style="color:#e85d5d">${9-total}</b></div>`;
+
+    if(total===0){el.innerHTML="<div class='empty'>まだ回答がありません</div>";return;}
+
+    // Q1集計
+    const q1counts={};
+    const q2counts={};
+    Object.values(data).forEach(d=>{
+      q1counts[d.q1]=(q1counts[d.q1]||0)+1;
+      q2counts[d.q2]=(q2counts[d.q2]||0)+1;
+    });
+
+    let html="";
+
+    // Q1グラフ
+    html+=`<div class="chart-section"><div class="chart-title">Q1 介護保険料、払う価値ある？</div>`;
+    Object.entries(q1counts).sort((a,b)=>b[1]-a[1]).forEach(([label,cnt])=>{
+      const pct=Math.round(cnt/total*100);
+      const color=Q1_COLORS[label]||"#aaa";
+      html+=`<div class="bar-row">
+        <div class="bar-label">${label}</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${color};"><span>${cnt}G</span></div></div>
+        <div class="bar-pct">${pct}%</div>
+      </div>`;
+    });
+    html+="</div>";
+
+    // Q2グラフ
+    html+=`<div class="chart-section"><div class="chart-title">Q2 親の介護、どうする？</div>`;
+    Object.entries(q2counts).sort((a,b)=>b[1]-a[1]).forEach(([label,cnt])=>{
+      const pct=Math.round(cnt/total*100);
+      const color=Q2_COLORS[label]||"#aaa";
+      html+=`<div class="bar-row">
+        <div class="bar-label">${label}</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${color};"><span>${cnt}G</span></div></div>
+        <div class="bar-pct">${pct}%</div>
+      </div>`;
+    });
+    html+="</div>";
+
+    // Q3意見一覧
+    html+=`<div class="chart-section"><div class="chart-title">Q3 気づいたこと・驚いたこと（意見一覧）</div><div class="ans-list">`;
+    for(let g=1;g<=9;g++){
+      const d=data[`g${g}`];
+      html+=`<div class="ans-card">
+        <div class="ans-head">${ANI[g-1]} グループ${g}${d?" ✓":""}</div>
+        <div class="ans-body">`;
+      if(d){
+        html+=`<span class="ans-tag" style="background:#e6f1fb;color:#185fa5;">${d.q1}</span>
+               <span class="ans-tag" style="background:#e8f9f1;color:#0f6e56;">${d.q2}</span><br>
+               ${d.q3?d.q3.replace(/</g,"&lt;"):"<span class='nd'>記述なし</span>"}`;
+      }else{
+        html+="<span class='nd'>まだ届いていません</span>";
+      }
+      html+="</div></div>";
+    }
+    html+="</div></div>";
+    el.innerHTML=html;
+  }catch(e){
+    el.innerHTML="<div class='empty' style='color:#e85d5d;'>読み込みに失敗しました</div>";
+  }
+};
+
+window.resetData=async function(){
+  if(!confirm("全グループの回答を削除します。よろしいですか？")) return;
+  try{
+    await set(ref(db,"discuss7"),null);
+    document.getElementById("stats").innerHTML="";
+    document.getElementById("teacher-content").innerHTML="<div class='empty' style='color:#3dba7f;'>✓ リセットしました！</div>";
+  }catch(e){
+    alert("リセットに失敗しました。");
+  }
+};
+</script>
+</body>
+</html>
