@@ -205,14 +205,38 @@ window.submitAll=async function(){
   if(!cg||!answers.q1||!answers.q2) return;
   answers.q3=document.getElementById("q3-text").value.trim();
   document.getElementById("submit-btn").disabled=true;
+  const payload={
+    group:cg, q1:answers.q1, q2:answers.q2, q3:answers.q3||"（記述なし）",
+    submitted:true, ts:Date.now()
+  };
+  let firebaseOk=false;
+  let gasOk=false;
+
+  // Firebase送信
   try{
-    await set(ref(db,`discuss7/g${cg}`),{
-      q1:answers.q1, q2:answers.q2, q3:answers.q3||"（記述なし）",
-      submitted:true, ts:Date.now()
+    await set(ref(db,`discuss7/g${cg}`),payload);
+    firebaseOk=true;
+  }catch(e){
+    console.warn("Firebase失敗:", e);
+  }
+
+  // GAS送信（スプレッドシート）
+  try{
+    await fetch("https://script.google.com/macros/s/AKfycbwAS_zQlCKw8_DlGe4ltijzRjQ3UrEbgbSK5jdq7lvS_SgmB4nOdVzsBRTuhV7iQ5hi/exec",{
+      method:"POST",
+      mode:"no-cors",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
     });
+    gasOk=true;
+  }catch(e){
+    console.warn("GAS失敗:", e);
+  }
+
+  if(firebaseOk||gasOk){
     document.getElementById("sent-wrap").classList.add("show");
     document.getElementById("submit-btn").style.display="none";
-  }catch(e){
+  }else{
     document.getElementById("submit-btn").disabled=false;
     alert("送信に失敗しました。もう一度試してください。");
   }
