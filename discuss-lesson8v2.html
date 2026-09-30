@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>グループ討論：働くこと・生きること</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#5a5a8a;--g2:#eeeefc;--bg:#fffdf8;--text:#3a3330;}
+body{font-family:"M PLUS Rounded 1c",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+.hero{background:linear-gradient(135deg,#5a5a8a,#3a3a6a);padding:20px 16px 24px;text-align:center;}
+.hero h1{font-size:17px;font-weight:900;color:#fff;line-height:1.3;}
+.hero p{font-size:12px;color:rgba(255,255,255,.75);margin-top:4px;}
+.modebar{display:flex;gap:8px;padding:12px 14px;background:var(--bg);position:sticky;top:0;z-index:200;border-bottom:2px solid #f0ece4;}
+.mbtn{flex:1;border:2.5px solid #e0dbd2;background:#fff;border-radius:40px;padding:10px 8px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;color:#aaa;transition:all .2s;}
+.mbtn.ons{background:var(--g);border-color:var(--g);color:#fff;}
+.mbtn.ont{background:#e85d5d;border-color:#e85d5d;color:#fff;}
+.pnl{display:none;padding:14px;}.pnl.show{display:block;}
+/* スライド */
+.slide-wrap{background:#fff;border-radius:16px;margin-bottom:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1.5px solid #e8e4dc;}
+.slide{display:none;}.slide.show{display:block;}
+.slide-head{padding:14px 18px;color:#fff;font-size:13px;font-weight:800;}
+.slide-body{padding:16px 18px;}
+.slide-title{font-size:17px;font-weight:900;color:#3a3330;margin-bottom:10px;line-height:1.4;}
+.slide-text{font-size:14px;color:#555;line-height:1.8;margin-bottom:8px;}
+.uke-card{border-radius:12px;padding:13px 15px;border:1.5px solid;margin-bottom:8px;}
+.uke-title{font-size:14px;font-weight:900;margin-bottom:4px;}
+.uke-text{font-size:13px;line-height:1.7;}
+.slide-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-top:1.5px solid #f0ece4;background:#f8f6f2;}
+.snav-btn{border:1.5px solid #ccc;background:#fff;border-radius:8px;padding:8px 18px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;color:#888;}
+.snav-btn:hover:not(:disabled){background:#3a3330;color:#fff;border-color:#3a3330;}
+.snav-btn:disabled{opacity:.25;cursor:default;}
+.sdots{display:flex;gap:5px;}
+.sdot{width:8px;height:8px;border-radius:50%;background:#ddd;cursor:pointer;transition:background .2s;}
+.sdot.on{background:#5a5a8a;}
+/* 討論 */
+.slbl{font-size:12px;font-weight:800;color:#aaa;margin-bottom:8px;}
+.ggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+.gbtn{border:2.5px solid #e0dbd2;background:#fff;border-radius:14px;padding:9px 4px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;text-align:center;color:#aaa;transition:all .18s;}
+.gbtn.on{background:var(--g);border-color:var(--g);color:#fff;transform:scale(1.05);}
+.gico{font-size:22px;display:block;margin-bottom:2px;}
+.q-card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,.08);border:1.5px solid #f0ece4;}
+.q-card.lk{opacity:.3;pointer-events:none;}
+.q-num{font-size:11px;font-weight:800;color:var(--g);margin-bottom:6px;}
+.q-text{font-size:15px;font-weight:800;color:var(--text);margin-bottom:10px;line-height:1.4;}
+textarea{width:100%;border:2px solid #e8e4dc;border-radius:12px;padding:11px;font-family:inherit;font-size:14px;line-height:1.6;resize:vertical;min-height:80px;background:#fefcf8;color:var(--text);outline:none;margin-top:6px;}
+textarea:focus{border-color:var(--g);}
+.sbtn{width:100%;padding:15px;border:none;border-radius:16px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;background:var(--g);color:#fff;box-shadow:0 4px 14px rgba(90,90,138,.35);margin-top:4px;transition:all .2s;}
+.sbtn:disabled{opacity:.35;cursor:default;}
+.sent-wrap{display:none;margin-top:8px;border-radius:16px;overflow:hidden;border:2px solid #3dba7f;}
+.sent-wrap.show{display:block;}
+.sent-ok{padding:14px 16px;background:#3dba7f;color:#fff;display:flex;align-items:center;gap:10px;}
+.sent-ok-ico{font-size:24px;}
+.sent-ok-txt{font-size:13px;font-weight:800;}
+/* 教員 */
+.tth{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.tttl{font-size:16px;font-weight:900;}
+.rfbtn{border:2px solid var(--g);background:var(--g2);color:#3a3a6a;border-radius:30px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
+.rstbtn{border:2px solid #e85d5d;background:#fde8e8;color:#c0392b;border-radius:30px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.chip{background:#fff;border:1.5px solid #f0ece4;border-radius:30px;padding:5px 12px;font-size:12px;font-weight:800;color:#888;}
+.chart-section{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;border:1.5px solid #f0ece4;}
+.chart-title{font-size:13px;font-weight:800;margin-bottom:10px;}
+.ans-list{display:flex;flex-direction:column;gap:8px;}
+.ans-card{background:#fff;border-radius:12px;border:1.5px solid #f0ece4;overflow:hidden;}
+.ans-head{padding:8px 14px;background:var(--g);font-size:13px;font-weight:900;color:#fff;}
+.ans-body{padding:10px 14px;font-size:13px;line-height:1.6;}
+.nd{color:#ccc;font-size:12px;font-style:italic;}
+.empty{text-align:center;padding:30px;color:#ccc;font-size:14px;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>グループ討論<br>働くこと・生きること</h1>
+  <p>スライドを読んでからグループで話し合おう</p>
+</div>
+<div class="modebar">
+  <button class="mbtn ons" id="mb-s" onclick="setMode('s')">🙋 生徒モード</button>
+  <button class="mbtn" id="mb-t" onclick="setMode('t')">📊 教員モード</button>
+</div>
+
+<div class="pnl show" id="pnl-s">
+  <div style="height:12px"></div>
+
+  <!-- スライド3枚 -->
+  <div class="slide-wrap">
+    <div class="slide show" id="sl0">
+      <div class="slide-head" style="background:#c0392b;">⚠️ 辞めたくても辞められない状態が続くと…</div>
+      <div class="slide-body">
+        <div class="slide-title">心と体に何が起きるか</div>
+        <div class="slide-text">「お金の不安」で我慢し続けることで起こりうること：</div>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:10px;">
+          <div style="background:#fde8e8;border-radius:10px;padding:10px 12px;font-size:14px;font-weight:700;color:#7a2020;">😔 慢性的なストレス・睡眠障害</div>
+          <div style="background:#fde8e8;border-radius:10px;padding:10px 12px;font-size:14px;font-weight:700;color:#7a2020;">😶 意欲の低下・無気力（燃え尽き症候群）</div>
+          <div style="background:#fde8e8;border-radius:10px;padding:10px 12px;font-size:14px;font-weight:700;color:#7a2020;">🏥 うつ病・適応障害などの発症</div>
+          <div style="background:#fde8e8;border-radius:10px;padding:10px 12px;font-size:14px;font-weight:700;color:#7a2020;">💔 人間関係の悪化・孤立</div>
+        </div>
+        <div class="slide-text" style="color:#c0392b;font-weight:800;">→ 「お金の不安」で我慢し続けることが<br>　 取り返しのつかない健康被害につながることがある。</div>
+      </div>
+    </div>
+
+    <div class="slide" id="sl1">
+      <div class="slide-head" style="background:#3dba7f;">🌱 でも、社会には受け皿がある</div>
+      <div class="slide-body">
+        <div class="slide-title">知っておくだけで「逃げ道」になる制度</div>
+        <div class="uke-card" style="border-color:#3dba7f;background:#e8f9f1;">
+          <div class="uke-title" style="color:#0f6e56;">💊 傷病手当金</div>
+          <div class="uke-text" style="color:#0f5a3a;">病気やケガで働けなくなったとき、給料の約2/3を最長1年6ヶ月受け取れる制度。うつ病・適応障害も対象。「病気でも収入ゼロにはならない」。</div>
+        </div>
+        <div class="uke-card" style="border-color:#5a8ad4;background:#e6f1fb;">
+          <div class="uke-title" style="color:#185fa5;">🏢 ハローワーク（公共職業安定所）</div>
+          <div class="uke-text" style="color:#0a3a7a;">無料で就職相談・職業紹介・職業訓練が受けられる国の機関。失業給付（雇用保険）も受け取れる。「仕事が見つかるか不安」を解消してくれる。</div>
+        </div>
+        <div class="uke-card" style="border-color:#f0a060;background:#fff3eb;">
+          <div class="uke-title" style="color:#854f0b;">🏠 生活保護</div>
+          <div class="uke-text" style="color:#6a3800;">生活に困ったとき、国が最低限の生活を保障する制度。国民の権利として法律で定められている。「恥ずかしい」ではなく「使っていい権利」。</div>
+        </div>
+        <div class="slide-text" style="color:#3dba7f;font-weight:800;margin-top:6px;">→ 「辞めたら終わり」ではない。<br>　 社会はあなたを支える仕組みを持っている。</div>
+      </div>
+    </div>
+
+    <div class="slide" id="sl2">
+      <div class="slide-head" style="background:#8b67d4;">💭 ここで考えてみよう</div>
+      <div class="slide-body">
+        <div class="slide-title">お金の不安がなくなったとしたら<br>あなたにとって「働くこと」とは何？</div>
+        <div class="slide-text">「辞めたくても辞められない」理由の多くはお金の不安だった。<br><br>でも傷病手当金・ハローワーク・生活保護という受け皿がある。<br><br>そうわかったうえで、もう一度考えてみよう。<br><br><strong>お金のためだけに働くのか。<br>それとも、あなたにとって働くことは何を意味するのか。<br>そして、あなたにとって「生きること」とは何か。</strong></div>
+      </div>
+    </div>
+
+    <div class="slide-nav">
+      <button class="snav-btn" id="sprev" onclick="moveSlide(-1)" disabled>← 前へ</button>
+      <div class="sdots" id="sdots"></div>
+      <button class="snav-btn" id="snext" onclick="moveSlide(1)">次へ →</button>
+    </div>
+  </div>
+
+  <!-- グループ選択 -->
+  <div class="slbl">🐨 自分のグループを選んでね</div>
+  <div class="ggrid">
+    <button class="gbtn" onclick="pg(1)"><span class="gico">🐻</span>G1</button>
+    <button class="gbtn" onclick="pg(2)"><span class="gico">🐼</span>G2</button>
+    <button class="gbtn" onclick="pg(3)"><span class="gico">🦊</span>G3</button>
+    <button class="gbtn" onclick="pg(4)"><span class="gico">🐰</span>G4</button>
+    <button class="gbtn" onclick="pg(5)"><span class="gico">🐧</span>G5</button>
+    <button class="gbtn" onclick="pg(6)"><span class="gico">🦁</span>G6</button>
+    <button class="gbtn" onclick="pg(7)"><span class="gico">🐸</span>G7</button>
+    <button class="gbtn" onclick="pg(8)"><span class="gico">🐯</span>G8</button>
+    <button class="gbtn" onclick="pg(9)"><span class="gico">🦋</span>G9</button>
+  </div>
+
+  <div class="q-card lk" id="q2-card">
+    <div class="q-num">Q2　グループで話し合おう</div>
+    <div class="q-text">傷病手当金・ハローワーク・生活保護を知ったうえで、「辞めたくても辞められない」という気持ちは変わった？</div>
+    <textarea id="q2-text" rows="3" placeholder="例：生活保護があると知って少し楽になった / でも実際使えるか不安 / ハローワークは知っていたけど行く勇気がなかった…正直な気持ちを！"></textarea>
+  </div>
+
+  <div class="q-card lk" id="q3-card">
+    <div class="q-num">Q3　グループで話し合おう</div>
+    <div class="q-text">お金の不安がなくなったとしたら、あなたにとって「働くこと」とは何？「生きること」とは何？</div>
+    <textarea id="q3-text" rows="3" placeholder="例：好きなことを仕事にしたい / 人の役に立つことが生きがい / 正直まだわからない…自分の言葉で！"></textarea>
+  </div>
+
+  <div class="q-card lk" id="q4-card">
+    <div class="q-num">Q4　グループで話し合おう</div>
+    <div class="q-text">今日の討論で気づいたこと・驚いたことは？</div>
+    <textarea id="q4-text" rows="3" placeholder="例：生活保護は権利だと知って見方が変わった / 働くことの意味をちゃんと考えたことがなかった…など！"></textarea>
+  </div>
+
+  <button class="sbtn" id="submit-btn" onclick="submitAll()" disabled>グループ? の回答を送る</button>
+  <div class="sent-wrap" id="sent-wrap">
+    <div class="sent-ok">
+      <span class="sent-ok-ico">🎉</span>
+      <div><div class="sent-ok-txt">送信完了！大切なことを考えてくれてありがとう！</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 教員モード -->
+<div class="pnl" id="pnl-t">
+  <div style="height:12px"></div>
+  <div class="tth">
+    <div class="tttl">📊 グループ回答一覧</div>
+    <div style="display:flex;gap:6px;">
+      <button class="rfbtn" onclick="loadTeacher()">🔄 更新</button>
+      <button class="rstbtn" onclick="resetData()">🗑️ リセット</button>
+    </div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div id="teacher-content"><div class="empty">🔄 更新ボタンを押すと結果が表示されます</div></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const firebaseConfig={apiKey:"AIzaSyCgA-yqynPM-ezZpBZCp8DLrxN9R82zS5U",authDomain:"hoken-app-26315.firebaseapp.com",databaseURL:"https://hoken-app-26315-default-rtdb.firebaseio.com",projectId:"hoken-app-26315",storageBucket:"hoken-app-26315.firebasestorage.app",messagingSenderId:"932877641447",appId:"1:932877641447:web:a351fa878ed76ae4392442"};
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
+const GAS_URL="https://script.google.com/macros/s/AKfycbwAS_zQlCKw8_DlGe4ltijzRjQ3UrEbgbSK5jdq7lvS_SgmB4nOdVzsBRTuhV7iQ5hi/exec";
+const ANI=["🐻","🐼","🦊","🐰","🐧","🦁","🐸","🐯","🦋"];
+
+let cg=null;
+let curSlide=0;
+const TOTAL=3;
+
+function renderDots(){
+  document.getElementById("sdots").innerHTML=Array.from({length:TOTAL},(_,i)=>
+    `<div class="sdot${i===curSlide?" on":""}" onclick="gotoSlide(${i})"></div>`
+  ).join("");
+  document.getElementById("sprev").disabled=curSlide===0;
+  document.getElementById("snext").disabled=curSlide===TOTAL-1;
+  document.getElementById("snext").textContent=curSlide===TOTAL-1?"以上！下で話し合おう":"次へ →";
+}
+window.gotoSlide=function(n){
+  document.getElementById("sl"+curSlide).classList.remove("show");
+  curSlide=Math.max(0,Math.min(TOTAL-1,n));
+  document.getElementById("sl"+curSlide).classList.add("show");
+  renderDots();
+};
+window.moveSlide=function(d){gotoSlide(curSlide+d);};
+renderDots();
+
+window.setMode=function(m){
+  document.getElementById("mb-s").className="mbtn"+(m==="s"?" ons":"");
+  document.getElementById("mb-t").className="mbtn"+(m==="t"?" ont":"");
+  document.getElementById("pnl-s").classList.toggle("show",m==="s");
+  document.getElementById("pnl-t").classList.toggle("show",m==="t");
+  if(m==="t") loadTeacher();
+};
+
+window.pg=function(n){
+  cg=n;
+  document.querySelectorAll(".gbtn").forEach((b,i)=>b.classList.toggle("on",i+1===n));
+  ["q2-card","q3-card","q4-card"].forEach(id=>document.getElementById(id).classList.remove("lk"));
+  document.getElementById("submit-btn").textContent=`グループ${n} の回答を送る`;
+  document.getElementById("submit-btn").disabled=false;
+};
+
+window.submitAll=async function(){
+  if(!cg) return;
+  const q2=document.getElementById("q2-text").value.trim();
+  const q3=document.getElementById("q3-text").value.trim();
+  const q4=document.getElementById("q4-text").value.trim();
+  document.getElementById("submit-btn").disabled=true;
+  const payload={group:cg,q2:q2||"（記述なし）",q3:q3||"（記述なし）",q4:q4||"（記述なし）",submitted:true,ts:Date.now()};
+  let ok=false;
+  try{await set(ref(db,`discuss8v2/g${cg}`),payload);ok=true;}catch(e){console.warn("Firebase失敗",e);}
+  try{await fetch(GAS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});ok=true;}catch(e){console.warn("GAS失敗",e);}
+  if(ok){document.getElementById("sent-wrap").classList.add("show");document.getElementById("submit-btn").style.display="none";}
+  else{document.getElementById("submit-btn").disabled=false;alert("送信に失敗しました。もう一度試してください。");}
+};
+
+window.loadTeacher=async function(){
+  const el=document.getElementById("teacher-content");
+  el.innerHTML="<div class='empty'>読み込み中… 🐾</div>";
+  try{
+    const snap=await get(ref(db,"discuss8v2"));
+    const data=snap.val()||{};
+    const total=Object.keys(data).length;
+    document.getElementById("stats").innerHTML=`<div class="chip">送信済み <b style="color:#5a5a8a">${total}</b> / 9</div><div class="chip">未送信 <b style="color:#e85d5d">${9-total}</b></div>`;
+    if(total===0){el.innerHTML="<div class='empty'>まだ回答がありません</div>";return;}
+    const qLabels={q2:"Q2 制度を知って気持ちは変わった？",q3:"Q3 働くこと・生きることとは？",q4:"Q4 今日の気づき"};
+    let html="";
+    Object.entries(qLabels).forEach(([key,title])=>{
+      html+=`<div class="chart-section"><div class="chart-title">${title}</div><div class="ans-list">`;
+      for(let g=1;g<=9;g++){
+        const d=data[`g${g}`];
+        html+=`<div class="ans-card"><div class="ans-head">${ANI[g-1]} グループ${g}${d?" ✓":""}</div><div class="ans-body">`;
+        html+=d&&d[key]?d[key].replace(/</g,"&lt;"):"<span class='nd'>まだ届いていません</span>";
+        html+="</div></div>";
+      }
+      html+="</div></div>";
+    });
+    el.innerHTML=html;
+  }catch(e){el.innerHTML="<div class='empty' style='color:#e85d5d;'>読み込みに失敗しました</div>";}
+};
+
+window.resetData=async function(){
+  if(!confirm("全グループの回答を削除します。よろしいですか？")) return;
+  try{
+    await set(ref(db,"discuss8v2"),null);
+    document.getElementById("stats").innerHTML="";
+    document.getElementById("teacher-content").innerHTML="<div class='empty' style='color:#3dba7f;'>✓ リセットしました！</div>";
+  }catch(e){alert("リセットに失敗しました。");}
+};
+</script>
+</body>
+</html>
