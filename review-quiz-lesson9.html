@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>⑨労働災害の防止 ── 4択復習クイズ</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--o:#ff7043;--o2:#fff3ef;--b:#29b6f6;--b2:#e3f5fd;--g:#43a047;--g2:#e8f5e9;--r:#e53935;--r2:#ffebee;--bg:#fffdf8;--text:#3a3330;--rd:18px;}
+body{font-family:"M PLUS Rounded 1c",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px;}
+.hero{background:linear-gradient(135deg,#43a047,#00897b);padding:22px 16px 30px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(255,255,255,.1);border-radius:50%;}
+.hero::after{content:"";position:absolute;bottom:-30px;left:-20px;width:100px;height:100px;background:rgba(255,255,255,.08);border-radius:50%;}
+.hero-emoji{font-size:48px;display:block;margin-bottom:6px;animation:bop 2s ease-in-out infinite;}
+@keyframes bop{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.hero h1{font-size:19px;font-weight:900;color:#fff;line-height:1.3;position:relative;}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:5px;position:relative;}
+.progress-wrap{padding:14px 16px 4px;}
+.prog-bar{height:10px;background:#e8e4dc;border-radius:10px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--b));border-radius:10px;transition:width .4s ease;}
+.prog-txt{font-size:12px;font-weight:800;color:#aaa;margin-top:5px;text-align:right;}
+.q-wrap{padding:14px 16px;}
+.q-card{background:#fff;border-radius:var(--rd);padding:20px 16px;margin-bottom:14px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:2px solid #f0ece4;display:none;}
+.q-card.show{display:block;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.q-num{display:inline-block;background:var(--g);color:#fff;font-size:12px;font-weight:900;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.q-text{font-size:16px;font-weight:800;line-height:1.6;margin-bottom:18px;}
+.choices{display:flex;flex-direction:column;gap:10px;}
+.choice-btn{border:2px solid #e8e4dc;background:#fff;border-radius:14px;padding:13px 14px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:all .18s;text-align:left;color:var(--text);display:flex;align-items:center;gap:10px;}
+.choice-btn:active{transform:scale(.98);}
+.choice-letter{display:inline-flex;width:26px;height:26px;border-radius:50%;background:#f0ece4;font-size:13px;font-weight:900;align-items:center;justify-content:center;color:#aaa;flex-shrink:0;}
+.choice-btn.correct{border-color:var(--g);background:var(--g2);color:#2e7d32;}
+.choice-btn.correct .choice-letter{background:var(--g);color:#fff;}
+.choice-btn.wrong{border-color:#ddd;background:#f8f8f8;color:#ccc;}
+.choice-btn.wrong .choice-letter{background:#ddd;color:#fff;}
+.choice-btn.selected-wrong{border-color:var(--r);background:var(--r2);color:#c62828;}
+.choice-btn.selected-wrong .choice-letter{background:var(--r);color:#fff;}
+.feedback{margin-top:14px;padding:14px;border-radius:14px;font-size:14px;font-weight:700;line-height:1.6;display:none;}
+.feedback.show{display:block;animation:fadeUp .3s ease;}
+.feedback.ok{background:var(--g2);border:2px solid var(--g);color:#2e7d32;}
+.feedback.ng{background:var(--r2);border:2px solid var(--r);color:#c62828;}
+.next-btn{width:100%;margin-top:12px;padding:14px;border:none;border-radius:14px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;background:var(--g);color:#fff;box-shadow:0 4px 14px rgba(67,160,71,.3);transition:all .2s;display:none;}
+.next-btn.show{display:block;animation:fadeUp .3s ease;}
+.next-btn:active{transform:scale(.97);}
+/* Result */
+.result-card{display:none;background:#fff;border-radius:var(--rd);padding:28px 20px;margin:0 16px;box-shadow:0 6px 28px rgba(0,0,0,.1);border:2px solid #f0ece4;text-align:center;}
+.result-card.show{display:block;animation:fadeUp .4s ease;}
+.result-emoji{font-size:64px;margin-bottom:10px;animation:bop 2s ease-in-out infinite;}
+.result-score{font-size:48px;font-weight:900;color:var(--g);}
+.result-label{font-size:14px;color:#aaa;margin-bottom:16px;font-weight:700;}
+.result-msg{font-size:15px;font-weight:800;line-height:1.6;margin-bottom:20px;color:var(--text);}
+.result-bar-wrap{background:#f0ece4;border-radius:10px;height:12px;margin-bottom:20px;overflow:hidden;}
+.result-bar{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--g),var(--b));transition:width 1s ease;}
+.wrong-review{text-align:left;margin-bottom:16px;}
+.wrong-title{font-size:13px;font-weight:900;color:#aaa;margin-bottom:8px;}
+.wrong-item{background:var(--r2);border:2px solid var(--r);border-radius:12px;padding:12px;margin-bottom:8px;}
+.wrong-item-q{font-size:13px;font-weight:900;color:#c62828;margin-bottom:4px;}
+.wrong-item-a{font-size:13px;font-weight:700;color:#c62828;}
+.retry-btn{width:100%;padding:14px;border:none;border-radius:14px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;background:var(--g);color:#fff;box-shadow:0 4px 14px rgba(67,160,71,.3);}
+.retry-btn:active{transform:scale(.97);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-emoji">📝</span>
+  <h1>⑨労働災害の防止<br>4択復習クイズ</h1>
+  <div class="hero-sub">全10問 ── しっかり復習しよう！</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  <div class="prog-txt" id="progTxt">0 / 10</div>
+</div>
+
+<div class="q-wrap" id="qWrap"></div>
+<div class="result-card" id="resultCard"></div>
+
+<script>
+const QS = [
+  {
+    q:"1960年代と比べて、現在の日本の労働災害による年間死亡者数はどのくらいになっているか？",
+    choices:["ほぼ変わらない（6,000人前後）","約3分の1（2,000人前後）","約10分の1（800人前後）","増加している（8,000人以上）"],
+    ans:2,
+    fb:"✅ 1960年代は年間約6,000人以上が亡くなっていましたが、安全対策の進歩により現在は約800人前後にまで減少しています。約10分の1になった計算です。"
+  },
+  {
+    q:"「労働安全衛生法」が定めているのはどれか？",
+    choices:["労働者の最低賃金","事業者に安全管理の義務を課すこと","外国人労働者の雇用制限","労働者の休暇制度"],
+    ans:1,
+    fb:"✅ 労働安全衛生法は、事業者に安全管理者の選任・健康診断の実施・危険防止措置などを義務づけ、働く人の安全と健康を守る法律です。"
+  },
+  {
+    q:"「ヒヤリハット」の説明として正しいのはどれか？",
+    choices:["大事故が起きた後に行う原因分析","ヒヤリとした・ハッとした危険な体験","事故で負傷した労働者のこと","安全管理の資格名称"],
+    ans:1,
+    fb:"✅ ヒヤリハットとは「ヒヤリとした」「ハッとした」危険な体験のこと。事故の一歩手前の状態で、これを集めることで重大事故を防ぐことができます。"
+  },
+  {
+    q:"ハインリッヒの法則（1:29:300）が示す内容として正しいのはどれか？",
+    choices:["1件の重大事故の背後に29件・300件の軽微な事故やヒヤリハットがある","事業所100社に1社は重大事故が起きる","安全対策費用の配分比率","労働災害の業種別割合"],
+    ans:0,
+    fb:"✅ ハインリッヒの法則は「1:29:300の法則」とも呼ばれ、1件の重大事故の背後に29件の軽傷事故と300件のヒヤリハットがあるとされます。小さな危険を見逃さないことが重要です。"
+  },
+  {
+    q:"労働者災害補償保険（労災保険）について正しいのはどれか？",
+    choices:["正社員だけが対象","治療費・休業補償などが給付される","被害者本人がすべての費用を負担する","任意加入で強制ではない"],
+    ans:1,
+    fb:"✅ 労災保険によって、治療費・休業補償・障害補償などが給付されます。費用を被害者が負担する必要はありません。"
+  },
+  {
+    q:"「過労死等防止対策推進法」の対象に含まれないのはどれか？",
+    choices:["長時間労働による脳・心臓疾患","過度のストレスによる精神障害","通勤中に発生した交通事故","仕事が原因の自殺"],
+    ans:2,
+    fb:"✅ 過労死等防止対策推進法では、脳・心臓疾患や精神障害による死亡・自殺を「過労死等」として対策します。通勤中の交通事故は別の法律（労災保険）で対応されます。"
+  },
+  {
+    q:"アルバイト・パートタイム労働者と労災保険の関係として正しいのはどれか？",
+    choices:["正社員と同様に対象になる","週20時間以上の場合だけ対象","アルバイトは対象外","雇用1年以上が条件"],
+    ans:0,
+    fb:"✅ アルバイト・パートも正社員と同様に労災保険の対象です。雇用形態や労働時間に関係なく、業務中の事故や職業病であれば補償されます。"
+  },
+  {
+    q:"職場での熱中症の扱いについて正しいのはどれか？",
+    choices:["個人の体質の問題として扱われる","業務上の労働災害として認定される","会社の責任にはならない","屋外作業のみが対象"],
+    ans:1,
+    fb:"✅ 屋外作業・厨房・工場など、職場での熱中症は業務上の労働災害として認定されます。屋内でも高温環境であれば対象になります。"
+  },
+  {
+    q:"労働災害の防止に必要な「三管理」として正しい組み合わせはどれか？",
+    choices:["時間管理・費用管理・人員管理","作業環境管理・作業管理・健康管理","機械管理・化学物質管理・電気管理","採用管理・教育管理・評価管理"],
+    ans:1,
+    fb:"✅ 労働災害防止の三管理は「作業環境管理（危険な環境の改善）」「作業管理（安全な作業方法の確立）」「健康管理（労働者の健康チェック）」です。"
+  },
+  {
+    q:"労働災害が特に多い業種として正しい組み合わせはどれか？",
+    choices:["金融業・保険業・情報通信業","製造業・建設業・第三次産業（サービス業など）","農業・林業・漁業のみ","公務員・教育関係者のみ"],
+    ans:1,
+    fb:"✅ 死亡事故では建設業・製造業・林業が多く、全体の死傷者数では第三次産業（サービス業）も増加しています。どの職場でも災害リスクがあります。"
+  }
+];
+
+let cur = 0, score = 0, wrongList = [];
+
+function showQ(i){
+  const wrap = document.getElementById('qWrap');
+  wrap.innerHTML = '';
+  const q = QS[i];
+  const card = document.createElement('div');
+  card.className = 'q-card show';
+  const letters = ['A','B','C','D'];
+  card.innerHTML = `
+    <div class="q-num">問${i+1}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="choices">
+      ${q.choices.map((c,j)=>`
+        <button class="choice-btn" onclick="answer(${j},this)">
+          <span class="choice-letter">${letters[j]}</span>
+          <span>${c}</span>
+        </button>`).join('')}
+    </div>
+    <div class="feedback" id="fb"></div>
+    <button class="next-btn" id="nxt" onclick="next()">${i<QS.length-1?'次の問題 →':'結果を見る 🎯'}</button>
+  `;
+  wrap.appendChild(card);
+  updateProgress(i);
+}
+
+function answer(val, btn){
+  const btns = document.querySelectorAll('.choice-btn');
+  btns.forEach(b => b.onclick = null);
+  const q = QS[cur];
+  const correct = val === q.ans;
+  if(correct){ score++; }
+  else { wrongList.push(cur); }
+
+  btns.forEach((b,j)=>{
+    if(j === q.ans){
+      b.classList.add('correct');
+    } else if(j === val && !correct){
+      b.classList.add('selected-wrong');
+    } else {
+      b.classList.add('wrong');
+    }
+  });
+
+  const fb = document.getElementById('fb');
+  fb.className = 'feedback show ' + (correct ? 'ok' : 'ng');
+  fb.innerHTML = (correct ? '🎉 ' : '😅 正解は <strong>' + ['A','B','C','D'][q.ans] + '</strong>！<br>') + q.fb;
+  document.getElementById('nxt').classList.add('show');
+}
+
+function next(){
+  cur++;
+  if(cur < QS.length){ showQ(cur); }
+  else{ showResult(); }
+}
+
+function updateProgress(i){
+  const pct = (i / QS.length) * 100;
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progTxt').textContent = i + ' / ' + QS.length;
+}
+
+function showResult(){
+  document.getElementById('qWrap').style.display = 'none';
+  document.querySelector('.progress-wrap').style.display = 'none';
+  const rc = document.getElementById('resultCard');
+  const pct = Math.round(score / QS.length * 100);
+  let emoji = '😢', msg = 'もう一度復習してみよう！';
+  if(pct >= 90){ emoji = '🏆'; msg = '完璧！労働災害の知識バッチリです！'; }
+  else if(pct >= 70){ emoji = '😊'; msg = 'よくできました！もう少しで満点！'; }
+  else if(pct >= 50){ emoji = '🙂'; msg = '半分以上正解！復習してさらに伸ばそう！'; }
+
+  const wrongHtml = wrongList.length > 0 ? `
+    <div class="wrong-review">
+      <div class="wrong-title">❌ 間違えた問題（復習しよう）</div>
+      ${wrongList.map(i=>`
+        <div class="wrong-item">
+          <div class="wrong-item-q">問${i+1} ${QS[i].q.slice(0,35)}…</div>
+          <div class="wrong-item-a">正解：${['A','B','C','D'][QS[i].ans]}. ${QS[i].choices[QS[i].ans]}</div>
+        </div>`).join('')}
+    </div>` : '<div style="color:#43a047;font-weight:900;font-size:15px;margin-bottom:16px">🎉 全問正解！素晴らしい！</div>';
+
+  rc.innerHTML = `
+    <div class="result-emoji">${emoji}</div>
+    <div class="result-score">${score} / ${QS.length}</div>
+    <div class="result-label">正解数 （正答率 ${pct}%）</div>
+    <div class="result-bar-wrap"><div class="result-bar" style="width:${pct}%"></div></div>
+    <div class="result-msg">${msg}</div>
+    ${wrongHtml}
+    <button class="retry-btn" onclick="retry()">🔄 もう一度挑戦する</button>
+  `;
+  rc.classList.add('show');
+}
+
+function retry(){
+  cur = 0; score = 0; wrongList = [];
+  document.getElementById('resultCard').className = 'result-card';
+  document.getElementById('qWrap').style.display = '';
+  document.querySelector('.progress-wrap').style.display = '';
+  showQ(0);
+}
+
+showQ(0);
+</script>
+</body>
+</html>
