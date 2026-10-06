@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>⑨労働災害の防止 ── アンケート</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--o:#ff7043;--o2:#fff3ef;--b:#29b6f6;--b2:#e3f5fd;--g:#43a047;--g2:#e8f5e9;--r:#e53935;--r2:#ffebee;--bg:#fffdf8;--text:#3a3330;--rd:18px;}
+body{font-family:"M PLUS Rounded 1c",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px;}
+.hero{background:linear-gradient(135deg,#ff7043,#ff8f00);padding:22px 16px 30px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(255,255,255,.1);border-radius:50%;}
+.hero::after{content:"";position:absolute;bottom:-30px;left:-20px;width:100px;height:100px;background:rgba(255,255,255,.08);border-radius:50%;}
+.hero-emoji{font-size:48px;display:block;margin-bottom:6px;animation:bop 2s ease-in-out infinite;}
+@keyframes bop{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.hero h1{font-size:19px;font-weight:900;color:#fff;line-height:1.3;position:relative;}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:5px;position:relative;}
+.wrap{padding:20px 16px;}
+/* --- Student mode --- */
+.q-card{background:#fff;border-radius:var(--rd);padding:22px 16px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:2px solid #f0ece4;}
+.q-label{display:inline-block;background:var(--o);color:#fff;font-size:12px;font-weight:900;padding:3px 10px;border-radius:20px;margin-bottom:12px;}
+.q-text{font-size:16px;font-weight:800;line-height:1.6;margin-bottom:20px;}
+.choices{display:flex;flex-direction:column;gap:10px;}
+.choice-btn{border:3px solid #e8e4dc;background:#fff;border-radius:14px;padding:14px 16px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;transition:all .18s;text-align:left;display:flex;align-items:center;gap:10px;color:var(--text);}
+.choice-btn:active{transform:scale(.98);}
+.choice-btn.sel{border-color:var(--o);background:var(--o2);}
+.choice-btn .emo{font-size:24px;flex-shrink:0;}
+.submit-btn{width:100%;margin-top:18px;padding:16px;border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:900;cursor:pointer;background:var(--o);color:#fff;box-shadow:0 4px 14px rgba(255,112,67,.3);transition:all .2s;opacity:.4;pointer-events:none;}
+.submit-btn.active{opacity:1;pointer-events:auto;}
+.submit-btn:active{transform:scale(.97);}
+.done-card{display:none;background:#fff;border-radius:var(--rd);padding:28px 20px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.08);border:2px solid #f0ece4;}
+.done-card.show{display:block;animation:fadeUp .4s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.done-emoji{font-size:64px;margin-bottom:10px;animation:bop 2s ease-in-out infinite;}
+.done-msg{font-size:16px;font-weight:800;line-height:1.6;color:var(--text);}
+.done-ans{display:inline-block;margin:10px 0;padding:10px 18px;background:var(--o2);border-radius:12px;font-size:15px;font-weight:800;color:var(--o);border:2px solid var(--o);}
+/* --- Teacher mode --- */
+.teacher-wrap{display:none;padding:16px;}
+.teacher-wrap.show{display:block;}
+.t-title{font-size:18px;font-weight:900;margin-bottom:4px;}
+.t-sub{font-size:13px;color:#aaa;font-weight:700;margin-bottom:16px;}
+.t-count{font-size:14px;font-weight:800;color:var(--o);margin-bottom:14px;}
+.bar-card{background:#fff;border-radius:var(--rd);padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:2px solid #f0ece4;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.bar-label{font-size:13px;font-weight:800;width:44px;text-align:center;flex-shrink:0;font-size:20px;}
+.bar-wrap{flex:1;}
+.bar-text{font-size:12px;font-weight:800;color:#888;margin-bottom:3px;}
+.bar-bg{background:#f0ece4;border-radius:8px;height:22px;overflow:hidden;}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--o),var(--b));border-radius:8px;transition:width .6s ease;min-width:2px;}
+.bar-num{font-size:13px;font-weight:900;width:36px;text-align:right;flex-shrink:0;color:var(--text);}
+.reload-btn{width:100%;margin-top:14px;padding:13px;border:none;border-radius:14px;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;background:#f0ece4;color:#888;transition:all .2s;}
+.reload-btn:active{transform:scale(.97);}
+.mode-switch{position:fixed;bottom:20px;right:16px;background:rgba(255,112,67,.9);color:#fff;border:none;border-radius:20px;padding:10px 16px;font-family:inherit;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2);backdrop-filter:blur(4px);z-index:100;}
+.status-badge{display:inline-block;margin-top:8px;font-size:12px;color:#aaa;font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-emoji">💼</span>
+  <h1>⑨労働災害の防止<br>あなたはどう感じる？</h1>
+  <div class="hero-sub">正直に答えよう！答えはみんなで共有します</div>
+</div>
+
+<!-- Student mode -->
+<div class="wrap" id="studentWrap">
+  <div class="q-card" id="qCard">
+    <div class="q-label">アンケート Q1</div>
+    <div class="q-text">あなたは将来の仕事で、自分が労働災害にあうかもしれないと思いますか？</div>
+    <div class="choices" id="choices">
+      <button class="choice-btn" onclick="select(0)"><span class="emo">😰</span><span>かなり心配　仕事は危ないと思う</span></button>
+      <button class="choice-btn" onclick="select(1)"><span class="emo">🤔</span><span>少し心配　気をつければ大丈夫かも</span></button>
+      <button class="choice-btn" onclick="select(2)"><span class="emo">😐</span><span>あまり心配していない　自分は関係ないかな</span></button>
+      <button class="choice-btn" onclick="select(3)"><span class="emo">💪</span><span>全然心配していない　気にしたことがない</span></button>
+    </div>
+    <button class="submit-btn" id="submitBtn" onclick="submit()">📩 送信する</button>
+    <div class="status-badge" id="statusBadge"></div>
+  </div>
+  <div class="done-card" id="doneCard">
+    <div class="done-emoji">✅</div>
+    <div class="done-msg">回答を送信しました！<br>ありがとうございます😊</div>
+    <div class="done-ans" id="doneAns"></div>
+    <div style="font-size:13px;color:#aaa;margin-top:8px;font-weight:700;">次のグループ活動まで待っていてください</div>
+  </div>
+</div>
+
+<!-- Teacher mode -->
+<div class="teacher-wrap" id="teacherWrap">
+  <div class="t-title">📊 クラス集計</div>
+  <div class="t-sub">⑨労働災害の防止 ── 意識調査</div>
+  <div class="t-count" id="tCount">読み込み中...</div>
+  <div class="bar-card" id="barCard"></div>
+  <button class="reload-btn" onclick="loadResults()">🔄 最新データを取得</button>
+</div>
+
+<button class="mode-switch" id="modeSwitchBtn" onclick="toggleMode()">🔐 先生</button>
+
+<script>
+// ── Config ──────────────────────────────────────────────
+const FIREBASE_URL = 'https://hoken-app-26315-default-rtdb.firebaseio.com';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwAS_zQlCKw8_DlGe4ltijzRjQ3UrEbgbSK5jdq7lvS_SgmB4nOdVzsBRTuhV7iQ5hi/exec';
+const DB_PATH = 'survey9/responses';
+
+const LABELS = ['😰 かなり心配','🤔 少し心配','😐 あまり心配していない','💪 全然心配していない'];
+const COLORS = ['#ff7043','#29b6f6','#43a047','#9c27b0'];
+
+// ── State ───────────────────────────────────────────────
+let selected = -1;
+let submitted = false;
+let teacherMode = false;
+
+function uid(){
+  let id = localStorage.getItem('survey9_uid');
+  if(!id){ id = 'u' + Date.now() + Math.random().toString(36).slice(2,6); localStorage.setItem('survey9_uid',id); }
+  return id;
+}
+
+// ── Student ─────────────────────────────────────────────
+function select(idx){
+  if(submitted) return;
+  selected = idx;
+  document.querySelectorAll('.choice-btn').forEach((b,i)=>{
+    b.classList.toggle('sel', i===idx);
+  });
+  document.getElementById('submitBtn').classList.add('active');
+}
+
+async function submit(){
+  if(selected < 0 || submitted) return;
+  submitted = true;
+  document.getElementById('submitBtn').textContent = '送信中...';
+  document.getElementById('submitBtn').style.opacity = '.6';
+
+  const payload = {
+    uid: uid(),
+    answer: selected,
+    label: LABELS[selected],
+    ts: new Date().toISOString()
+  };
+
+  let ok = false;
+  // Firebase first
+  try {
+    const res = await fetch(`${FIREBASE_URL}/${DB_PATH}/${payload.uid}.json`, {
+      method:'PUT', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    if(res.ok) ok = true;
+  } catch(e){}
+
+  // GAS fallback
+  if(!ok){
+    try {
+      await fetch(GAS_URL + '?sheet=survey9&uid=' + encodeURIComponent(payload.uid)
+        + '&answer=' + payload.answer
+        + '&label=' + encodeURIComponent(payload.label)
+        + '&ts=' + encodeURIComponent(payload.ts));
+      ok = true;
+    } catch(e){}
+  }
+
+  document.getElementById('statusBadge').textContent = ok ? '' : '⚠ オフライン保存（後で同期）';
+  localStorage.setItem('survey9_ans', payload.answer);
+
+  document.getElementById('qCard').style.display = 'none';
+  const dc = document.getElementById('doneCard');
+  dc.classList.add('show');
+  document.getElementById('doneAns').textContent = LABELS[selected];
+}
+
+// ── Teacher ─────────────────────────────────────────────
+let teacherUnlocked = false;
+
+function toggleMode(){
+  if(!teacherUnlocked){
+    const pw = prompt('先生用パスワードを入力してください');
+    if(pw !== 'sensei2025') return;
+    teacherUnlocked = true;
+  }
+  teacherMode = !teacherMode;
+  document.getElementById('studentWrap').style.display = teacherMode ? 'none' : '';
+  const tw = document.getElementById('teacherWrap');
+  tw.classList.toggle('show', teacherMode);
+  document.getElementById('modeSwitchBtn').textContent = teacherMode ? '👩‍🎓 生徒' : '🔐 先生';
+  if(teacherMode) loadResults();
+}
+
+async function loadResults(){
+  document.getElementById('tCount').textContent = '読み込み中...';
+  try {
+    const res = await fetch(`${FIREBASE_URL}/${DB_PATH}.json`);
+    const data = await res.json();
+    renderResults(data);
+  } catch(e){
+    document.getElementById('tCount').textContent = 'データ取得エラー';
+  }
+}
+
+function renderResults(data){
+  const counts = [0,0,0,0];
+  let total = 0;
+  if(data){
+    Object.values(data).forEach(r=>{
+      const i = parseInt(r.answer);
+      if(i >= 0 && i < 4){ counts[i]++; total++; }
+    });
+  }
+  document.getElementById('tCount').textContent = `回答者数: ${total} 人`;
+  const max = Math.max(...counts, 1);
+  const bc = document.getElementById('barCard');
+  bc.innerHTML = LABELS.map((lbl,i)=>{
+    const pct = Math.round(counts[i]/Math.max(total,1)*100);
+    const w = Math.round(counts[i]/max*100);
+    return `
+      <div class="bar-row">
+        <div class="bar-label">${lbl.split(' ')[0]}</div>
+        <div class="bar-wrap">
+          <div class="bar-text">${lbl.replace(/^[^\s]+ /,'')}</div>
+          <div class="bar-bg"><div class="bar-fill" style="width:${w}%;background:${COLORS[i]}"></div></div>
+        </div>
+        <div class="bar-num">${counts[i]}人<br><span style="font-size:10px;color:#aaa">${pct}%</span></div>
+      </div>`;
+  }).join('');
+}
+
+// ── Init ─────────────────────────────────────────────────
+const prevAns = localStorage.getItem('survey9_ans');
+if(prevAns !== null){
+  submitted = true;
+  document.getElementById('qCard').style.display = 'none';
+  const dc = document.getElementById('doneCard');
+  dc.classList.add('show');
+  document.getElementById('doneAns').textContent = LABELS[parseInt(prevAns)] || '';
+}
+</script>
+</body>
+</html>
