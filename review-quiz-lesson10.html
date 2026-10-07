@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>復習クイズ：働く人の健康づくり</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#1a1a1a;min-height:100vh;padding:1rem;font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.wrap{width:100%;max-width:760px;}
+.card{background:#0d0d0d;border-radius:16px;padding:2rem 2.5rem;min-height:480px;display:flex;flex-direction:column;position:relative;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.q-num{font-size:13px;color:#888;margin-bottom:1rem;}
+.q-text{font-size:22px;font-weight:700;line-height:1.6;white-space:pre-line;color:#fff;flex:1;margin-bottom:2rem;}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:auto;}
+.choice{padding:14px 16px;border:2px solid #333;background:#1a1a1a;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;color:#ccc;transition:all .15s;text-align:left;line-height:1.4;font-family:inherit;}
+.choice:hover:not(:disabled){border-color:#888;color:#fff;background:#252525;}
+.choice:disabled{cursor:default;}
+.choice.correct{background:#0a2a18;border-color:#4ecb87;color:#4ecb87;}
+.choice.wrong{background:#2a0a0a;border-color:#f07070;color:#f07070;}
+.result-box{margin-top:1.25rem;border-radius:12px;padding:1.25rem 1.5rem;}
+.result-ok{background:#0a2a18;border:1px solid #2a6e4a;}
+.result-ng{background:#2a0a0a;border:1px solid #7a2020;}
+.result-mark{font-size:20px;font-weight:700;margin-bottom:6px;}
+.result-mark.ok{color:#4ecb87;}.result-mark.ng{color:#f07070;}
+.result-explain{font-size:14px;color:#ddd;line-height:1.7;white-space:pre-line;}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.25rem;}
+.nav-btn{border:1px solid #444;background:#1a1a1a;border-radius:8px;padding:11px 28px;font-size:14px;font-weight:500;cursor:pointer;color:#aaa;transition:all .15s;font-family:inherit;}
+.nav-btn:hover{background:#2a2a2a;color:#fff;}
+.nav-btn:disabled{opacity:.25;cursor:default;}
+.dots{display:flex;gap:5px;flex-wrap:wrap;max-width:260px;justify-content:center;}
+.dot{width:9px;height:9px;border-radius:50%;background:#333;transition:background .2s;flex-shrink:0;}
+.dot.cur{background:#f0c060;}.dot.done-ok{background:#4ecb87;}.dot.done-ng{background:#f07070;}
+.prog{font-size:12px;color:#555;margin-top:4px;text-align:center;}
+#result-screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:480px;text-align:center;}
+#result-screen.show{display:flex;}
+.result-emoji{font-size:72px;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.result-title{font-size:36px;font-weight:700;color:#fff;margin-bottom:0.5rem;}
+.result-score{font-size:20px;color:#aaa;margin-bottom:1.5rem;}
+.retry-btn{border:2px solid #f0c060;background:transparent;color:#f0c060;border-radius:12px;padding:14px 40px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.retry-btn:hover{background:#f0c060;color:#000;}
+#celebrate{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.85);}
+#celebrate.show{display:flex;}
+#celebrate canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.celeb-msg{position:relative;z-index:10;text-align:center;animation:celebIn .6s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes celebIn{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.celeb-emoji{font-size:72px;display:block;margin-bottom:.5rem;animation:bounce 1s ease-in-out infinite;}
+.celeb-title{font-size:48px;font-weight:700;color:#f0c060;text-shadow:0 0 30px rgba(240,192,96,.8);margin-bottom:.4rem;}
+.celeb-sub{font-size:22px;color:#fff;margin-bottom:2rem;}
+.celeb-close{border:2px solid #f0c060;background:transparent;color:#f0c060;border-radius:12px;padding:12px 36px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;}
+.celeb-close:hover{background:#f0c060;color:#000;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" id="quiz-card">
+    <div class="q-num" id="q-num"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div id="result-box" style="display:none;"></div>
+  </div>
+  <div class="card" id="result-screen">
+    <div class="result-emoji" id="res-emoji"></div>
+    <div class="result-title" id="res-title"></div>
+    <div class="result-score" id="res-score"></div>
+    <button class="retry-btn" onclick="retry()">もう一度チャレンジ！</button>
+  </div>
+  <div class="nav" id="nav-wrap">
+    <button class="nav-btn" id="prev" onclick="move(-1)" disabled>← 前へ</button>
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div class="dots" id="dots"></div>
+      <div class="prog" id="prog"></div>
+    </div>
+    <button class="nav-btn" id="next-btn" onclick="nextQ()" disabled>次の問題 →</button>
+  </div>
+</div>
+<div id="celebrate">
+  <canvas id="fw-canvas"></canvas>
+  <div class="celeb-msg">
+    <span class="celeb-emoji">🏖️</span>
+    <div class="celeb-title">全問正解！！</div>
+    <div class="celeb-sub">働く人の健康マスター🎉</div>
+    <button class="celeb-close" onclick="closeCeleb()">閉じる</button>
+  </div>
+</div>
+<script>
+const QS=[
+  {q:"快適な職場づくりのうち\n「ソフト面（心理的・制度的な面）」の対策はどれ？",
+   choices:["温度や湿度の調整","休憩室の設置","ハラスメント対策","談話室の設置"],
+   ans:2,explain:"温度・湿度の調整や休憩室・談話室の設置は「ハード面」。ハラスメント対策のような心理的・制度的な対策が「ソフト面」です。快適職場には両方が必要です（教科書p.104）。"},
+  {q:"労働者の健康管理を経営の視点で考え\n戦略的に取り組むことを何という？",
+   choices:["健康経営","成果主義","終身雇用","年功序列"],
+   ans:0,explain:"「健康経営」といいます。社員が健康に働くことで会社の業績も向上するなど、経営によい影響があることが示されています。国はこうした企業を表彰しています。"},
+  {q:"ストレスチェック制度の\n主な目的はどれ？",
+   choices:["社員の性格を診断して評価に使う","メンタルヘルス不調を未然に防ぐ","医師の代わりに病気を診断する","ストレスの強い社員を配置転換する"],
+   ans:1,explain:"自分のストレス状態に気づいて対処できるよう支援し、結果を職場で集計して環境を改善することで、メンタルヘルス不調を未然に防ぐことが主な目的です。"},
+  {q:"職場で進められている\n「心の健康づくり」を何という？",
+   choices:["ヘルスプロモーション","リハビリテーション","メンタルヘルスケア","ワーク・ライフ・バランス"],
+   ans:2,explain:"「メンタルヘルスケア」といいます。ストレスへの気づきを促すことや、心身の緊張をほぐすストレッチなどリラクセーションの指導が行われています。"},
+  {q:"「産業保健スタッフ」に\n含まれないのはどれ？",
+   choices:["産業医","衛生管理者","保健師","営業部長"],
+   ans:3,explain:"産業保健スタッフとは、産業医・衛生管理者・保健師などのことです。それぞれの立場から相談に乗ったり、職場環境を改善したり、医療機関と連携したりします。"},
+  {q:"心の健康問題で仕事を休んだ人に\n行われている支援はどれ？",
+   choices:["退職をすすめる","スムーズな職場復帰の支援","給料をすべて止める","元の職場に戻ることを禁止する"],
+   ans:1,explain:"「心の健康問題により休業した労働者の職場復帰支援の手引き」が作られ、スムーズに職場復帰できるよう支援が行われています。"},
+  {q:"教科書の資料（2023年）で\n日本人の有給休暇の「支給日数」と「取得日数」は？",
+   choices:["支給20日・取得12日","支給20日・取得20日","支給28日・取得20日","支給12日・取得7日"],
+   ans:0,explain:"日本は支給20日に対して取得12日。もらえる休みを使いきれておらず、諸外国と比べても取得日数が少ない状況です（教科書p.105 図2）。"},
+  {q:"働き過ぎを防ぐために\n法律で会社に求められていることは？",
+   choices:["残業時間の上限をなくす","休日出勤を毎週行わせる","有給休暇を買い取って休ませない","有給休暇を確実に取得させる"],
+   ans:3,explain:"法律によって、会社は労働者に年次有給休暇を確実に取得させることが義務づけられ、時間外労働（残業）の上限も設定されています。"},
+  {q:"「余暇」の意義として\n教科書の内容に合わないものはどれ？",
+   choices:["心身の健康を保つ","家族のきずなや友情を保つ","仕事の時間を増やすために使う","地域社会とのつながりを保つ"],
+   ans:2,explain:"余暇は心身の健康を保ち、家族のきずなや友情、地域社会とのつながりを維持する貴重な機会です。余暇を確保・活用することは「生活の質」を高めることにつながります。"},
+  {q:"ワーク・ライフ・バランスの\n説明として最も適切なのは？",
+   choices:["仕事をできるだけ減らすこと","仕事と家庭・地域生活などとの調和","家庭よりも仕事を優先すること","若いうちだけ長時間働くこと"],
+   ans:1,explain:"仕事と家庭生活、地域生活、自己啓発など仕事以外の生活との調和を図り、生きがいや働きがいをもって個人の能力や個性を発揮することを目指すものです。"},
+];
+let cur=0;
+let answers=new Array(QS.length).fill(null);
+let fwAnim=null;
+function renderDots(){document.getElementById("dots").innerHTML=QS.map((_,i)=>{let c="dot";if(i===cur)c+=" cur";else if(answers[i]!==null)c+=answers[i]===QS[i].ans?" done-ok":" done-ng";return`<div class="${c}"></div>`;}).join("");}
+function render(){
+  const q=QS[cur];
+  document.getElementById("q-num").textContent=`Q${cur+1} / ${QS.length}`;
+  document.getElementById("q-text").textContent=q.q;
+  document.getElementById("prev").disabled=cur===0;
+  const chosen=answers[cur];const answered=chosen!==null;
+  document.getElementById("next-btn").disabled=!answered;
+  document.getElementById("next-btn").textContent=cur===QS.length-1?"結果を見る":"次の問題 →";
+  document.getElementById("choices").innerHTML=q.choices.map((c,i)=>{
+    let cls="choice";
+    if(answered){if(i===q.ans)cls+=" correct";else if(i===chosen)cls+=" wrong";}
+    return`<button class="${cls}" onclick="pick(${i})" ${answered?"disabled":""}>${c}</button>`;
+  }).join("");
+  const rb=document.getElementById("result-box");
+  if(answered){
+    const ok=chosen===q.ans;
+    rb.style.display="block";
+    rb.innerHTML=`<div class="result-box ${ok?"result-ok":"result-ng"}"><div class="result-mark ${ok?"ok":"ng"}">${ok?"○　正解！":"×　不正解"}</div><div class="result-explain">${q.explain}</div></div>`;
+  }else{rb.style.display="none";rb.innerHTML="";}
+  renderDots();
+}
+function pick(i){if(answers[cur]!==null)return;answers[cur]=i;render();}
+function move(d){cur=Math.max(0,Math.min(QS.length-1,cur+d));render();}
+function nextQ(){if(cur===QS.length-1){showResult();}else{cur++;render();}}
+function showResult(){
+  const correct=answers.filter((a,i)=>a===QS[i].ans).length;
+  document.getElementById("quiz-card").style.display="none";
+  document.getElementById("nav-wrap").style.display="none";
+  document.getElementById("result-screen").classList.add("show");
+  let emoji,title;
+  if(correct===QS.length){emoji="🎉";title="完璧！全問正解！！";setTimeout(launchFw,300);}
+  else if(correct>=8){emoji="😊";title="すごい！もう少しで満点！";}
+  else if(correct>=6){emoji="🙂";title="なかなかいい！";}
+  else{emoji="📖";title="もう一度復習しよう！";}
+  document.getElementById("res-emoji").textContent=emoji;
+  document.getElementById("res-title").textContent=title;
+  document.getElementById("res-score").textContent=`${correct} / ${QS.length} 問正解`;
+}
+function retry(){cur=0;answers=new Array(QS.length).fill(null);document.getElementById("quiz-card").style.display="flex";document.getElementById("nav-wrap").style.display="flex";document.getElementById("result-screen").classList.remove("show");render();}
+function launchFw(){
+  const canvas=document.getElementById("fw-canvas");const ctx=canvas.getContext("2d");
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const particles=[];
+  const COLORS=["#f0c060","#ffd700","#4ecb87","#60b8ff","#a89ef5","#ff9060","#fff"];
+  function burst(x,y){const color=COLORS[Math.floor(Math.random()*COLORS.length)];for(let i=0;i<80;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*6;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,decay:.012+Math.random()*.01,size:2+Math.random()*4,color});}}
+  for(let i=0;i<6;i++)setTimeout(()=>burst(100+Math.random()*(canvas.width-200),80+Math.random()*(canvas.height*.5)),i*180);
+  let bc=0;const bi=setInterval(()=>{burst(100+Math.random()*(canvas.width-200),60+Math.random()*(canvas.height*.55));bc++;if(bc>20)clearInterval(bi);},400);
+  function loop(){ctx.fillStyle="rgba(0,0,0,0.18)";ctx.fillRect(0,0,canvas.width,canvas.height);for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.vx*=.98;p.life-=p.decay;if(p.life<=0){particles.splice(i,1);continue;}ctx.globalAlpha=p.life;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;fwAnim=requestAnimationFrame(loop);}
+  document.getElementById("celebrate").classList.add("show");loop();
+}
+function closeCeleb(){document.getElementById("celebrate").classList.remove("show");if(fwAnim)cancelAnimationFrame(fwAnim);}
+render();
+</script>
+</body>
+</html>
