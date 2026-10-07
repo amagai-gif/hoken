@@ -2,206 +2,183 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>労働災害の防止 ○×クイズ</title>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>授業前クイズ：労働災害の防止</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{--o:#ff7043;--o2:#fff3ef;--b:#29b6f6;--b2:#e3f5fd;--g:#43a047;--g2:#e8f5e9;--r:#e53935;--r2:#ffebee;--bg:#fffdf8;--text:#3a3330;--rd:18px;}
-body{font-family:"M PLUS Rounded 1c",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px;}
-.hero{background:linear-gradient(135deg,#ff7043,#ff8f00);padding:22px 16px 30px;text-align:center;position:relative;overflow:hidden;}
-.hero::before{content:"";position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(255,255,255,.1);border-radius:50%;}
-.hero::after{content:"";position:absolute;bottom:-30px;left:-20px;width:100px;height:100px;background:rgba(255,255,255,.08);border-radius:50%;}
-.hero-emoji{font-size:48px;display:block;margin-bottom:6px;animation:bop 2s ease-in-out infinite;}
-@keyframes bop{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-.hero h1{font-size:20px;font-weight:900;color:#fff;line-height:1.3;position:relative;}
-.hero-sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:5px;position:relative;}
-.progress-wrap{padding:14px 16px 4px;}
-.prog-bar{height:10px;background:#e8e4dc;border-radius:10px;overflow:hidden;}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--o),var(--b));border-radius:10px;transition:width .4s ease;}
-.prog-txt{font-size:12px;font-weight:800;color:#aaa;margin-top:5px;text-align:right;}
-.q-wrap{padding:14px 16px;}
-.q-card{background:#fff;border-radius:var(--rd);padding:20px 16px;margin-bottom:14px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:2px solid #f0ece4;display:none;}
-.q-card.show{display:block;animation:fadeUp .3s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-.q-num{display:inline-block;background:var(--o);color:#fff;font-size:12px;font-weight:900;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
-.q-text{font-size:16px;font-weight:800;line-height:1.6;margin-bottom:18px;}
-.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.choice-btn{border:3px solid #e8e4dc;background:#fff;border-radius:16px;padding:18px 10px;font-family:inherit;font-size:22px;font-weight:900;cursor:pointer;transition:all .18s;text-align:center;color:#aaa;}
-.choice-btn:active{transform:scale(.95);}
-.choice-btn.maru{border-color:var(--b);background:var(--b2);color:var(--b);}
-.choice-btn.batu{border-color:var(--r);background:var(--r2);color:var(--r);}
-.choice-btn.correct{border-color:var(--g) !important;background:var(--g2) !important;color:var(--g) !important;transform:scale(1.05);box-shadow:0 4px 16px rgba(67,160,71,.3);}
-.choice-btn.wrong{border-color:#ccc !important;background:#f8f8f8 !important;color:#ccc !important;opacity:.5;}
-.feedback{margin-top:14px;padding:14px;border-radius:14px;font-size:14px;font-weight:700;line-height:1.6;display:none;}
-.feedback.show{display:block;animation:fadeUp .3s ease;}
-.feedback.ok{background:var(--g2);border:2px solid var(--g);color:#2e7d32;}
-.feedback.ng{background:var(--r2);border:2px solid var(--r);color:#c62828;}
-.next-btn{width:100%;margin-top:12px;padding:14px;border:none;border-radius:14px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;background:var(--o);color:#fff;box-shadow:0 4px 14px rgba(255,112,67,.3);transition:all .2s;display:none;}
-.next-btn.show{display:block;animation:fadeUp .3s ease;}
-.next-btn:active{transform:scale(.97);}
-.result-card{display:none;background:#fff;border-radius:var(--rd);padding:28px 20px;margin:0 16px;box-shadow:0 6px 28px rgba(0,0,0,.1);border:2px solid #f0ece4;text-align:center;}
-.result-card.show{display:block;animation:fadeUp .4s ease;}
-.result-emoji{font-size:64px;margin-bottom:10px;animation:bop 2s ease-in-out infinite;}
-.result-score{font-size:48px;font-weight:900;color:var(--o);}
-.result-label{font-size:14px;color:#aaa;margin-bottom:16px;font-weight:700;}
-.result-msg{font-size:15px;font-weight:800;line-height:1.6;margin-bottom:20px;color:var(--text);}
-.result-bar-wrap{background:#f0ece4;border-radius:10px;height:12px;margin-bottom:8px;overflow:hidden;}
-.result-bar{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--o),var(--b));transition:width 1s ease;}
-.retry-btn{width:100%;padding:14px;border:none;border-radius:14px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;background:var(--o);color:#fff;box-shadow:0 4px 14px rgba(255,112,67,.3);margin-top:8px;}
-.retry-btn:active{transform:scale(.97);}
+body{background:#1a1a1a;min-height:100vh;padding:1rem;font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.app{background:#0d0d0d;width:100%;max-width:960px;min-height:520px;border-radius:16px;padding:2.5rem 3rem;display:flex;flex-direction:column;position:relative;overflow:hidden;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.slide-num{position:absolute;top:1.25rem;right:1.5rem;font-size:14px;color:#555;}
+.q-tag{display:inline-block;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:1.25rem;background:#1a1a2a;color:#f0c060;}
+.q-text{font-size:28px;font-weight:700;color:#fff;line-height:1.5;white-space:pre-line;margin-bottom:2rem;flex:1;}
+.intro-badge{display:inline-block;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:1.25rem;background:#1a1a2a;color:#f0c060;}
+.intro-title{font-size:32px;font-weight:700;color:#fff;line-height:1.45;margin-bottom:0.6rem;}
+.intro-sub{font-size:20px;color:#aaa;line-height:1.6;}
+.btn-row{display:flex;gap:16px;margin-top:auto;}
+.ans-btn{flex:1;padding:20px 12px;border:2.5px solid;border-radius:14px;font-family:inherit;font-size:24px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center;background:transparent;}
+.btn-o{border-color:#2a6e4a;color:#4ecb87;}
+.btn-x{border-color:#7a2020;color:#f07070;}
+.btn-o:hover:not(:disabled){background:#1a3d2a;}
+.btn-x:hover:not(:disabled){background:#3a1010;}
+.ans-btn:disabled{opacity:.3;cursor:default;}
+.big-answer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:16px;z-index:10;opacity:0;pointer-events:none;}
+.big-answer.show{opacity:1;pointer-events:auto;}
+.big-mark{font-size:160px;font-weight:700;line-height:1;}
+.anim-pop{animation:pop .35s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes pop{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.bg-ok{background:#0a2a18;}.bg-ng{background:#2a0a0a;}
+.col-ok{color:#4ecb87;}.col-ng{color:#f07070;}
+.explain-box{position:absolute;inset:0;border-radius:16px;padding:2.5rem 3rem;display:flex;flex-direction:column;justify-content:center;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s;}
+.explain-box.show{opacity:1;pointer-events:auto;}
+.explain-mark{font-size:72px;font-weight:700;line-height:1;margin-bottom:1rem;}
+.explain-text{font-size:22px;font-weight:700;line-height:1.75;white-space:pre-line;color:#fff;}
+.explain-hint{font-size:15px;color:#555;margin-top:1.75rem;}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.25rem;width:100%;max-width:960px;}
+.nav-btn{border:1px solid #333;background:#1a1a1a;border-radius:8px;padding:12px 28px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color:#aaa;transition:all .15s;}
+.nav-btn:hover{background:#2a2a2a;color:#fff;}
+.nav-btn:disabled{opacity:.25;cursor:default;}
+.dots-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.dots{display:flex;gap:5px;flex-wrap:wrap;max-width:260px;justify-content:center;}
+.dot{width:9px;height:9px;border-radius:50%;background:#333;flex-shrink:0;transition:background .2s;}
+.dot.cur{background:#f0c060;}.dot.done-ok{background:#4ecb87;}.dot.done-ng{background:#f07070;}
+.prog{font-size:12px;color:#555;}
+#celebrate{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.85);}
+#celebrate.show{display:flex;}
+#celebrate canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.celeb-msg{position:relative;z-index:10;text-align:center;animation:celebIn .6s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes celebIn{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.celeb-emoji{font-size:80px;display:block;margin-bottom:.5rem;animation:bounce 1s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-15px);}}
+.celeb-title{font-size:48px;font-weight:700;color:#f0c060;text-shadow:0 0 30px rgba(240,192,96,.8);margin-bottom:.4rem;}
+.celeb-sub{font-size:22px;color:#fff;margin-bottom:2rem;}
+.celeb-close{border:2px solid #f0c060;background:transparent;color:#f0c060;border-radius:12px;padding:12px 36px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.celeb-close:hover{background:#f0c060;color:#000;}
 </style>
 </head>
 <body>
-
-<div class="hero">
-  <span class="hero-emoji">⚠️</span>
-  <h1>労働災害の防止<br>○×クイズ</h1>
-  <div class="hero-sub">全10問 ── 答えを考えてから選ぼう！</div>
+<div class="app" id="app">
+  <span class="slide-num" id="snum"></span>
+  <div id="content" style="display:flex;flex-direction:column;flex:1;"></div>
+  <div class="big-answer" id="big-answer"><div class="big-mark" id="big-mark"></div></div>
+  <div class="explain-box" id="explain-box">
+    <div class="explain-mark" id="explain-mark"></div>
+    <div class="explain-text" id="explain-text"></div>
+    <div class="explain-hint">← → キーまたは下のボタンで次へ</div>
+  </div>
 </div>
-
-<div class="progress-wrap">
-  <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
-  <div class="prog-txt" id="progTxt">0 / 10</div>
+<div class="nav">
+  <button class="nav-btn" id="prev" onclick="move(-1)" disabled>← 前へ</button>
+  <div class="dots-wrap">
+    <div class="dots" id="dots"></div>
+    <div class="prog" id="prog"></div>
+  </div>
+  <button class="nav-btn" id="next" onclick="move(1)">次へ →</button>
 </div>
-
-<div class="q-wrap" id="qWrap"></div>
-<div class="result-card" id="resultCard"></div>
-
+<div id="celebrate">
+  <canvas id="fw-canvas"></canvas>
+  <div class="celeb-msg">
+    <span class="celeb-emoji">⚠️</span>
+    <div class="celeb-title">全問正解！！</div>
+    <div class="celeb-sub">労働災害マスター🎉</div>
+    <button class="celeb-close" onclick="closeCeleb()">閉じる</button>
+  </div>
+</div>
 <script>
-const QS = [
-  {
-    q:"日本の労働災害による死亡者数は、1960年代と比べて現在は大幅に減少している。",
-    ans:true,
-    fb:"◎ 正解！ 1960年代は年間6,000人以上が亡くなっていましたが、法整備や安全対策の進歩で現在は約800人前後にまで減少しています。"
-  },
-  {
-    q:"労働災害は製造業や建設業だけで起こり、サービス業やオフィスでは発生しない。",
-    ans:false,
-    fb:"◎ 正解！ 腰痛・転倒・過労など、サービス業やオフィスでも多くの労働災害が起きています。"
-  },
-  {
-    q:"労働安全衛生法は、働く人の安全と健康を守るための法律で、事業者に安全管理の義務を課している。",
-    ans:true,
-    fb:"◎ 正解！ 事業者は安全管理者の選任、健康診断の実施、危険防止措置などが義務づけられています。"
-  },
-  {
-    q:"「ヒヤリハット」とは、大事故が起きた後に行う原因分析のことをいう。",
-    ans:false,
-    fb:"◎ 正解！ ヒヤリハットとは「ヒヤリとした」「ハッとした」危険な体験のこと。事故の一歩手前の状態です。"
-  },
-  {
-    q:"ハインリッヒの法則によると、1件の重大事故の背後には29件の軽傷事故と300件のヒヤリハットが存在するといわれる。",
-    ans:true,
-    fb:"◎ 正解！ ハインリッヒの法則（1:29:300の法則）は、安全管理の基本として世界中で使われています。"
-  },
-  {
-    q:"労働災害が発生した場合、その費用はすべて被害者本人が負担しなければならない。",
-    ans:false,
-    fb:"◎ 正解！ 労働者災害補償保険（労災保険）によって、治療費・休業補償などが給付されます。被害者が費用を負担する必要はありません。"
-  },
-  {
-    q:"過労死は、長時間労働や過度のストレスが原因で起こる脳・心臓疾患や自殺を含む概念である。",
-    ans:true,
-    fb:"◎ 正解！ 過労死等防止対策推進法では、脳・心臓疾患や精神障害による自殺も過労死等として対策されています。"
-  },
-  {
-    q:"アルバイトやパートタイム労働者は、労働災害補償の対象外である。",
-    ans:false,
-    fb:"◎ 正解！ アルバイト・パートも正社員と同様に労災保険の対象です。雇用形態に関係なく補償されます。"
-  },
-  {
-    q:"職場での熱中症は「労働災害」として扱われる。",
-    ans:true,
-    fb:"◎ 正解！ 屋外作業・厨房・工場など、職場での熱中症は業務上の労働災害として認定されます。"
-  },
-  {
-    q:"労働災害を防ぐためには、個人の「注意」だけで十分であり、職場環境の整備は必要ない。",
-    ans:false,
-    fb:"◎ 正解！ 個人の注意だけでなく、危険な環境を取り除く「作業環境管理」「作業管理」「健康管理」の三管理が重要です。"
-  }
+const SLIDES=[
+  {type:"intro",title:"授業前クイズ",sub:"○か×か、直感で答えてみよう！"},
+  {type:"ox",q:"日本の労働災害による死亡者数は\n1960年代と比べて現在は大幅に減少している",ans:"o",
+   explain:"1960年代は年間6,000人以上が亡くなっていましたが\n法整備や安全対策の進歩で\n現在は約800人前後にまで減少しています。"},
+  {type:"ox",q:"労働災害は製造業や建設業だけで起こり\nサービス業やオフィスでは発生しない",ans:"x",
+   explain:"腰痛・転倒・過労など\nサービス業やオフィスでも\n多くの労働災害が起きています。"},
+  {type:"ox",q:"労働安全衛生法は働く人の安全と健康を守るための法律で\n事業者に安全管理の義務を課している",ans:"o",
+   explain:"事業者は安全管理者の選任・健康診断の実施・\n危険防止措置などが義務づけられています。"},
+  {type:"ox",q:"「ヒヤリハット」とは\n大事故が起きた後に行う原因分析のことをいう",ans:"x",
+   explain:"ヒヤリハットとは「ヒヤリとした」「ハッとした」\n危険な体験のことです。\n事故の一歩手前の状態を指します。"},
+  {type:"ox",q:"ハインリッヒの法則によると\n1件の重大事故の背後には\n29件の軽傷事故と300件のヒヤリハットが存在する",ans:"o",
+   explain:"ハインリッヒの法則（1:29:300の法則）は\n安全管理の基本として\n世界中で使われています。"},
+  {type:"ox",q:"労働災害が発生した場合\nその費用はすべて被害者本人が\n負担しなければならない",ans:"x",
+   explain:"労働者災害補償保険（労災保険）によって\n治療費・休業補償などが給付されます。\n被害者が費用を負担する必要はありません。"},
+  {type:"ox",q:"過労死は長時間労働や過度のストレスが原因で起こる\n脳・心臓疾患や自殺を含む概念である",ans:"o",
+   explain:"過労死等防止対策推進法では\n脳・心臓疾患や精神障害による自殺も\n過労死等として対策されています。"},
+  {type:"ox",q:"アルバイトやパートタイム労働者は\n労働災害補償の対象外である",ans:"x",
+   explain:"アルバイト・パートも正社員と同様に\n労災保険の対象です。\n雇用形態に関係なく補償されます。"},
+  {type:"ox",q:"職場での熱中症は\n「労働災害」として扱われる",ans:"o",
+   explain:"屋外作業・厨房・工場など\n職場での熱中症は\n業務上の労働災害として認定されます。"},
+  {type:"ox",q:"労働災害を防ぐためには\n個人の「注意」だけで十分であり\n職場環境の整備は必要ない",ans:"x",
+   explain:"個人の注意だけでなく\n危険な環境を取り除く\n「作業環境管理」「作業管理」「健康管理」の三管理が重要です。"},
 ];
-
-let cur=0, score=0;
-
-function showQ(i){
-  const wrap=document.getElementById('qWrap');
-  wrap.innerHTML='';
-  const q=QS[i];
-  const card=document.createElement('div');
-  card.className='q-card show';
-  card.innerHTML=`
-    <div class="q-num">問${i+1}</div>
-    <div class="q-text">${q.q}</div>
-    <div class="choices">
-      <button class="choice-btn maru" onclick="answer(true,this)">○</button>
-      <button class="choice-btn batu" onclick="answer(false,this)">✕</button>
-    </div>
-    <div class="feedback" id="fb"></div>
-    <button class="next-btn" id="nxt" onclick="next()">${i<QS.length-1?'次の問題 →':'結果を見る 🎯'}</button>
-  `;
-  wrap.appendChild(card);
-  updateProgress(i);
+const TOTAL_Q=SLIDES.filter(s=>s.type==="ox").length;
+let cur=0;
+const chosen=new Array(SLIDES.length).fill(null);
+let fwAnim=null;
+function launchFireworks(){
+  const canvas=document.getElementById("fw-canvas");
+  const ctx=canvas.getContext("2d");
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const particles=[];
+  const COLORS=["#f0c060","#ffd700","#4ecb87","#60b8ff","#a89ef5","#ff9060","#fff"];
+  function burst(x,y){const color=COLORS[Math.floor(Math.random()*COLORS.length)];for(let i=0;i<80;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*6;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,decay:.012+Math.random()*.01,size:2+Math.random()*4,color});}}
+  for(let i=0;i<6;i++)setTimeout(()=>burst(100+Math.random()*(canvas.width-200),80+Math.random()*(canvas.height*.5)),i*180);
+  let bc=0;const bi=setInterval(()=>{burst(100+Math.random()*(canvas.width-200),60+Math.random()*(canvas.height*.55));bc++;if(bc>20)clearInterval(bi);},400);
+  function loop(){ctx.fillStyle="rgba(0,0,0,0.18)";ctx.fillRect(0,0,canvas.width,canvas.height);for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.vx*=.98;p.life-=p.decay;if(p.life<=0){particles.splice(i,1);continue;}ctx.globalAlpha=p.life;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;fwAnim=requestAnimationFrame(loop);}
+  loop();
 }
-
-function answer(val,btn){
-  const btns=document.querySelectorAll('.choice-btn');
-  btns.forEach(b=>b.onclick=null);
-  const q=QS[cur];
-  const correct=val===q.ans;
-  if(correct){score++;}
-  btns.forEach(b=>{
-    const isCorr=(b.classList.contains('maru')&&q.ans)||(b.classList.contains('batu')&&!q.ans);
-    if(isCorr) b.classList.add('correct');
-    else b.classList.add('wrong');
-  });
-  const fb=document.getElementById('fb');
-  fb.className='feedback show '+(correct?'ok':'ng');
-  fb.innerHTML=(correct?'🎉 ':'😅 ')+q.fb;
-  document.getElementById('nxt').classList.add('show');
+function showCeleb(){document.getElementById("celebrate").classList.add("show");launchFireworks();}
+function closeCeleb(){document.getElementById("celebrate").classList.remove("show");if(fwAnim)cancelAnimationFrame(fwAnim);}
+function checkAll(){const qs=SLIDES.map((s,i)=>s.type==="ox"?i:-1).filter(i=>i>=0);if(!qs.every(i=>chosen[i]!==null))return;if(qs.every(i=>SLIDES[i].ans===chosen[i]))setTimeout(showCeleb,600);}
+function getDisplay(s,v){return s.ans===v?{sym:"○",bg:"bg-ok",col:"col-ok"}:{sym:"×",bg:"bg-ng",col:"col-ng"};}
+function isOk(s,v){return v!==null&&s.ans===v;}
+function showAnswer(v){
+  const s=SLIDES[cur];chosen[cur]=v;
+  const d=getDisplay(s,v);
+  const ba=document.getElementById("big-answer");
+  ba.className="big-answer "+d.bg+" show";
+  const bm=document.getElementById("big-mark");
+  const nb=bm.cloneNode(false);nb.className="big-mark anim-pop "+d.col;nb.textContent=d.sym;
+  bm.parentNode.replaceChild(nb,bm);
+  setTimeout(()=>{
+    ba.className="big-answer";
+    const eb=document.getElementById("explain-box");
+    eb.className="explain-box "+d.bg+" show";
+    document.getElementById("explain-mark").className="explain-mark "+d.col;
+    document.getElementById("explain-mark").textContent=d.sym;
+    document.getElementById("explain-text").textContent=s.explain;
+    renderDots();checkAll();
+  },900);
 }
-
-function next(){
-  cur++;
-  if(cur<QS.length){showQ(cur);}
-  else{showResult();}
+function renderDots(){
+  const qs=SLIDES.map((s,i)=>s.type==="ox"?i:-1).filter(i=>i>=0);
+  document.getElementById("dots").innerHTML=qs.map(i=>{let c="dot";if(i===cur)c+=" cur";else if(chosen[i]!==null)c+=isOk(SLIDES[i],chosen[i])?" done-ok":" done-ng";return`<div class="${c}"></div>`;}).join("");
 }
-
-function updateProgress(i){
-  const pct=((i)/QS.length)*100;
-  document.getElementById('progFill').style.width=pct+'%';
-  document.getElementById('progTxt').textContent=i+' / '+QS.length;
+function render(){
+  const s=SLIDES[cur];
+  document.getElementById("snum").textContent=`${cur+1} / ${SLIDES.length}`;
+  document.getElementById("prev").disabled=cur===0;
+  document.getElementById("next").disabled=cur===SLIDES.length-1;
+  const qN=SLIDES.slice(0,cur+1).filter(x=>x.type==="ox").length;
+  document.getElementById("prog").textContent=s.type==="ox"?`Q${qN} / ${TOTAL_Q}`:"← → で進む";
+  document.getElementById("big-answer").className="big-answer";
+  const eb=document.getElementById("explain-box");
+  if(chosen[cur]!==null&&s.type==="ox"){
+    const d=getDisplay(s,chosen[cur]);
+    eb.className="explain-box "+d.bg+" show";
+    document.getElementById("explain-mark").className="explain-mark "+d.col;
+    document.getElementById("explain-mark").textContent=d.sym;
+    document.getElementById("explain-text").textContent=s.explain;
+  }else{eb.className="explain-box";}
+  renderDots();
+  let html="";
+  if(s.type==="intro"){
+    html=`<div class="intro-badge">労働災害の防止</div><div class="intro-title">${s.title}</div><div class="intro-sub">${s.sub}</div>`;
+  }else{
+    const lk=chosen[cur]!==null?"disabled":"";
+    html=`<div class="q-tag">労働災害の防止</div><div class="q-text">${s.q}</div><div class="btn-row"><button class="ans-btn btn-o" onclick="showAnswer('o')" ${lk}>○</button><button class="ans-btn btn-x" onclick="showAnswer('x')" ${lk}>×</button></div>`;
+  }
+  document.getElementById("content").innerHTML=html;
 }
-
-function showResult(){
-  document.getElementById('qWrap').style.display='none';
-  document.querySelector('.progress-wrap').style.display='none';
-  const rc=document.getElementById('resultCard');
-  const pct=Math.round(score/QS.length*100);
-  let emoji='😢',msg='もう一度復習してみよう！';
-  if(pct>=90){emoji='🏆';msg='完璧！労働災害の知識バッチリです！';}
-  else if(pct>=70){emoji='😊';msg='よくできました！もう少しで満点！';}
-  else if(pct>=50){emoji='🙂';msg='半分以上正解！復習してさらに伸ばそう！';}
-  rc.innerHTML=`
-    <div class="result-emoji">${emoji}</div>
-    <div class="result-score">${score} / ${QS.length}</div>
-    <div class="result-label">正解数 （正答率 ${pct}%）</div>
-    <div class="result-bar-wrap"><div class="result-bar" style="width:${pct}%"></div></div>
-    <div class="result-msg">${msg}</div>
-    <button class="retry-btn" onclick="retry()">🔄 もう一度挑戦する</button>
-  `;
-  rc.classList.add('show');
-}
-
-function retry(){
-  cur=0;score=0;
-  document.getElementById('resultCard').className='result-card';
-  document.getElementById('qWrap').style.display='';
-  document.querySelector('.progress-wrap').style.display='';
-  showQ(0);
-}
-
-showQ(0);
+function move(d){cur=Math.max(0,Math.min(SLIDES.length-1,cur+d));render();}
+document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")move(1);if(e.key==="ArrowLeft")move(-1);});
+render();
 </script>
 </body>
 </html>
