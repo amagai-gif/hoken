@@ -3,354 +3,429 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>⑨労働災害の防止 ── グループ討論</title>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<title>グループ討論 / 労働災害の防止</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{--o:#ff7043;--o2:#fff3ef;--b:#29b6f6;--b2:#e3f5fd;--g:#43a047;--g2:#e8f5e9;--p:#7b2fbe;--p2:#f3e5f5;--bg:#fffdf8;--text:#3a3330;--rd:18px;}
-body{font-family:"M PLUS Rounded 1c",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:100px;}
-.hero{background:linear-gradient(135deg,#7b2fbe,#4a148c);padding:22px 16px 30px;text-align:center;position:relative;overflow:hidden;}
-.hero::before{content:"";position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(255,255,255,.1);border-radius:50%;}
-.hero::after{content:"";position:absolute;bottom:-30px;left:-20px;width:100px;height:100px;background:rgba(255,255,255,.08);border-radius:50%;}
-.hero-emoji{font-size:48px;display:block;margin-bottom:6px;animation:bop 2s ease-in-out infinite;}
-@keyframes bop{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-.hero h1{font-size:19px;font-weight:900;color:#fff;line-height:1.3;position:relative;}
-.hero-sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:5px;position:relative;}
+body{font-family:'M PLUS Rounded 1c',sans-serif;background:#fffdf8;color:#3a3330;min-height:100vh;}
 
-/* Group Select */
-.setup-wrap{padding:20px 16px;}
-.setup-card{background:#fff;border-radius:var(--rd);padding:20px 16px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:2px solid #f0ece4;}
-.setup-label{font-size:14px;font-weight:800;color:#aaa;margin-bottom:10px;}
-.setup-title{font-size:17px;font-weight:900;margin-bottom:16px;line-height:1.5;}
-.group-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
-.group-btn{border:3px solid #e8e4dc;background:#fff;border-radius:14px;padding:14px 8px;font-family:inherit;font-size:22px;font-weight:900;cursor:pointer;transition:all .18s;text-align:center;color:#aaa;}
-.group-btn:active{transform:scale(.95);}
-.group-btn.sel{border-color:var(--p);background:var(--p2);color:var(--p);}
-.start-btn{width:100%;padding:16px;border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:900;cursor:pointer;background:var(--p);color:#fff;box-shadow:0 4px 14px rgba(123,47,190,.3);transition:all .2s;opacity:.4;pointer-events:none;}
-.start-btn.active{opacity:1;pointer-events:auto;}
-.start-btn:active{transform:scale(.97);}
+/* ── モードバー ── */
+.modebar{display:flex;background:#5a5a8a;padding:6px 8px 0;gap:6px;position:sticky;top:0;z-index:100;}
+.mbtn{flex:1;padding:8px 4px 10px;border:none;border-radius:10px 10px 0 0;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;background:#4a4a7a;color:#ccc;}
+.mbtn.ons{background:#fffdf8;color:#3a3330;}
+.mbtn.ont{background:#fffdf8;color:#3a3330;}
 
-/* Discussion */
-.discuss-wrap{display:none;padding:14px 16px;}
-.step-nav{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;}
-.step-dot{width:32px;height:32px;border-radius:50%;background:#e8e4dc;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;color:#aaa;flex-shrink:0;cursor:pointer;transition:all .2s;}
-.step-dot.done{background:var(--g);color:#fff;}
-.step-dot.active{background:var(--p);color:#fff;transform:scale(1.1);}
-.d-card{background:#fff;border-radius:var(--rd);padding:20px 16px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:2px solid #f0ece4;display:none;}
-.d-card.show{display:block;animation:fadeUp .3s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-.d-num{display:inline-block;background:var(--p);color:#fff;font-size:12px;font-weight:900;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
-.d-question{font-size:16px;font-weight:900;line-height:1.6;margin-bottom:14px;}
-.d-hint{background:var(--p2);border-radius:12px;padding:12px;font-size:13px;font-weight:700;line-height:1.6;color:#6a1b9a;margin-bottom:14px;}
-.d-hint-title{font-size:11px;font-weight:900;color:#ab47bc;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
-textarea{width:100%;border:2px solid #e8e4dc;border-radius:12px;padding:12px;font-family:inherit;font-size:14px;font-weight:700;resize:vertical;min-height:100px;color:var(--text);transition:border-color .2s;background:#fafaf8;}
-textarea:focus{outline:none;border-color:var(--p);}
-.char-count{text-align:right;font-size:11px;color:#bbb;font-weight:700;margin-top:3px;}
-.next-btn{width:100%;margin-top:12px;padding:14px;border:none;border-radius:14px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;background:var(--p);color:#fff;box-shadow:0 4px 14px rgba(123,47,190,.3);transition:all .2s;}
-.next-btn:active{transform:scale(.97);}
-.skip-btn{width:100%;margin-top:8px;padding:11px;border:none;border-radius:14px;font-family:inherit;font-size:13px;font-weight:900;cursor:pointer;background:#f0ece4;color:#aaa;transition:all .2s;}
-.skip-btn:active{transform:scale(.97);}
+/* ── パネル ── */
+.panel{display:none;padding:0 0 40px;}
+.panel.act{display:block;}
 
-/* Summary */
-.summary-card{display:none;background:#fff;border-radius:var(--rd);padding:22px 16px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:2px solid #f0ece4;text-align:center;}
-.summary-card.show{display:block;animation:fadeUp .4s ease;}
-.sum-emoji{font-size:56px;margin-bottom:10px;animation:bop 2s ease-in-out infinite;}
-.sum-title{font-size:18px;font-weight:900;margin-bottom:8px;}
-.sum-sub{font-size:14px;color:#aaa;font-weight:700;line-height:1.6;}
-.sum-ans{background:var(--p2);border-radius:12px;padding:12px 14px;margin:14px 0;text-align:left;}
-.sum-ans-item{font-size:13px;font-weight:700;line-height:1.8;color:#5e35b1;}
-.sum-ans-item b{color:var(--p);font-weight:900;}
+/* ── ヒーロー ── */
+.hero{background:linear-gradient(135deg,#5a5a8a,#8a5a8a);color:#fff;padding:18px 16px;text-align:center;}
+.hero h1{font-size:18px;font-weight:800;line-height:1.4;}
+.hero p{font-size:12px;opacity:.8;margin-top:4px;}
 
-/* Teacher mode */
-.teacher-wrap{display:none;padding:16px;}
-.teacher-wrap.show{display:block;}
-.t-title{font-size:18px;font-weight:900;margin-bottom:4px;}
-.t-sub{font-size:13px;color:#aaa;font-weight:700;margin-bottom:16px;}
-.t-group-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:14px;padding-bottom:4px;}
-.t-tab{padding:7px 12px;border-radius:20px;font-family:inherit;font-size:13px;font-weight:900;cursor:pointer;border:2px solid #e8e4dc;background:#fff;color:#aaa;flex-shrink:0;transition:all .18s;}
-.t-tab.sel{border-color:var(--p);background:var(--p2);color:var(--p);}
-.t-answer-card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 12px rgba(0,0,0,.07);border:2px solid #f0ece4;margin-bottom:10px;}
-.t-answer-q{font-size:11px;font-weight:900;color:#ab47bc;margin-bottom:5px;}
-.t-answer-text{font-size:14px;font-weight:700;line-height:1.6;color:var(--text);}
-.t-empty{text-align:center;color:#bbb;font-size:14px;font-weight:700;padding:20px;}
-.reload-btn{width:100%;margin-top:10px;padding:13px;border:none;border-radius:14px;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;background:#f0ece4;color:#888;transition:all .2s;}
-.mode-switch{position:fixed;bottom:20px;right:16px;background:rgba(123,47,190,.9);color:#fff;border:none;border-radius:20px;padding:10px 16px;font-family:inherit;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2);backdrop-filter:blur(4px);z-index:100;}
-.group-badge{display:inline-block;background:var(--p);color:#fff;font-size:13px;font-weight:900;padding:4px 12px;border-radius:20px;margin-bottom:14px;}
+/* ── スライドナビ ── */
+.slide-nav{display:flex;gap:6px;padding:10px 12px;background:#eeeefc;overflow-x:auto;}
+.snbtn{flex:0 0 auto;padding:6px 14px;border:2px solid #5a5a8a;border-radius:20px;font-family:inherit;font-size:12px;font-weight:700;background:#fff;color:#5a5a8a;cursor:pointer;}
+.snbtn.act{background:#5a5a8a;color:#fff;}
+
+/* ── スライド ── */
+.slide-wrap{display:none;padding:12px;}
+.slide-wrap.act{display:block;}
+.slide-head{border-radius:12px 12px 0 0;padding:12px 16px;color:#fff;font-weight:800;font-size:15px;}
+.slide-head.red{background:#c0392b;}
+.slide-head.green{background:#27ae60;}
+.slide-head.purple{background:#8e44ad;}
+.slide-body{background:#fff;border-radius:0 0 12px 12px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+
+/* ── 業種カード ── */
+.industry-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.ind-card{border-radius:10px;padding:10px;background:#fff7f5;border:1.5px solid #e0ccc8;}
+.ind-card .ind-title{font-size:12px;font-weight:800;color:#c0392b;margin-bottom:4px;}
+.ind-card ul{font-size:11px;padding-left:14px;color:#555;line-height:1.7;}
+
+/* ── 三管理 ── */
+.mgmt-grid{display:grid;gap:8px;margin-top:8px;}
+.mgmt-card{border-radius:10px;padding:10px 14px;display:flex;align-items:flex-start;gap:10px;}
+.mgmt-card.env{background:#e8f8f5;border:1.5px solid #27ae60;}
+.mgmt-card.op{background:#eaf4fb;border:1.5px solid #2980b9;}
+.mgmt-card.health{background:#fdf2e9;border:1.5px solid #e67e22;}
+.mgmt-icon{font-size:24px;}
+.mgmt-text h4{font-size:13px;font-weight:800;margin-bottom:2px;}
+.mgmt-text p{font-size:11px;color:#555;line-height:1.5;}
+
+/* ── ヒヤリハット ── */
+.hiyari-box{background:#fff9e6;border:2px solid #f39c12;border-radius:12px;padding:14px;margin-top:8px;}
+.hiyari-box h4{font-size:14px;font-weight:800;color:#e67e22;margin-bottom:8px;}
+.hiyari-box p{font-size:13px;line-height:1.8;color:#444;}
+.hiyari-tip{font-size:11px;color:#888;margin-top:8px;font-style:italic;}
+
+/* ── グループ選択 ── */
+.grp-section{padding:12px;}
+.grp-label{font-size:13px;font-weight:700;color:#5a5a8a;margin-bottom:8px;text-align:center;}
+.grp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.gbtn{padding:12px 4px;border:2px solid #c9c9e8;border-radius:12px;font-family:inherit;font-size:12px;font-weight:700;background:#fff;color:#5a5a8a;cursor:pointer;text-align:center;transition:.15s;}
+.gbtn:hover{background:#eeeefc;}
+.gbtn.sel{background:#5a5a8a;color:#fff;border-color:#5a5a8a;}
+
+/* ── Q-カード ── */
+.q-section{padding:0 12px 12px;}
+.q-card{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:14px;overflow:hidden;}
+.q-card.lk{opacity:.45;pointer-events:none;}
+.q-head{background:#5a5a8a;color:#fff;padding:10px 14px;font-size:13px;font-weight:800;}
+.q-body{padding:12px 14px;}
+.q-text{font-size:13px;line-height:1.7;margin-bottom:10px;}
+.opts{display:flex;gap:8px;flex-wrap:wrap;}
+.opt{padding:8px 14px;border:2px solid #c9c9e8;border-radius:20px;font-family:inherit;font-size:12px;cursor:pointer;transition:.15s;}
+.opt:hover{border-color:#5a5a8a;}
+.opt.sel{background:#5a5a8a;color:#fff;border-color:#5a5a8a;}
+textarea{width:100%;border:1.5px solid #c9c9e8;border-radius:10px;padding:10px;font-family:inherit;font-size:13px;resize:vertical;min-height:80px;}
+textarea:focus{outline:none;border-color:#5a5a8a;}
+
+/* ── 送信 ── */
+.submit-wrap{padding:0 12px 24px;text-align:center;}
+.submit-btn{background:#5a5a8a;color:#fff;border:none;border-radius:24px;padding:14px 40px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;width:100%;max-width:320px;}
+.submit-btn:disabled{opacity:.5;}
+.done-msg{display:none;font-size:14px;color:#27ae60;font-weight:700;padding:10px;}
+
+/* ── 教員パネル ── */
+.t-ctrl{padding:12px;}
+.t-btn{background:#8a5a8a;color:#fff;border:none;border-radius:20px;padding:10px 24px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;margin:4px;}
+.t-btn.danger{background:#c0392b;}
+.t-results{padding:0 12px;}
+.t-group{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:12px;overflow:hidden;}
+.t-group-head{background:#eeeefc;padding:8px 14px;font-size:13px;font-weight:800;color:#5a5a8a;}
+.t-qrow{padding:8px 14px;border-bottom:1px solid #f0f0f0;font-size:12px;}
+.t-qrow:last-child{border-bottom:none;}
+.t-qlabel{font-weight:700;color:#888;font-size:11px;margin-bottom:2px;}
+.t-ans{color:#3a3330;}
+.t-empty{color:#ccc;font-style:italic;}
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <span class="hero-emoji">🤖</span>
-  <h1>⑨労働災害の防止<br>グループ討論</h1>
-  <div class="hero-sub">AIとロボットが仕事の安全をどう変える？</div>
+<!-- モードバー -->
+<div class="modebar">
+  <button class="mbtn ons" onclick="mode('s')">👩‍🎓 生徒</button>
+  <button class="mbtn" id="tbtn" onclick="mode('t')">👩‍🏫 教員</button>
 </div>
 
-<!-- Group Select -->
-<div class="setup-wrap" id="setupWrap">
-  <div class="setup-card">
-    <div class="setup-label">STEP 1</div>
-    <div class="setup-title">あなたのグループ番号を選んでください</div>
-    <div class="group-grid" id="groupGrid">
-      <button class="group-btn" onclick="selGroup(1)">G1</button>
-      <button class="group-btn" onclick="selGroup(2)">G2</button>
-      <button class="group-btn" onclick="selGroup(3)">G3</button>
-      <button class="group-btn" onclick="selGroup(4)">G4</button>
-      <button class="group-btn" onclick="selGroup(5)">G5</button>
-      <button class="group-btn" onclick="selGroup(6)">G6</button>
-      <button class="group-btn" onclick="selGroup(7)">G7</button>
-      <button class="group-btn" onclick="selGroup(8)">G8</button>
-      <button class="group-btn" onclick="selGroup(9)">G9</button>
+<!-- ===== 生徒パネル ===== -->
+<div class="panel act" id="panel-s">
+
+  <div class="hero">
+    <h1>💼 グループ討論<br>労働災害の防止</h1>
+    <p>グループを選んで、みんなで考えよう</p>
+  </div>
+
+  <!-- スライドナビ -->
+  <div class="slide-nav">
+    <button class="snbtn act" onclick="pg(0)">📊 業種別リスク</button>
+    <button class="snbtn" onclick="pg(1)">🔰 三管理</button>
+    <button class="snbtn" onclick="pg(2)">⚠️ ヒヤリハット</button>
+  </div>
+
+  <!-- スライド0: 業種別リスク -->
+  <div class="slide-wrap act" id="sl0">
+    <div class="slide-head red">📊 業種別の労働災害リスク</div>
+    <div class="slide-body">
+      <p style="font-size:12px;color:#777;margin-bottom:4px;">どんな仕事にどんな危険があるか確認しよう</p>
+      <div class="industry-grid">
+        <div class="ind-card">
+          <div class="ind-title">🏭 製造業</div>
+          <ul>
+            <li>機械への巻き込まれ</li>
+            <li>切り傷・打撲</li>
+            <li>化学物質への暴露</li>
+          </ul>
+        </div>
+        <div class="ind-card">
+          <div class="ind-title">🏗️ 建設・屋外作業</div>
+          <ul>
+            <li>高所からの転落</li>
+            <li>重機との接触</li>
+            <li>熱中症</li>
+          </ul>
+        </div>
+        <div class="ind-card">
+          <div class="ind-title">🛒 小売・サービス</div>
+          <ul>
+            <li>転倒（床の濡れ）</li>
+            <li>腰痛（重い荷物）</li>
+            <li>カスタマーハラスメント</li>
+          </ul>
+        </div>
+        <div class="ind-card">
+          <div class="ind-title">💻 オフィス・IT</div>
+          <ul>
+            <li>長時間労働</li>
+            <li>VDT症候群</li>
+            <li>メンタルヘルス不調</li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <button class="start-btn" id="startBtn" onclick="startDiscuss()">💬 討論をはじめる</button>
   </div>
-</div>
 
-<!-- Discussion -->
-<div class="discuss-wrap" id="discussWrap">
-  <div class="group-badge" id="groupBadge">G? グループ</div>
-  <div class="step-nav" id="stepNav"></div>
-  <div id="cardArea"></div>
-</div>
-
-<!-- Teacher mode -->
-<div class="teacher-wrap" id="teacherWrap">
-  <div class="t-title">📋 グループ回答一覧</div>
-  <div class="t-sub">⑨労働災害の防止 ── グループ討論</div>
-  <div class="t-group-tabs" id="tGroupTabs">
-    <button class="t-tab sel" onclick="selTeacherGroup('all')">全グループ</button>
-    <button class="t-tab" onclick="selTeacherGroup('g1')">G1</button>
-    <button class="t-tab" onclick="selTeacherGroup('g2')">G2</button>
-    <button class="t-tab" onclick="selTeacherGroup('g3')">G3</button>
-    <button class="t-tab" onclick="selTeacherGroup('g4')">G4</button>
-    <button class="t-tab" onclick="selTeacherGroup('g5')">G5</button>
-    <button class="t-tab" onclick="selTeacherGroup('g6')">G6</button>
-    <button class="t-tab" onclick="selTeacherGroup('g7')">G7</button>
-    <button class="t-tab" onclick="selTeacherGroup('g8')">G8</button>
-    <button class="t-tab" onclick="selTeacherGroup('g9')">G9</button>
+  <!-- スライド1: 三管理 -->
+  <div class="slide-wrap" id="sl1">
+    <div class="slide-head green">🔰 労働災害防止の三管理</div>
+    <div class="slide-body">
+      <p style="font-size:12px;color:#777;margin-bottom:6px;">職場の安全は「3つの管理」が基本</p>
+      <div class="mgmt-grid">
+        <div class="mgmt-card env">
+          <div class="mgmt-icon">🏢</div>
+          <div class="mgmt-text">
+            <h4>① 作業環境管理</h4>
+            <p>有害な物質や騒音を減らす。換気・照明・温度を整える。</p>
+          </div>
+        </div>
+        <div class="mgmt-card op">
+          <div class="mgmt-icon">📋</div>
+          <div class="mgmt-text">
+            <h4>② 作業管理</h4>
+            <p>正しい手順・保護具の使用。無理な姿勢や長時間作業を避ける。</p>
+          </div>
+        </div>
+        <div class="mgmt-card health">
+          <div class="mgmt-icon">💊</div>
+          <div class="mgmt-text">
+            <h4>③ 健康管理</h4>
+            <p>定期健診・ストレスチェック。早期発見・早期対応が大切。</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div id="tAnswerArea"><div class="t-empty">読み込み中...</div></div>
-  <button class="reload-btn" onclick="loadTeacherData()">🔄 最新データを取得</button>
+
+  <!-- スライド2: ヒヤリハット -->
+  <div class="slide-wrap" id="sl2">
+    <div class="slide-head purple">⚠️ ヒヤリハットとは？</div>
+    <div class="slide-body">
+      <div class="hiyari-box">
+        <h4>💡 ヒヤリハットの法則（ハインリッヒの法則）</h4>
+        <p>1件の重大事故の背後には<strong>29件の軽傷事故</strong>、さらに<strong>300件のヒヤリハット</strong>（ひやっとした・はっとした体験）が隠れている。</p>
+        <p style="margin-top:8px;">「危なかった…」という体験を報告・共有することで、大きな事故を防げる。</p>
+        <p class="hiyari-tip">※ヒヤリハットを報告しやすい職場の雰囲気づくりが重要</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- グループ選択 -->
+  <div class="grp-section">
+    <div class="grp-label">🐾 グループを選んでください</div>
+    <div class="grp-grid">
+      <button class="gbtn" onclick="selGrp(1)">🐻 1班</button>
+      <button class="gbtn" onclick="selGrp(2)">🐼 2班</button>
+      <button class="gbtn" onclick="selGrp(3)">🦊 3班</button>
+      <button class="gbtn" onclick="selGrp(4)">🐰 4班</button>
+      <button class="gbtn" onclick="selGrp(5)">🐧 5班</button>
+      <button class="gbtn" onclick="selGrp(6)">🦁 6班</button>
+      <button class="gbtn" onclick="selGrp(7)">🐸 7班</button>
+      <button class="gbtn" onclick="selGrp(8)">🐯 8班</button>
+      <button class="gbtn" onclick="selGrp(9)">🦋 9班</button>
+    </div>
+  </div>
+
+  <!-- Q-カード -->
+  <div class="q-section">
+
+    <div class="q-card lk" id="qc1">
+      <div class="q-head">Q1 ヒヤリハット報告文化</div>
+      <div class="q-body">
+        <div class="q-text">あなたのクラスや部活で「ヒヤッとした体験」を報告しやすい雰囲気はありますか？</div>
+        <div class="opts">
+          <button class="opt" onclick="pick(this,'q2','ある')">✅ ある</button>
+          <button class="opt" onclick="pick(this,'q2','ない')">❌ ない</button>
+          <button class="opt" onclick="pick(this,'q2','わからない')">🤔 わからない</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card lk" id="qc2">
+      <div class="q-head">Q2 危険な作業を断れる？</div>
+      <div class="q-body">
+        <div class="q-text">もしアルバイト先で「危ない」と感じる作業を頼まれたら、断れると思いますか？</div>
+        <div class="opts">
+          <button class="opt" onclick="pick(this,'q3','断れると思う')">💪 断れると思う</button>
+          <button class="opt" onclick="pick(this,'q3','難しいと思う')">😰 難しいと思う</button>
+          <button class="opt" onclick="pick(this,'q3','わからない')">🤔 わからない</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card lk" id="qc3">
+      <div class="q-head">Q3 今日の気づき</div>
+      <div class="q-body">
+        <div class="q-text">労働災害の防止について、今日の学習で気づいたこと・考えたことをグループで話し合って書いてください。</div>
+        <textarea id="q4" placeholder="グループで話し合った内容を入力..."></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 送信 -->
+  <div class="submit-wrap">
+    <button class="submit-btn" id="sbtn" onclick="submitAll()" disabled>📤 グループの回答を送信</button>
+    <div class="done-msg" id="done-msg">✅ 送信完了！お疲れさまでした</div>
+  </div>
+
+</div><!-- /panel-s -->
+
+<!-- ===== 教員パネル ===== -->
+<div class="panel" id="panel-t">
+  <div class="hero" style="background:linear-gradient(135deg,#8a5a8a,#5a5a8a);">
+    <h1>👩‍🏫 教員ビュー</h1>
+    <p>全班の回答を確認できます</p>
+  </div>
+  <div class="t-ctrl">
+    <button class="t-btn" onclick="loadAll()">🔄 回答を読み込む</button>
+    <button class="t-btn danger" onclick="clearAll()">🗑️ 全データ消去</button>
+  </div>
+  <div class="t-results" id="t-results"></div>
 </div>
 
-<button class="mode-switch" id="modeSwitchBtn" onclick="toggleMode()">🔐 先生</button>
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDummyKeyForHokenApp",
+  authDomain: "hoken-app-26315.firebaseapp.com",
+  databaseURL: "https://hoken-app-26315-default-rtdb.firebaseio.com",
+  projectId: "hoken-app-26315",
+  storageBucket: "hoken-app-26315.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abcdef"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window._fbSet = async (path, data) => {
+  await set(ref(db, path), data);
+};
+window._fbGet = async (path) => {
+  const snap = await get(ref(db, path));
+  return snap.exists() ? snap.val() : null;
+};
+window._fbRemove = async (path) => {
+  await remove(ref(db, path));
+};
+</script>
 
 <script>
-const FIREBASE_URL = 'https://hoken-app-26315-default-rtdb.firebaseio.com';
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwAS_zQlCKw8_DlGe4ltijzRjQ3UrEbgbSK5jdq7lvS_SgmB4nOdVzsBRTuhV7iQ5hi/exec';
+// ── 状態 ──
+let cg = 0;
+let ans = {};
+const qLabels = {
+  q2: 'Q1 ヒヤリハット報告文化',
+  q3: 'Q2 危険な作業を断れる？',
+  q4: 'Q3 今日の気づき'
+};
+const grpEmoji = ['','🐻','🐼','🦊','🐰','🐧','🦁','🐸','🐯','🦋'];
 
-const STEPS = [
-  {
-    id: 'q1',
-    q: '🤖 AIやロボットが工場・建設現場などで働くと、労働災害は減ると思いますか？',
-    hint: '📌 ヒント: 危険な作業を機械に任せると…？ ロボットが疲れないと…？ どんな事故が減りそう？',
-    placeholder: 'グループの意見をまとめて書いてください（例：危険な作業をロボットが代わりにやることで、転落や挟まれ事故が減ると思う）'
-  },
-  {
-    id: 'q2',
-    q: '⚠️ 逆に、AIやロボットの導入で新しい危険（事故リスク）が生まれることはありますか？',
-    hint: '📌 ヒント: 機械の誤作動・人間とロボットの協働・プログラムミスなど、新しいリスクについて考えよう',
-    placeholder: 'グループで話し合った意見を書いてください（例：ロボットが予期しない動きをして人にぶつかる危険がある）'
-  },
-  {
-    id: 'q3',
-    q: '🏥 メンタルヘルス（過労・ストレス）の問題も、AIで解決できると思いますか？',
-    hint: '📌 ヒント: AIが仕事量を管理してくれたら？ でも監視が強くなったら？ 人との関係はどうなる？',
-    placeholder: 'グループの考えを書いてください（例：AIが労働時間を管理してくれれば残業が減るかもしれないが、監視される不安もある）'
-  },
-  {
-    id: 'q4',
-    q: '💡 AI・ロボット時代の労働災害を防ぐために、どんなルールや対策が必要だと思いますか？',
-    hint: '📌 ヒント: 法律・訓練・設計・労働者の権利など、どんな仕組みが必要か考えよう',
-    placeholder: 'グループのアイデアを書いてください（例：ロボットと人が一緒に働くエリアには安全センサーを義務づけるべき）'
+// ── モード切替 ──
+function mode(m){
+  document.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('ons','ont'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('act'));
+  if(m==='s'){
+    document.querySelectorAll('.mbtn')[0].classList.add('ons');
+    document.getElementById('panel-s').classList.add('act');
+  } else {
+    document.querySelectorAll('.mbtn')[1].classList.add('ont');
+    document.getElementById('panel-t').classList.add('act');
   }
-];
-
-let selectedGroup = null;
-let currentStep = 0;
-let answers = {};
-let teacherMode = false;
-let teacherUnlocked = false;
-let teacherGroupFilter = 'all';
-let teacherData = null;
-
-// ── Group Select ─────────────────────────────────────────
-function selGroup(n){
-  selectedGroup = n;
-  document.querySelectorAll('.group-btn').forEach((b,i)=>{
-    b.classList.toggle('sel', i+1 === n);
-  });
-  document.getElementById('startBtn').classList.add('active');
 }
+window.mode = mode;
 
-function startDiscuss(){
-  if(!selectedGroup) return;
-  document.getElementById('setupWrap').style.display = 'none';
-  document.getElementById('discussWrap').style.display = 'block';
-  document.getElementById('groupBadge').textContent = 'G' + selectedGroup + ' グループ';
-
-  // Check saved progress
-  const saved = localStorage.getItem('discuss9_g' + selectedGroup);
-  if(saved){
-    try{ answers = JSON.parse(saved); }catch(e){ answers = {}; }
-  }
-  currentStep = Object.keys(answers).length;
-  if(currentStep >= STEPS.length) currentStep = STEPS.length;
-
-  renderNav();
-  if(currentStep >= STEPS.length){ showSummary(); }
-  else{ showStep(currentStep); }
+// ── スライド切替 ──
+function pg(n){
+  document.querySelectorAll('.slide-wrap').forEach((s,i)=>s.classList.toggle('act',i===n));
+  document.querySelectorAll('.snbtn').forEach((b,i)=>b.classList.toggle('act',i===n));
 }
+window.pg = pg;
 
-// ── Navigation ───────────────────────────────────────────
-function renderNav(){
-  const nav = document.getElementById('stepNav');
-  nav.innerHTML = STEPS.map((s,i)=>{
-    let cls = 'step-dot';
-    if(i < currentStep) cls += ' done';
-    else if(i === currentStep) cls += ' active';
-    return `<div class="${cls}" onclick="jumpStep(${i})">${i+1}</div>`;
-  }).join('') + `<div class="step-dot ${currentStep>=STEPS.length?'done':''}" style="font-size:16px">✅</div>`;
+// ── グループ選択 ──
+function selGrp(n){
+  cg = n;
+  document.querySelectorAll('.gbtn').forEach((b,i)=>b.classList.toggle('sel',i+1===n));
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('lk'));
+  document.getElementById('sbtn').disabled = false;
 }
+window.selGrp = selGrp;
 
-function jumpStep(i){
-  if(i <= currentStep){ currentStep = i; showStep(i); renderNav(); }
+// ── 選択肢 ──
+function pick(el, key, val){
+  const parent = el.closest('.opts');
+  parent.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  ans[key] = val;
 }
+window.pick = pick;
 
-// ── Step ─────────────────────────────────────────────────
-function showStep(i){
-  const s = STEPS[i];
-  const savedAns = answers[s.id] || '';
-  document.getElementById('cardArea').innerHTML = `
-    <div class="d-card show">
-      <div class="d-num">ディスカッション ${i+1} / ${STEPS.length}</div>
-      <div class="d-question">${s.q}</div>
-      <div class="d-hint"><div class="d-hint-title">💡 考えるヒント</div>${s.hint}</div>
-      <textarea id="ans${i}" placeholder="${s.placeholder}" maxlength="300" oninput="updateCount(${i})">${savedAns}</textarea>
-      <div class="char-count" id="cnt${i}">${savedAns.length} / 300文字</div>
-      <button class="next-btn" onclick="saveAndNext(${i})">${i<STEPS.length-1?'次のテーマへ ➡':'📤 まとめて送信する'}</button>
-      <button class="skip-btn" onclick="skipStep(${i})">スキップ（後で書く）</button>
-    </div>`;
-}
-
-function updateCount(i){
-  const v = document.getElementById('ans'+i).value;
-  document.getElementById('cnt'+i).textContent = v.length + ' / 300文字';
-}
-
-function saveAndNext(i){
-  const val = document.getElementById('ans'+i).value.trim();
-  answers[STEPS[i].id] = val;
-  localStorage.setItem('discuss9_g' + selectedGroup, JSON.stringify(answers));
-  currentStep = Math.max(currentStep, i+1);
-  renderNav();
-  if(i < STEPS.length-1){ showStep(i+1); }
-  else{ submitAll(); }
-}
-
-function skipStep(i){
-  answers[STEPS[i].id] = '';
-  currentStep = Math.max(currentStep, i+1);
-  renderNav();
-  if(i < STEPS.length-1){ showStep(i+1); }
-  else{ submitAll(); }
-}
-
-// ── Submit ───────────────────────────────────────────────
+// ── 送信 ──
 async function submitAll(){
-  const payload = {
-    group: 'g' + selectedGroup,
-    answers: answers,
+  if(!cg) return;
+  const q4val = document.getElementById('q4').value.trim();
+  const data = {
+    q2: ans.q2 || null,
+    q3: ans.q3 || null,
+    q4: q4val || null,
     ts: new Date().toISOString()
   };
-
-  let ok = false;
   try {
-    const res = await fetch(`${FIREBASE_URL}/discuss9/g${selectedGroup}.json`,{
-      method:'PUT', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
-    });
-    if(res.ok) ok = true;
-  } catch(e){}
-
-  if(!ok){
-    try{
-      const qs = Object.entries(answers).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&');
-      await fetch(GAS_URL+'?sheet=discuss9&group=g'+selectedGroup+'&ts='+encodeURIComponent(payload.ts)+'&'+qs);
-      ok = true;
-    }catch(e){}
-  }
-  showSummary(ok);
-}
-
-function showSummary(ok){
-  document.getElementById('cardArea').innerHTML = `
-    <div class="summary-card show">
-      <div class="sum-emoji">🎉</div>
-      <div class="sum-title">${ok===false?'⚠ 送信エラー（ローカル保存済み）':'討論おつかれさまでした！'}</div>
-      <div class="sum-sub">G${selectedGroup}グループの意見を記録しました。<br>先生の合図があるまで待ってください。</div>
-      <div class="sum-ans">
-        ${STEPS.map((s,i)=>`<div class="sum-ans-item"><b>Q${i+1}</b> ${s.q.replace(/^[^\s]+ /,'').slice(0,30)}…<br>${answers[s.id]||'（未回答）'}</div>`).join('')}
-      </div>
-    </div>`;
-  document.getElementById('stepNav').style.display = 'none';
-}
-
-// ── Teacher ──────────────────────────────────────────────
-function toggleMode(){
-  if(!teacherUnlocked){
-    const pw = prompt('先生用パスワードを入力してください');
-    if(pw !== 'sensei2025') return;
-    teacherUnlocked = true;
-  }
-  teacherMode = !teacherMode;
-  document.getElementById('setupWrap').style.display = teacherMode ? 'none' : '';
-  document.getElementById('discussWrap').style.display = 'none';
-  const tw = document.getElementById('teacherWrap');
-  tw.classList.toggle('show', teacherMode);
-  document.getElementById('modeSwitchBtn').textContent = teacherMode ? '👩‍🎓 生徒' : '🔐 先生';
-  if(teacherMode) loadTeacherData();
-}
-
-async function loadTeacherData(){
-  document.getElementById('tAnswerArea').innerHTML = '<div class="t-empty">読み込み中...</div>';
-  try {
-    const res = await fetch(`${FIREBASE_URL}/discuss9.json`);
-    teacherData = await res.json();
-    renderTeacher();
+    await window._fbSet('discuss9/g'+cg, data);
+    document.getElementById('sbtn').style.display='none';
+    document.getElementById('done-msg').style.display='block';
   } catch(e){
-    document.getElementById('tAnswerArea').innerHTML = '<div class="t-empty">データ取得エラー</div>';
+    alert('送信エラー: '+e.message);
   }
 }
+window.submitAll = submitAll;
 
-function selTeacherGroup(g){
-  teacherGroupFilter = g;
-  document.querySelectorAll('.t-tab').forEach(t=>{
-    t.classList.toggle('sel', t.textContent.toLowerCase().replace(' ','') === g || (g==='all' && t.textContent==='全グループ'));
-  });
-  renderTeacher();
+// ── 教員: 読み込み ──
+async function loadAll(){
+  const res = document.getElementById('t-results');
+  res.innerHTML = '<p style="padding:12px;color:#888;font-size:13px;">読み込み中...</p>';
+  try {
+    const data = await window._fbGet('discuss9') || {};
+    let html = '';
+    for(let i=1;i<=9;i++){
+      const g = data['g'+i] || {};
+      html += `<div class="t-group">
+        <div class="t-group-head">${grpEmoji[i]} ${i}班</div>`;
+      for(const [k,label] of Object.entries(qLabels)){
+        const v = g[k];
+        html += `<div class="t-qrow">
+          <div class="t-qlabel">${label}</div>
+          <div class="t-ans">${v ? escHtml(v) : '<span class="t-empty">未回答</span>'}</div>
+        </div>`;
+      }
+      html += '</div>';
+    }
+    res.innerHTML = html || '<p style="padding:12px;color:#888;">回答がありません</p>';
+  } catch(e){
+    res.innerHTML = '<p style="padding:12px;color:#c00;font-size:12px;">読み込みエラー: '+e.message+'</p>';
+  }
 }
+window.loadAll = loadAll;
 
-function renderTeacher(){
-  const area = document.getElementById('tAnswerArea');
-  if(!teacherData){ area.innerHTML='<div class="t-empty">データなし</div>'; return; }
-  const groups = teacherGroupFilter === 'all'
-    ? Object.keys(teacherData)
-    : [teacherGroupFilter].filter(k=>teacherData[k]);
-  if(!groups.length){ area.innerHTML='<div class="t-empty">回答がまだありません</div>'; return; }
-  area.innerHTML = groups.map(gk=>{
-    const rec = teacherData[gk];
-    if(!rec || !rec.answers) return '';
-    const groupNum = gk.replace('g','');
-    return `<div class="t-answer-card">
-      <div class="t-answer-q" style="font-size:14px;font-weight:900;color:var(--p);margin-bottom:8px">📌 G${groupNum}グループ</div>
-      ${STEPS.map((s,i)=>`
-        <div style="margin-bottom:8px">
-          <div class="t-answer-q">Q${i+1} ${s.q.replace(/^[^\s]+ /,'').slice(0,40)}…</div>
-          <div class="t-answer-text">${rec.answers[s.id]||'（未回答）'}</div>
-        </div>`).join('')}
-    </div>`;
-  }).join('');
+// ── 教員: 消去 ──
+async function clearAll(){
+  if(!confirm('全班のデータを消去しますか？')) return;
+  try {
+    await window._fbRemove('discuss9');
+    document.getElementById('t-results').innerHTML = '<p style="padding:12px;color:#27ae60;font-size:13px;">消去しました</p>';
+  } catch(e){
+    alert('エラー: '+e.message);
+  }
+}
+window.clearAll = clearAll;
+
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 </script>
 </body>
