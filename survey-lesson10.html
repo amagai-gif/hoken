@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>アンケート：⑩働く人の健康づくり</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"M PLUS Rounded 1c",sans-serif;background:#fffdf8;color:#3a3330;min-height:100vh;padding-bottom:60px;}
+.hero{background:linear-gradient(135deg,#f0c060,#e8845a);padding:20px 16px 24px;text-align:center;}
+.hero h1{font-size:17px;font-weight:900;color:#fff;line-height:1.3;}
+.hero p{font-size:12px;color:rgba(255,255,255,.85);margin-top:4px;}
+.modebar{display:flex;gap:8px;padding:12px 14px;background:#fffdf8;position:sticky;top:0;z-index:200;border-bottom:2px solid #f0ece4;}
+.mbtn{flex:1;border:2.5px solid #e0dbd2;background:#fff;border-radius:40px;padding:10px 8px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;color:#aaa;transition:all .2s;}
+.mbtn.ons{background:#f0c060;border-color:#f0c060;color:#fff;}
+.mbtn.ont{background:#e85d5d;border-color:#e85d5d;color:#fff;}
+.pnl{display:none;padding:14px;}.pnl.show{display:block;}
+.q-card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,.08);border:1.5px solid #f0ece4;}
+.q-num{font-size:11px;font-weight:800;color:#f0c060;margin-bottom:6px;}
+.q-text{font-size:15px;font-weight:800;color:#3a3330;margin-bottom:12px;line-height:1.4;}
+.opts{display:flex;flex-direction:column;gap:7px;}
+.opt-btn{width:100%;padding:13px 14px;border:2.5px solid #e0dbd2;background:#fff;border-radius:12px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;text-align:left;color:#888;transition:all .18s;}
+.opt-btn.on{border-color:#f0c060;background:#fdf5e0;color:#8a5800;}
+.sbtn{width:100%;padding:15px;border:none;border-radius:16px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;background:#f0c060;color:#fff;box-shadow:0 4px 14px rgba(240,192,96,.35);margin-top:8px;transition:all .2s;}
+.sbtn:disabled{opacity:.35;cursor:default;}
+.done-box{background:#fdf5e0;border:2px solid #f0c060;border-radius:16px;padding:20px;text-align:center;display:none;}
+.done-emoji{font-size:48px;display:block;margin-bottom:8px;}
+.done-text{font-size:16px;font-weight:900;color:#8a5800;}
+.chart-section{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;border:1.5px solid #f0ece4;box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.chart-title{font-size:13px;font-weight:800;margin-bottom:10px;color:#3a3330;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.bar-label{font-size:12px;font-weight:700;color:#3a3330;min-width:120px;flex-shrink:0;line-height:1.3;}
+.bar-wrap{flex:1;background:#f0ece4;border-radius:999px;height:28px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:999px;display:flex;align-items:center;padding-left:8px;transition:width .5s ease;min-width:0;}
+.bar-fill span{font-size:11px;font-weight:800;color:#fff;white-space:nowrap;}
+.bar-pct{font-size:12px;font-weight:800;min-width:36px;text-align:right;}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.chip{background:#fff;border:1.5px solid #f0ece4;border-radius:30px;padding:5px 12px;font-size:12px;font-weight:800;color:#888;}
+.rfbtn{border:2px solid #f0c060;background:#fdf5e0;color:#8a5800;border-radius:30px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;margin-bottom:12px;}
+.rstbtn{border:2px solid #e85d5d;background:#fde8e8;color:#c0392b;border-radius:30px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;margin-bottom:12px;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>アンケート：⑩働く人の健康づくり<br>あなたはどう働きたい？休みたい？</h1>
+  <p>全4問・選んで送信するだけ！</p>
+</div>
+<div class="modebar">
+  <button class="mbtn ons" id="mb-s" onclick="setMode('s')">🙋 生徒モード</button>
+  <button class="mbtn" id="mb-t" onclick="setMode('t')">📊 集計モード</button>
+</div>
+
+<div class="pnl show" id="pnl-s">
+  <div style="height:12px"></div>
+  <div id="survey-form">
+    <div class="q-card">
+      <div class="q-num">Q1</div>
+      <div class="q-text">将来、会社を選ぶとき一番大事にしたいのは？</div>
+      <div class="opts">
+        <button class="opt-btn" onclick="pick(1,'a')">💰 給料の高さ（休みは少なめでもOK）</button>
+        <button class="opt-btn" onclick="pick(1,'b')">🏖️ 休みの取りやすさ（給料はふつうでOK）</button>
+        <button class="opt-btn" onclick="pick(1,'c')">❤️ やりがい（好きなことができる）</button>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Q2</div>
+      <div class="q-text">働き始めて有給休暇（給料が出る休み）を20日もらえたら、全部使える？</div>
+      <div class="opts">
+        <button class="opt-btn" onclick="pick(2,'a')">✅ 全部使う！</button>
+        <button class="opt-btn" onclick="pick(2,'b')">😓 まわりに気をつかって使いにくそう</button>
+        <button class="opt-btn" onclick="pick(2,'c')">🤔 わからない</button>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Q3</div>
+      <div class="q-text">会社にあったら一番うれしい「健康づくり」は？</div>
+      <div class="opts">
+        <button class="opt-btn" onclick="pick(3,'a')">🍱 社員食堂のヘルシーでおいしいごはん</button>
+        <button class="opt-btn" onclick="pick(3,'b')">😴 昼寝スペース</button>
+        <button class="opt-btn" onclick="pick(3,'c')">🏃 ジム・運動会・ストレッチ教室</button>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Q4</div>
+      <div class="q-text">休みの日（余暇）、一番したいことは？</div>
+      <div class="opts">
+        <button class="opt-btn" onclick="pick(4,'a')">🎮 家でゆっくり・趣味</button>
+        <button class="opt-btn" onclick="pick(4,'b')">👫 友だちや家族と出かける</button>
+        <button class="opt-btn" onclick="pick(4,'c')">⚽ 運動・スポーツ</button>
+      </div>
+    </div>
+  </div>
+  <div style="padding:0 0 4px;">
+    <button class="sbtn" id="submit-btn" onclick="submitAnswers()" disabled>回答を送信する</button>
+  </div>
+  <div class="done-box" id="done-box">
+    <span class="done-emoji">🎉</span>
+    <div class="done-text">送信完了！ありがとう！</div>
+  </div>
+</div>
+
+<div class="pnl" id="pnl-t">
+  <div style="height:12px"></div>
+  <div style="display:flex;gap:8px;margin-bottom:12px;">
+    <button class="rfbtn" onclick="loadResults()">🔄 最新の集計を見る</button>
+    <button class="rstbtn" onclick="resetData()">🗑️ リセット</button>
+  </div>
+  <div class="stats" id="stat-box"></div>
+  <div id="charts"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const firebaseConfig={apiKey:"AIzaSyCgA-yqynPM-ezZpBZCp8DLrxN9R82zS5U",authDomain:"hoken-app-26315.firebaseapp.com",databaseURL:"https://hoken-app-26315-default-rtdb.firebaseio.com",projectId:"hoken-app-26315",storageBucket:"hoken-app-26315.firebasestorage.app",messagingSenderId:"932877641447",appId:"1:932877641447:web:a351fa878ed76ae4392442"};
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
+const GAS_URL="https://script.google.com/macros/s/AKfycbwAS_zQlCKw8_DlGe4ltijzRjQ3UrEbgbSK5jdq7lvS_SgmB4nOdVzsBRTuhV7iQ5hi/exec";
+
+const answers={1:null,2:null,3:null,4:null};
+let submitted=false;
+
+const Q_LABELS={
+  1:{title:"Q1 会社選びで一番大事にしたいのは？",a:"給料の高さ",b:"休みの取りやすさ",c:"やりがい"},
+  2:{title:"Q2 有給休暇20日、全部使える？",a:"全部使う！",b:"気をつかって使いにくそう",c:"わからない"},
+  3:{title:"Q3 会社にあったらうれしい健康づくりは？",a:"社員食堂のごはん",b:"昼寝スペース",c:"ジム・運動会・ストレッチ"},
+  4:{title:"Q4 休みの日に一番したいことは？",a:"家でゆっくり・趣味",b:"友だちや家族と出かける",c:"運動・スポーツ"},
+};
+const COLORS={a:"#f0c060",b:"#5a8ad4",c:"#3dba7f"};
+
+window.setMode=function(m){
+  document.getElementById("mb-s").className="mbtn"+(m==="s"?" ons":"");
+  document.getElementById("mb-t").className="mbtn"+(m==="t"?" ont":"");
+  document.getElementById("pnl-s").classList.toggle("show",m==="s");
+  document.getElementById("pnl-t").classList.toggle("show",m==="t");
+  if(m==="t") loadResults();
+};
+
+window.pick=function(q,choice){
+  if(submitted) return;
+  answers[q]=choice;
+  const card=document.querySelectorAll(".q-card")[q-1];
+  card.querySelectorAll(".opt-btn").forEach(b=>b.classList.remove("on"));
+  const idx={a:0,b:1,c:2}[choice];
+  card.querySelectorAll(".opt-btn")[idx].classList.add("on");
+  const allAnswered=Object.values(answers).every(v=>v!==null);
+  document.getElementById("submit-btn").disabled=!allAnswered;
+};
+
+window.submitAnswers=async function(){
+  if(submitted) return;
+  submitted=true;
+  document.getElementById("submit-btn").disabled=true;
+  const id="u_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
+  const rec={q1:answers[1],q2:answers[2],q3:answers[3],q4:answers[4],ts:Date.now()};
+  let ok=false;
+  try{await set(ref(db,"survey10/responses/"+id),rec);ok=true;}catch(e){console.warn("Firebase失敗",e);}
+  if(!ok){try{await fetch(GAS_URL+"?sheet=survey10&uid="+encodeURIComponent(id)+"&q1="+rec.q1+"&q2="+rec.q2+"&q3="+rec.q3+"&q4="+rec.q4+"&ts="+rec.ts,{mode:"no-cors"});ok=true;}catch(e){console.warn("GAS失敗",e);}}
+  try{
+    if(!ok) throw new Error("send failed");
+    document.getElementById("survey-form").style.display="none";
+    document.getElementById("submit-btn").style.display="none";
+    document.getElementById("done-box").style.display="block";
+  }catch(e){
+    submitted=false;
+    document.getElementById("submit-btn").disabled=false;
+    alert("送信に失敗しました。もう一度試してください。");
+  }
+};
+
+window.loadResults=async function(){
+  const el=document.getElementById("charts");
+  el.innerHTML="<div style='text-align:center;padding:20px;color:#aaa;font-size:14px;'>読み込み中…</div>";
+  try{
+    const snap=await get(ref(db,"survey10/responses"));
+    const data=snap.val()||{};
+    const responses=Object.values(data);
+    const total=responses.length;
+    document.getElementById("stat-box").innerHTML=`<div class="chip">回答数 <b style="color:#f0c060">${total}</b> 人</div><div class="chip">未回答 <b style="color:#e85d5d">${Math.max(0,36-total)}</b> 人</div>`;
+    if(total===0){el.innerHTML="<div style='text-align:center;padding:20px;color:#aaa;'>まだ回答がありません</div>";return;}
+    let html="";
+    for(let q=1;q<=4;q++){
+      const key="q"+q;
+      const label=Q_LABELS[q];
+      const keys=Object.keys(label).filter(k=>k!=="title");
+      html+=`<div class="chart-section"><div class="chart-title">${label.title}</div>`;
+      keys.forEach(k=>{
+        const cnt=responses.filter(r=>r[key]===k).length;
+        const pct=total>0?Math.round(cnt/total*100):0;
+        html+=`<div class="bar-row"><div class="bar-label">${label[k]}</div><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${COLORS[k]};"><span>${cnt}人</span></div></div><div class="bar-pct" style="color:${COLORS[k]}">${pct}%</div></div>`;
+      });
+      html+="</div>";
+    }
+    el.innerHTML=html;
+  }catch(e){
+    el.innerHTML="<div style='text-align:center;padding:20px;color:#e85d5d;'>読み込みに失敗しました</div>";
+  }
+};
+
+window.resetData=async function(){
+  if(!confirm("全回答データを削除します。よろしいですか？")) return;
+  try{
+    await set(ref(db,"survey10/responses"),null);
+    document.getElementById("stat-box").innerHTML="";
+    document.getElementById("charts").innerHTML="<div style='text-align:center;padding:20px;color:#3dba7f;font-size:14px;font-weight:800;'>✓ リセットしました！</div>";
+  }catch(e){alert("リセットに失敗しました。");}
+};
+</script>
+</body>
+</html>
