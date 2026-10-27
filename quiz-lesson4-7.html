@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>授業前クイズ：保健制度とその活用</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#1a1a1a;min-height:100vh;padding:1rem;font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.app{background:#0d0d0d;width:100%;max-width:960px;min-height:520px;border-radius:16px;padding:2.5rem 3rem;display:flex;flex-direction:column;position:relative;overflow:hidden;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.slide-num{position:absolute;top:1.25rem;right:1.5rem;font-size:14px;color:#555;}
+.q-tag{display:inline-block;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:1.25rem;background:#1a1a2a;color:#f0c060;}
+.q-text{font-size:28px;font-weight:700;color:#fff;line-height:1.5;white-space:pre-line;margin-bottom:2rem;flex:1;}
+.intro-badge{display:inline-block;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:1.25rem;background:#1a1a2a;color:#f0c060;}
+.intro-title{font-size:32px;font-weight:700;color:#fff;line-height:1.45;margin-bottom:0.6rem;}
+.intro-sub{font-size:20px;color:#aaa;line-height:1.6;}
+.btn-row{display:flex;gap:16px;margin-top:auto;}
+.ans-btn{flex:1;padding:20px 12px;border:2.5px solid;border-radius:14px;font-family:inherit;font-size:24px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center;background:transparent;}
+.btn-o{border-color:#2a6e4a;color:#4ecb87;}
+.btn-x{border-color:#7a2020;color:#f07070;}
+.btn-o:hover:not(:disabled){background:#1a3d2a;}
+.btn-x:hover:not(:disabled){background:#3a1010;}
+.ans-btn:disabled{opacity:.3;cursor:default;}
+.big-answer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:16px;z-index:10;opacity:0;pointer-events:none;}
+.big-answer.show{opacity:1;pointer-events:auto;}
+.big-mark{font-size:160px;font-weight:700;line-height:1;}
+.anim-pop{animation:pop .35s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes pop{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.bg-ok{background:#0a2a18;}.bg-ng{background:#2a0a0a;}
+.col-ok{color:#4ecb87;}.col-ng{color:#f07070;}
+.explain-box{position:absolute;inset:0;border-radius:16px;padding:2.5rem 3rem;display:flex;flex-direction:column;justify-content:center;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s;}
+.explain-box.show{opacity:1;pointer-events:auto;}
+.explain-mark{font-size:72px;font-weight:700;line-height:1;margin-bottom:1rem;}
+.explain-text{font-size:22px;font-weight:700;line-height:1.75;white-space:pre-line;color:#fff;}
+.explain-hint{font-size:15px;color:#555;margin-top:1.75rem;}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.25rem;width:100%;max-width:960px;}
+.nav-btn{border:1px solid #333;background:#1a1a1a;border-radius:8px;padding:12px 28px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color:#aaa;transition:all .15s;}
+.nav-btn:hover{background:#2a2a2a;color:#fff;}
+.nav-btn:disabled{opacity:.25;cursor:default;}
+.dots-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.dots{display:flex;gap:5px;flex-wrap:wrap;max-width:260px;justify-content:center;}
+.dot{width:9px;height:9px;border-radius:50%;background:#333;flex-shrink:0;transition:background .2s;}
+.dot.cur{background:#f0c060;}.dot.done-ok{background:#4ecb87;}.dot.done-ng{background:#f07070;}
+.prog{font-size:12px;color:#555;}
+#celebrate{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.85);}
+#celebrate.show{display:flex;}
+#celebrate canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.celeb-msg{position:relative;z-index:10;text-align:center;animation:celebIn .6s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes celebIn{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.celeb-emoji{font-size:80px;display:block;margin-bottom:.5rem;animation:bounce 1s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-15px);}}
+.celeb-title{font-size:48px;font-weight:700;color:#f0c060;text-shadow:0 0 30px rgba(240,192,96,.8);margin-bottom:.4rem;}
+.celeb-sub{font-size:22px;color:#fff;margin-bottom:2rem;}
+.celeb-close{border:2px solid #f0c060;background:transparent;color:#f0c060;border-radius:12px;padding:12px 36px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.celeb-close:hover{background:#f0c060;color:#000;}
+.res-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.res-emoji{font-size:80px;margin-bottom:.5rem;animation:bounce 1s ease-in-out infinite;}
+.res-score{font-size:64px;font-weight:700;color:#f0c060;line-height:1.2;}
+.res-score small{font-size:28px;color:#aaa;}
+.res-msg{font-size:24px;font-weight:700;color:#fff;margin:1rem 0 1.5rem;}
+.res-note{font-size:16px;color:#888;}
+.res-btn{border:2px solid #f0c060;background:transparent;color:#f0c060;border-radius:12px;padding:12px 32px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin:0 6px;}
+.res-btn:hover{background:#f0c060;color:#000;}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <span class="slide-num" id="snum"></span>
+  <div id="content" style="display:flex;flex-direction:column;flex:1;"></div>
+  <div class="big-answer" id="big-answer"><div class="big-mark" id="big-mark"></div></div>
+  <div class="explain-box" id="explain-box">
+    <div class="explain-mark" id="explain-mark"></div>
+    <div class="explain-text" id="explain-text"></div>
+    <div class="explain-hint">← → キーまたは下のボタンで次へ</div>
+  </div>
+</div>
+<div class="nav">
+  <button class="nav-btn" id="prev" onclick="move(-1)" disabled>← 前へ</button>
+  <div class="dots-wrap">
+    <div class="dots" id="dots"></div>
+    <div class="prog" id="prog"></div>
+  </div>
+  <button class="nav-btn" id="next" onclick="move(1)">次へ →</button>
+</div>
+<div id="celebrate">
+  <canvas id="fw-canvas"></canvas>
+  <div class="celeb-msg">
+    <span class="celeb-emoji">🏥</span>
+    <div class="celeb-title">全問正解！！</div>
+    <div class="celeb-sub">保健サービスマスター🎉</div>
+    <button class="celeb-close" onclick="closeCeleb()">閉じる</button>
+  </div>
+</div>
+<script>
+const SLIDES=[
+  {type:"intro",title:"授業前クイズ",sub:"○か×か、直感で答えてみよう！"},
+  {type:"ox",q:"保健所は\nすべての市町村に1つずつある",ans:"x",
+   explain:"保健所は全国で約470か所。市町村は約1,700あるので\nほとんどの保健所は、いくつもの市町村をまとめて担当しています。\n市町村ごとにあるのは「保健センター」の方です。"},
+  {type:"ox",q:"ラーメン屋やカフェなどの飲食店を始めるには\n保健所の許可が必要だ",ans:"o",
+   explain:"食べ物を出すお店は、保健所の「営業許可」が必要です。\n開店後も、保健所の食品衛生監視員が\n衛生的かどうかを調べに来ることがあります。"},
+  {type:"ox",q:"犬を飼ったら\n狂犬病の予防注射を毎年受けさせることが\n法律で決まっている",ans:"o",
+   explain:"狂犬病予防法で、犬の登録と年1回の予防注射が義務です。\n狂犬病は発症するとほぼ100％亡くなる病気。\n日本国内でうつった人が60年以上出ていないのは、このしくみのおかげです。"},
+  {type:"ox",q:"腕に残っている「ハンコ注射」の跡（BCG）は\n結核を防ぐためのワクチンの跡だ",ans:"o",
+   explain:"BCGは赤ちゃんのころに受ける結核のワクチン。\n9本の針のスタンプで打つので、跡が残る人もいます。\n教科書p.127にも出てくる「予防接種」の1つです。"},
+  {type:"ox",q:"インフルエンザの予防接種を受ければ\n絶対にインフルエンザにかからない",ans:"x",
+   explain:"予防接種でも、かかることはあります。\nでも「かかりにくくする」「かかっても重くなりにくくする」\n効果があります。だから受ける意味があるのです。"},
+  {type:"ox",q:"HIV検査は\n多くの保健所で、無料・名前を言わずに\n受けることができる",ans:"o",
+   explain:"多くの保健所では、HIV検査を無料・匿名（名前を言わない）で\n受けられます。だれにも知られずに相談できるしくみです。\n困ったときに使える保健サービスの1つです。"},
+  {type:"ox",q:"母子健康手帳は日本で生まれたしくみで\n今では海外の国でも使われている",ans:"o",
+   explain:"母子健康手帳は日本で生まれ、世界の多くの国に広がりました。\n妊娠から子どもの成長までを1冊に記録できる\n日本自慢の保健サービスです。"},
+  {type:"ox",q:"市町村が行うがん検診は\n全額自分で払うので、何万円もかかる",ans:"x",
+   explain:"市町村のがん検診は、税金などで支えられていて\n多くの市町村で、無料かわずかな自己負担で受けられます。\n使わないともったいないサービスです。"},
+  {type:"ox",q:"インターネットで検索して\n上の方に出てくる健康情報ほど\n正しい情報だ",ans:"x",
+   explain:"検索の順番は「正しさ」の順ではありません。\n広告やうわさが上に出ることもあります。\n国や自治体などの信頼できる情報で確かめよう。"},
+  {type:"ox",q:"歩道や公園を整えたり\nスポーツ施設を市民に開放したりすることも\n人々の健康を守る取り組みの1つだ",ans:"o",
+   explain:"体を動かしやすいまちをつくることも保健行政の仕事です。\n教科書では「社会環境の整備」として紹介されています。\n個人の努力を、まち全体で支えているのです。"},
+  {type:"result"},
+];
+const TOTAL_Q=SLIDES.filter(s=>s.type==="ox").length;
+let cur=0;
+const chosen=new Array(SLIDES.length).fill(null);
+let fwAnim=null;
+function launchFireworks(){
+  const canvas=document.getElementById("fw-canvas");
+  const ctx=canvas.getContext("2d");
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const particles=[];
+  const COLORS=["#f0c060","#ffd700","#4ecb87","#60b8ff","#a89ef5","#ff9060","#fff"];
+  function burst(x,y){const color=COLORS[Math.floor(Math.random()*COLORS.length)];for(let i=0;i<80;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*6;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,decay:.012+Math.random()*.01,size:2+Math.random()*4,color});}}
+  for(let i=0;i<6;i++)setTimeout(()=>burst(100+Math.random()*(canvas.width-200),80+Math.random()*(canvas.height*.5)),i*180);
+  let bc=0;const bi=setInterval(()=>{burst(100+Math.random()*(canvas.width-200),60+Math.random()*(canvas.height*.55));bc++;if(bc>20)clearInterval(bi);},400);
+  function loop(){ctx.fillStyle="rgba(0,0,0,0.18)";ctx.fillRect(0,0,canvas.width,canvas.height);for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.vx*=.98;p.life-=p.decay;if(p.life<=0){particles.splice(i,1);continue;}ctx.globalAlpha=p.life;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;fwAnim=requestAnimationFrame(loop);}
+  loop();
+}
+function showCeleb(){if(fwAnim)cancelAnimationFrame(fwAnim);document.getElementById("celebrate").classList.add("show");launchFireworks();}
+function closeCeleb(){document.getElementById("celebrate").classList.remove("show");if(fwAnim)cancelAnimationFrame(fwAnim);}
+function checkAll(){const qs=SLIDES.map((s,i)=>s.type==="ox"?i:-1).filter(i=>i>=0);if(!qs.every(i=>chosen[i]!==null))return;if(qs.every(i=>SLIDES[i].ans===chosen[i]))setTimeout(showCeleb,600);}
+function getDisplay(s,v){return s.ans===v?{sym:"○",bg:"bg-ok",col:"col-ok"}:{sym:"×",bg:"bg-ng",col:"col-ng"};}
+function isOk(s,v){return v!==null&&s.ans===v;}
+function showAnswer(v){
+  const s=SLIDES[cur];chosen[cur]=v;
+  const d=getDisplay(s,v);
+  const ba=document.getElementById("big-answer");
+  ba.className="big-answer "+d.bg+" show";
+  const bm=document.getElementById("big-mark");
+  const nb=bm.cloneNode(false);nb.className="big-mark anim-pop "+d.col;nb.textContent=d.sym;
+  bm.parentNode.replaceChild(nb,bm);
+  setTimeout(()=>{
+    ba.className="big-answer";
+    const eb=document.getElementById("explain-box");
+    eb.className="explain-box "+d.bg+" show";
+    document.getElementById("explain-mark").className="explain-mark "+d.col;
+    document.getElementById("explain-mark").textContent=d.sym;
+    document.getElementById("explain-text").textContent=s.explain;
+    renderDots();
+  },900);
+}
+function renderDots(){
+  const qs=SLIDES.map((s,i)=>s.type==="ox"?i:-1).filter(i=>i>=0);
+  document.getElementById("dots").innerHTML=qs.map(i=>{let c="dot";if(i===cur)c+=" cur";else if(chosen[i]!==null)c+=isOk(SLIDES[i],chosen[i])?" done-ok":" done-ng";return`<div class="${c}"></div>`;}).join("");
+}
+function render(){
+  const s=SLIDES[cur];
+  document.getElementById("snum").textContent=`${cur+1} / ${SLIDES.length}`;
+  document.getElementById("prev").disabled=cur===0;
+  document.getElementById("next").disabled=cur===SLIDES.length-1;
+  const qN=SLIDES.slice(0,cur+1).filter(x=>x.type==="ox").length;
+  document.getElementById("prog").textContent=s.type==="ox"?`Q${qN} / ${TOTAL_Q}`:(s.type==="result"?"結果発表":"← → で進む");
+  document.getElementById("big-answer").className="big-answer";
+  const eb=document.getElementById("explain-box");
+  if(chosen[cur]!==null&&s.type==="ox"){
+    const d=getDisplay(s,chosen[cur]);
+    eb.className="explain-box "+d.bg+" show";
+    document.getElementById("explain-mark").className="explain-mark "+d.col;
+    document.getElementById("explain-mark").textContent=d.sym;
+    document.getElementById("explain-text").textContent=s.explain;
+  }else{eb.className="explain-box";}
+  renderDots();
+  let html="";
+  if(s.type==="result"){
+    const qs=SLIDES.map((x,i)=>x.type==="ox"?i:-1).filter(i=>i>=0);
+    const answered=qs.filter(i=>chosen[i]!==null).length;
+    const ok=qs.filter(i=>isOk(SLIDES[i],chosen[i])).length;
+    let emoji="📖",msg="教科書を読んで、もう一度チャレンジ！";
+    if(ok===TOTAL_Q){emoji="🎉";msg="全問正解！すばらしい！";}
+    else if(ok>=8){emoji="😊";msg="すごい！あと少しで満点！";}
+    else if(ok>=6){emoji="🙂";msg="なかなかいい！";}
+    const note=answered<TOTAL_Q?`<div class="res-note">まだ答えていない問題が ${TOTAL_Q-answered} 問あります</div>`:"";
+    const again=ok===TOTAL_Q?`<button class="res-btn" onclick="showCeleb()">🎆 もう一度お祝い</button>`:"";
+    html=`<div class="res-wrap"><div class="res-emoji">${emoji}</div><div class="res-score">${ok}<small> / ${TOTAL_Q} 問正解</small></div><div class="res-msg">${msg}</div>${note}<div style="margin-top:1rem;">${again}<button class="res-btn" onclick="retry()">🔄 最初からやり直す</button></div></div>`;
+    document.getElementById("content").innerHTML=html;
+    if(ok===TOTAL_Q&&!celebDone){celebDone=true;setTimeout(showCeleb,500);}
+    return;
+  }
+  if(s.type==="intro"){
+    html=`<div class="intro-badge">保健制度とその活用</div><div class="intro-title">${s.title}</div><div class="intro-sub">${s.sub}</div>`;
+  }else{
+    const lk=chosen[cur]!==null?"disabled":"";
+    html=`<div class="q-tag">保健制度とその活用</div><div class="q-text">${s.q}</div><div class="btn-row"><button class="ans-btn btn-o" onclick="showAnswer('o')" ${lk}>○</button><button class="ans-btn btn-x" onclick="showAnswer('x')" ${lk}>×</button></div>`;
+  }
+  document.getElementById("content").innerHTML=html;
+}
+let celebDone=false;
+function retry(){chosen.fill(null);celebDone=false;cur=0;render();}
+function move(d){cur=Math.max(0,Math.min(SLIDES.length-1,cur+d));render();}
+document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")move(1);if(e.key==="ArrowLeft")move(-1);});
+render();
+</script>
+</body>
+</html>
