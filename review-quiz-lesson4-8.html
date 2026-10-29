@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>復習クイズ：医療制度とその活用</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#1a1a1a;min-height:100vh;padding:1rem;font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.wrap{width:100%;max-width:760px;}
+.card{background:#0d0d0d;border-radius:16px;padding:2rem 2.5rem;min-height:480px;display:flex;flex-direction:column;position:relative;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.q-num{font-size:13px;color:#888;margin-bottom:1rem;}
+.q-text{font-size:22px;font-weight:700;line-height:1.6;white-space:pre-line;color:#fff;flex:1;margin-bottom:2rem;}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:auto;}
+.choice{padding:14px 16px;border:2px solid #333;background:#1a1a1a;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;color:#ccc;transition:all .15s;text-align:left;line-height:1.4;font-family:inherit;}
+.choice:hover:not(:disabled){border-color:#888;color:#fff;background:#252525;}
+.choice:disabled{cursor:default;}
+.choice.correct{background:#0a2a18;border-color:#4ecb87;color:#4ecb87;}
+.choice.wrong{background:#2a0a0a;border-color:#f07070;color:#f07070;}
+.result-box{margin-top:1.25rem;border-radius:12px;padding:1.25rem 1.5rem;}
+.result-ok{background:#0a2a18;border:1px solid #2a6e4a;}
+.result-ng{background:#2a0a0a;border:1px solid #7a2020;}
+.result-mark{font-size:20px;font-weight:700;margin-bottom:6px;}
+.result-mark.ok{color:#4ecb87;}.result-mark.ng{color:#f07070;}
+.result-explain{font-size:14px;color:#ddd;line-height:1.7;white-space:pre-line;}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.25rem;}
+.nav-btn{border:1px solid #444;background:#1a1a1a;border-radius:8px;padding:11px 28px;font-size:14px;font-weight:500;cursor:pointer;color:#aaa;transition:all .15s;font-family:inherit;}
+.nav-btn:hover{background:#2a2a2a;color:#fff;}
+.nav-btn:disabled{opacity:.25;cursor:default;}
+.dots{display:flex;gap:5px;flex-wrap:wrap;max-width:260px;justify-content:center;}
+.dot{width:9px;height:9px;border-radius:50%;background:#333;transition:background .2s;flex-shrink:0;}
+.dot.cur{background:#f0c060;}.dot.done-ok{background:#4ecb87;}.dot.done-ng{background:#f07070;}
+.prog{font-size:12px;color:#555;margin-top:4px;text-align:center;}
+#result-screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:480px;text-align:center;}
+#result-screen.show{display:flex;}
+.result-emoji{font-size:72px;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.result-title{font-size:36px;font-weight:700;color:#fff;margin-bottom:0.5rem;}
+.result-score{font-size:20px;color:#aaa;margin-bottom:1.5rem;}
+.retry-btn{border:2px solid #f0c060;background:transparent;color:#f0c060;border-radius:12px;padding:14px 40px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.retry-btn:hover{background:#f0c060;color:#000;}
+#celebrate{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.85);}
+#celebrate.show{display:flex;}
+#celebrate canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.celeb-msg{position:relative;z-index:10;text-align:center;animation:celebIn .6s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes celebIn{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+.celeb-emoji{font-size:72px;display:block;margin-bottom:.5rem;animation:bounce 1s ease-in-out infinite;}
+.celeb-title{font-size:48px;font-weight:700;color:#f0c060;text-shadow:0 0 30px rgba(240,192,96,.8);margin-bottom:.4rem;}
+.celeb-sub{font-size:22px;color:#fff;margin-bottom:2rem;}
+.celeb-close{border:2px solid #f0c060;background:transparent;color:#f0c060;border-radius:12px;padding:12px 36px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;}
+.celeb-close:hover{background:#f0c060;color:#000;}
+@media (max-width:820px){
+  body{padding:.6rem;justify-content:flex-start;}
+  .card{padding:1.4rem 1.2rem;min-height:420px;}
+  .q-text{font-size:19px;margin-bottom:1.4rem;}
+  .choice{font-size:14px;padding:13px 12px;}
+  .result-explain{font-size:13px;}
+  .nav-btn{padding:10px 18px;}
+}
+@media (max-width:520px){.choices{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" id="quiz-card">
+    <div class="q-num" id="q-num"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div id="result-box" style="display:none;"></div>
+  </div>
+  <div class="card" id="result-screen">
+    <div class="result-emoji" id="res-emoji"></div>
+    <div class="result-title" id="res-title"></div>
+    <div class="result-score" id="res-score"></div>
+    <button class="retry-btn" onclick="retry()">もう一度チャレンジ！</button>
+  </div>
+  <div class="nav" id="nav-wrap">
+    <button class="nav-btn" id="prev" onclick="move(-1)" disabled>← 前へ</button>
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div class="dots" id="dots"></div>
+      <div class="prog" id="prog"></div>
+    </div>
+    <button class="nav-btn" id="next-btn" onclick="nextQ()" disabled>次の問題 →</button>
+  </div>
+</div>
+<div id="celebrate">
+  <canvas id="fw-canvas"></canvas>
+  <div class="celeb-msg">
+    <span class="celeb-emoji">🩺</span>
+    <div class="celeb-title">全問正解！！</div>
+    <div class="celeb-sub">医療制度マスター🎉</div>
+    <button class="celeb-close" onclick="closeCeleb()">閉じる</button>
+  </div>
+</div>
+<script>
+const QS=[
+  {q:"病気やけがで、医療機関で診察・検査・治療などを受けるときに\nかかる費用を何という？",
+   choices:["医療費","保険料","税金","入院費"],
+   ans:0,explain:"診察・検査・治療などにかかる費用を「医療費」といいます。大きな病気やけがであるほど高額になり、個人が全額を支払うのが難しい場合もあります（教科書p.128）。"},
+  {q:"医療保険で、国民全体があらかじめ出し合って\n蓄えておくお金を何という？",
+   choices:["医療費","保険料","紹介料","選定料"],
+   ans:1,explain:"国民全体であらかじめ「保険料」を出し合って資金を蓄えておき、かかった医療費の多くをこの蓄えから支払うのが医療保険のしくみです。"},
+  {q:"日本で、誰もが少ない負担で医療を受けられる\n「国民皆保険」が実現したのは何年？",
+   choices:["1922年","1945年","1961年","2000年"],
+   ans:2,explain:"日本では1961年に国民皆保険が実現しました。1922年は健康保険法の制定、2000年は介護保険法の施行です（ノートp.95 表1）。"},
+  {q:"教科書の図1で、Aさんの医療費は約30万円。\n3割負担のとき、Aさんが窓口で払うのはいくら？",
+   choices:["約3万円","約21万円","約30万円","約9万円"],
+   ans:3,explain:"30万円の3割で約9万円です。残りの7割（約21万円）は保険者から医療機関に支払われます（教科書p.128 図1）。さらに「高額療養費制度」で1か月の支払いには上限があり、実際の負担はもっと少なくなります（平均的な収入の家庭で約8万6千円）。"},
+  {q:"医療機関の窓口で保険証を提示できない場合は\nどうなる？",
+   choices:["一度、全額自己負担になる","支払いはしなくてよい","診察を受けられない","必ず半額になる"],
+   ans:0,explain:"保険証が提示できない場合、医療機関の窓口では一度、全額を自己負担することになります。"},
+  {q:"「病院」と「診療所」は\n何によって分けられている？",
+   choices:["医師の人数","診療科目の数","入院患者用のベッドの数","建物の高さ"],
+   ans:2,explain:"入院患者用のベッド（病床）が20床以上のものを病院、それ未満もしくは病床をもたないものを診療所といいます。"},
+  {q:"心身の不調を感じたとき\nまず受診するとよいのはどこ？",
+   choices:["いきなり大学病院","身近なかかりつけ医","とにかく救急車を呼ぶ","ネットの口コミ1位の病院"],
+   ans:1,explain:"まずは身近で信頼できる「かかりつけ医」を受診します。必要な場合は、かかりつけ医から専門の医療機関を紹介してもらえます。"},
+  {q:"より専門的な検査が必要なとき\nかかりつけ医が発行し、大きな病院へ持っていくものは？",
+   choices:["処方箋","診断書","保険証","紹介状"],
+   ans:3,explain:"かかりつけ医が発行する「紹介状」を持って、地域医療支援病院や特定機能病院などの大きな病院を受診します（教科書p.129 図2）。"},
+  {q:"医師から十分な説明を受け、納得した上で\n自ら治療方法を決めることを何という？",
+   choices:["インフォームド・コンセント","セカンド・オピニオン","プライマリ・ケア","リハビリテーション"],
+   ans:0,explain:"「インフォームド・コンセント」といいます。わからないことは質問しながら、よく相談して決めることが大切です。"},
+  {q:"安心して治療を受けるため、別の医療機関の医師などに\n意見を求めることを何という？",
+   choices:["インフォームド・コンセント","かかりつけ医","セカンド・オピニオン","紹介状"],
+   ans:2,explain:"「セカンド・オピニオン」といいます。主治医以外の医師の意見も聞くことで、納得して治療法を選ぶことにつながります。"},
+];
+let cur=0;
+let answers=new Array(QS.length).fill(null);
+let fwAnim=null;
+function renderDots(){document.getElementById("dots").innerHTML=QS.map((_,i)=>{let c="dot";if(i===cur)c+=" cur";else if(answers[i]!==null)c+=answers[i]===QS[i].ans?" done-ok":" done-ng";return`<div class="${c}"></div>`;}).join("");}
+function render(){
+  const q=QS[cur];
+  document.getElementById("q-num").textContent=`Q${cur+1} / ${QS.length}`;
+  document.getElementById("q-text").textContent=q.q;
+  document.getElementById("prev").disabled=cur===0;
+  const chosen=answers[cur];const answered=chosen!==null;
+  document.getElementById("next-btn").disabled=!answered;
+  document.getElementById("next-btn").textContent=cur===QS.length-1?"結果を見る":"次の問題 →";
+  document.getElementById("choices").innerHTML=q.choices.map((c,i)=>{
+    let cls="choice";
+    if(answered){if(i===q.ans)cls+=" correct";else if(i===chosen)cls+=" wrong";}
+    return`<button class="${cls}" onclick="pick(${i})" ${answered?"disabled":""}>${c}</button>`;
+  }).join("");
+  const rb=document.getElementById("result-box");
+  if(answered){
+    const ok=chosen===q.ans;
+    rb.style.display="block";
+    rb.innerHTML=`<div class="result-box ${ok?"result-ok":"result-ng"}"><div class="result-mark ${ok?"ok":"ng"}">${ok?"○　正解！":"×　不正解"}</div><div class="result-explain">${q.explain}</div></div>`;
+  }else{rb.style.display="none";rb.innerHTML="";}
+  renderDots();
+}
+function pick(i){if(answers[cur]!==null)return;answers[cur]=i;render();}
+function move(d){cur=Math.max(0,Math.min(QS.length-1,cur+d));render();}
+function nextQ(){if(cur===QS.length-1){showResult();}else{cur++;render();}}
+function showResult(){
+  const correct=answers.filter((a,i)=>a===QS[i].ans).length;
+  document.getElementById("quiz-card").style.display="none";
+  document.getElementById("nav-wrap").style.display="none";
+  document.getElementById("result-screen").classList.add("show");
+  let emoji,title;
+  if(correct===QS.length){emoji="🎉";title="完璧！全問正解！！";setTimeout(launchFw,300);}
+  else if(correct>=8){emoji="😊";title="すごい！もう少しで満点！";}
+  else if(correct>=6){emoji="🙂";title="なかなかいい！";}
+  else{emoji="📖";title="もう一度復習しよう！";}
+  document.getElementById("res-emoji").textContent=emoji;
+  document.getElementById("res-title").textContent=title;
+  document.getElementById("res-score").textContent=`${correct} / ${QS.length} 問正解`;
+}
+function retry(){cur=0;answers=new Array(QS.length).fill(null);document.getElementById("quiz-card").style.display="flex";document.getElementById("nav-wrap").style.display="flex";document.getElementById("result-screen").classList.remove("show");render();}
+function launchFw(){
+  const canvas=document.getElementById("fw-canvas");const ctx=canvas.getContext("2d");
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const particles=[];
+  const COLORS=["#f0c060","#ffd700","#4ecb87","#60b8ff","#a89ef5","#ff9060","#fff"];
+  function burst(x,y){const color=COLORS[Math.floor(Math.random()*COLORS.length)];for(let i=0;i<80;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*6;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,decay:.012+Math.random()*.01,size:2+Math.random()*4,color});}}
+  for(let i=0;i<6;i++)setTimeout(()=>burst(100+Math.random()*(canvas.width-200),80+Math.random()*(canvas.height*.5)),i*180);
+  let bc=0;const bi=setInterval(()=>{burst(100+Math.random()*(canvas.width-200),60+Math.random()*(canvas.height*.55));bc++;if(bc>20)clearInterval(bi);},400);
+  function loop(){ctx.fillStyle="rgba(0,0,0,0.18)";ctx.fillRect(0,0,canvas.width,canvas.height);for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.vx*=.98;p.life-=p.decay;if(p.life<=0){particles.splice(i,1);continue;}ctx.globalAlpha=p.life;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;fwAnim=requestAnimationFrame(loop);}
+  document.getElementById("celebrate").classList.add("show");loop();
+}
+function closeCeleb(){document.getElementById("celebrate").classList.remove("show");if(fwAnim)cancelAnimationFrame(fwAnim);}
+render();
+</script>
+</body>
+</html>
